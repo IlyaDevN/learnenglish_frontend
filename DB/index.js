@@ -62,4 +62,11 @@ export const db = [
 		tag: "",
 		difficulty: "",
 	},
+	{	
+		id: 10,
+		question: "Приятно наконец встретиться с вами лично!",
+		answer: "It's good to finally meet you in person!",
+		tag: "",
+		difficulty: "",
+	},
 ]

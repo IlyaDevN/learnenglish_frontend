@@ -13,8 +13,13 @@ const sourceSans3 = Source_Sans_3({ subsets: ["latin", "cyrillic"] });
 export default function HomePage() {
   console.log("render");
   const [sentences, setSentences] = useState(db);
-  const [currentSentence, setCurrentSentence] = useState(db[0]);
+  const [randomNumber, setRandomNumber] = useState();
   const [currentAnswer, setCurrentAnswer] = useState();
+
+  useEffect(() => {
+    setRandomNumber(getRandomNumber(0, sentences.length));
+    setCurrentAnswer("");
+  }, [sentences]);
 
   function getRandomNumber(min, max) {
     min = Math.ceil(min);
@@ -26,20 +31,17 @@ export default function HomePage() {
     if (sentences.length === 0) {
       return;
     }
-    const randomNumber = getRandomNumber(0, sentences.length);
-    setCurrentSentence(sentences[randomNumber]);
     const sentencesCopy = sentences.slice();
     sentencesCopy.splice(randomNumber, 1);
     setSentences(sentencesCopy);
-	setCurrentAnswer("");
   }
 
   function handleShowTranslation() {
-    setCurrentAnswer(currentSentence.answer);
+    setCurrentAnswer(sentences[randomNumber].answer);
   }
 
   function handleReset() {
-	setSentences(db);
+    setSentences(db);
   }
 
   return (
@@ -55,12 +57,16 @@ export default function HomePage() {
           "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
         )}
       >
-        <ContentField>{currentSentence.question}</ContentField>
-        <ContentField>{currentAnswer}</ContentField>
+        <ContentField>
+          {sentences[randomNumber]?.question ?? "The end"}
+        </ContentField>
+        <ContentField>
+          {currentAnswer || "Нажмите показать перевод"}
+        </ContentField>
         <InputField />
         <UiButton onClick={handleShowTranslation}>Показать перевод</UiButton>
         <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
-		<UiButton onClick={handleReset}>Начать сначала</UiButton>
+        <UiButton onClick={handleReset}>Начать сначала</UiButton>
       </div>
     </div>
   );
