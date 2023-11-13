@@ -5,21 +5,37 @@ import clsx from "clsx";
 import { UiButton } from "../components/ui/UiButton";
 import { ContentField } from "../components/ui/ContentField";
 import { InputField } from "../components/ui/InputField";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { db } from "../DB";
 
 const sourceSans3 = Source_Sans_3({ subsets: ["latin", "cyrillic"] });
 
 export default function HomePage() {
-  console.log("render");
+  console.log("start render");
+  const firstUpdate = useRef(true);
   const [sentences, setSentences] = useState(db);
-  const [randomNumber, setRandomNumber] = useState();
+  const [randomNumber, setRandomNumber] = useState(() => {
+	// console.log(sentences);
+	console.log("init random number"); 
+	return getRandomNumber(0, sentences.length);
+	// return 1;
+  });
   const [currentAnswer, setCurrentAnswer] = useState();
 
-  useEffect(() => {
-    setRandomNumber(getRandomNumber(0, sentences.length));
-    setCurrentAnswer("");
-  }, [sentences]);
+// setRandomNumber(getRandomNumber(0, sentences.length));
+
+useEffect(() => {
+	if(firstUpdate.current) {
+		firstUpdate.current = false;
+		return;
+	}
+
+	console.log("useEffect");
+	setRandomNumber(getRandomNumber(0, sentences.length));
+	// console.log("randomNumber inside effect " + randomNumber);
+}, [randomNumber])
+
+console.log("randomNumber outside " + randomNumber);
 
   function getRandomNumber(min, max) {
     min = Math.ceil(min);
@@ -31,9 +47,13 @@ export default function HomePage() {
     if (sentences.length === 0) {
       return;
     }
+	
+	const newRandomNumber = getRandomNumber(0, sentences.length);
+	setRandomNumber(newRandomNumber);
     const sentencesCopy = sentences.slice();
     sentencesCopy.splice(randomNumber, 1);
     setSentences(sentencesCopy);
+	console.log("inside next sentence " + randomNumber);
   }
 
   function handleShowTranslation() {
@@ -57,8 +77,8 @@ export default function HomePage() {
           "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
         )}
       >
-        <ContentField>
-          {sentences[randomNumber]?.question ?? "The end"}
+        <ContentField suppressHydrationWarning={false}>
+          {sentences[randomNumber].question}
         </ContentField>
         <ContentField>
           {currentAnswer || "Нажмите показать перевод"}
