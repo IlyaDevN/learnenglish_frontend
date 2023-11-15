@@ -33,8 +33,10 @@ export default function HomePage() {
 
   function handleReset() {
     setSentences(db);
+	count.current = db.length;
+	setRandomNumber(getRandomNumber(0, count.current));
   }
-
+  
   function getRandomNumber(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
