@@ -14,24 +14,17 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export default function HomePage() {
-  const firstUpdate = useRef(true);
   const [sentences, setSentences] = useState(db);
-  const [randomNumber, setRandomNumber] = useState(() => {
-    const newRandomNumber = getRandomNumber(0, sentences.length);
-    return newRandomNumber;
-  });
+  const [randomNumber, setRandomNumber] = useState(() => getRandomNumber(0, sentences.length));
   const [currentAnswer, setCurrentAnswer] = useState();
   const count = useRef(sentences.length);
 
   function handleNextSentence() {
     const sentencesCopy = sentences.slice();
-	
     sentencesCopy.splice(randomNumber, 1);
     setSentences(sentencesCopy);
-	count.current = count.current - 1;
-    const newRandomNumber = getRandomNumber(0, count.current);
-	
-    setRandomNumber(newRandomNumber);
+	count.current -= 1;
+    setRandomNumber(getRandomNumber(0, count.current));
   }
 
   function handleShowTranslation() {
@@ -71,7 +64,6 @@ export default function HomePage() {
         </ContentField>
         <InputField />
         <UiButton onClick={handleShowTranslation}>Показать перевод</UiButton>
-        {/* <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton> */}
         <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
       </div>
