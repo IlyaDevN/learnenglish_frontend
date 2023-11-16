@@ -59,6 +59,7 @@ export default function HomePage() {
     setSentences(initialData);
     count.current = initialData.length;
     setRandomNumber(getRandomNumber(0, count.current));
+	setCurrentAnswer("");
   }
 
   function getRandomNumber(min, max) {
