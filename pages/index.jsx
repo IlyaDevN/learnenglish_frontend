@@ -35,15 +35,24 @@ export default function HomePage() {
   }, []);
 
   function handleNextSentence() {
+	if(count.current === 0) {
+		return;
+	}
+
     const sentencesCopy = sentences.slice();
     sentencesCopy.splice(randomNumber, 1);
     setSentences(sentencesCopy);
     count.current -= 1;
     setRandomNumber(getRandomNumber(0, count.current));
+	setCurrentAnswer("");
   }
 
   function handleShowTranslation() {
-    setCurrentAnswer(sentences[randomNumber].answer);
+	if(sentences.length) {
+		setCurrentAnswer(sentences[randomNumber].answer);
+	} else {
+		setCurrentAnswer("Урок окончен");
+	}
   }
 
   function handleReset() {
