@@ -1,7 +1,9 @@
+import { useState } from "react";
 import InputField from "./InputField";
 import ShowPassButton from "./showPassButton/showPassButton";
 
 export default function InputBlock({ tip, fieldType, placeholder }) {
+  const [currentFieldType, setCurrentFieldType] = useState("password");
 
   return (
     <div>
@@ -9,8 +11,13 @@ export default function InputBlock({ tip, fieldType, placeholder }) {
         {tip}
       </p>
       <div className="relative">
-        <InputField fieldType={fieldType} placeholder={placeholder} />
-        {fieldType === "password" && <ShowPassButton />}
+        <InputField 
+			{...(fieldType === "password" ? {fieldType: currentFieldType} : {fieldType: fieldType})}
+			placeholder={placeholder} />
+        {fieldType === "password" && <ShowPassButton
+			currentFieldType={currentFieldType}
+		 	setCurrentFieldType={setCurrentFieldType}
+		 />}
       </div>
     </div>
   );
