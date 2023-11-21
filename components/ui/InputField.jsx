@@ -12,7 +12,7 @@ export default function InputField({ className, fieldType, placeholder }) {
     <input
       className={clsx(
         fieldStyle.inputStyle,
-        fieldStyle.placeholderStyle,
+        placeholder && fieldStyle.placeholderStyle,
         className,
       )}
       type={fieldType}
