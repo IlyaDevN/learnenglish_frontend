@@ -2,7 +2,7 @@ import { useState } from "react";
 import InputField from "./InputField";
 import ShowPassButton from "./showPassButton/showPassButton";
 
-export default function InputBlock({ tip, fieldType, placeholder }) {
+export default function InputBlock({ tip, fieldName, fieldType, placeholder }) {
   const [currentFieldType, setCurrentFieldType] = useState("password");
 
   return (
@@ -12,6 +12,7 @@ export default function InputBlock({ tip, fieldType, placeholder }) {
       </p>
       <div className="relative">
         <InputField 
+			fieldName={fieldName}
 			{...(fieldType === "password" ? {fieldType: currentFieldType} : {fieldType: fieldType})}
 			placeholder={placeholder} />
         {fieldType === "password" && <ShowPassButton

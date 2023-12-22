@@ -1,7 +1,13 @@
 import Image from "next/image";
 import bgSrc from "./bg.jpg";
+import { ContentContext } from "../../context";
+import { useContext } from "react";
+import Header from "../header";
+import ModalMenu from "../ModalMenu";
 
-export default function Layout({children}) {
+export default function Layout({ children }) {
+  const { isAuth } = useContext(ContentContext);
+
   return (
     <div>
       <Image
@@ -9,7 +15,9 @@ export default function Layout({children}) {
         src={bgSrc}
         alt="background"
       />
-	  {children}
+	  {isAuth && <Header/>}
+      {children}
+	  <ModalMenu />
     </div>
   );
 }

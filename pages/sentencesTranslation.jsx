@@ -4,6 +4,7 @@ import { UiButton } from "../components/ui/UiButton";
 import { ContentField } from "../components/ui/ContentField";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
 import { useState, useRef, useEffect } from "react";
+import ModalMenu from "../components/ModalMenu";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -46,7 +47,7 @@ export default function SentencesTranslation() {
     count.current -= 1;
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
-	setInputContent("");
+    setInputContent("");
   }
 
   function handleShowTranslation() {
@@ -62,7 +63,7 @@ export default function SentencesTranslation() {
     count.current = initialData.length;
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
-	setInputContent("");
+    setInputContent("");
   }
 
   function getRandomNumber(min, max) {
@@ -88,7 +89,11 @@ export default function SentencesTranslation() {
         <ContentField className={currentAnswer ? "" : "text-opacity-50"}>
           {currentAnswer || "Нажмите на кнопку показать перевод"}
         </ContentField>
-        <InputSentenceField value={inputContent} onChange={e => setInputContent(e.target.value)}/>
+        <InputSentenceField
+          placeholder="Напишите перевод"
+          value={inputContent}
+          onChange={(e) => setInputContent(e.target.value)}
+        />
         <UiButton onClick={handleShowTranslation}>Показать перевод</UiButton>
         <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
