@@ -2,7 +2,7 @@ import clsx from "clsx";
 import InputBlock from "./ui/InputBlock";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "./ui/UiButton";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { ContentContext } from "../context";
 import { useContext } from "react";
 import { Cookies } from "react-cookie";

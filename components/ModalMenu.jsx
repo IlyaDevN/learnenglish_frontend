@@ -1,26 +1,35 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ContentContext } from "../context";
 import ModalMenuButton from "./ui/ModalMenuButton";
 import clsx from "clsx";
 import { CSSTransition } from "react-transition-group";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export default function ModalMenu() {
-  const { isModalActive, setIsModalActive } = useContext(ContentContext);
-  const [currentPage, setCurrentPage] = useState("/");
+  const { isModalActive, setIsModalActive, currentPage, setCurrentPage } = useContext(ContentContext);
+
+  const MODAL_PATHS = {
+    startPage: "/",
+    sentenceTranslation: "/menu",
+  };
+
   const router = useRouter();
 
-  function changePage(destination) {
-	setIsModalActive(false);
-	setCurrentPage(destination);
+  function modalMenuButtonHandler(destination) {
+    setIsModalActive(false);
+    setCurrentPage(destination);
+  }
+
+  function modalTransitionEndHandler() {
+	for(let key in MODAL_PATHS) {
+		if(MODAL_PATHS[key] === currentPage) {
+			router.push(currentPage);
+		}
+	}
   }
 
   return (
-    <CSSTransition
-      in={isModalActive}
-      timeout={500}
-      onExited={() => router.push(currentPage)}
-    >
+    <CSSTransition in={isModalActive} timeout={500} onExited={modalTransitionEndHandler}>
       <div
         className={clsx(
           isModalActive ? "translate-x-0" : "-translate-x-full",
@@ -31,15 +40,15 @@ export default function ModalMenu() {
           <li>
             <ModalMenuButton
               name="начальная страница"
-              destination="/"
-              onClick={changePage}
+              destination={MODAL_PATHS.startPage}
+              onClick={modalMenuButtonHandler}
             />
           </li>
           <li>
             <ModalMenuButton
               name="перевод предложений"
-              destination="/menu"
-              onClick={changePage}
+              destination={MODAL_PATHS.sentenceTranslation}
+              onClick={modalMenuButtonHandler}
             />
           </li>
         </ul>

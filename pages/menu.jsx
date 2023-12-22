@@ -1,18 +1,21 @@
 import clsx from "clsx";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useContext } from "react";
+import { ContentContext } from "../context";
 
 const sourceSans3 = Source_Sans_3({
 	subsets: ["latin", "cyrillic"],
-	weight: ["700", "900"],
+	weight: ["900"],
   });
 
 export default function Menu() {
+	const { setCurrentPage } = useContext(ContentContext);
 	const router = useRouter();
 
 	function serverSentetencesTranslationButtonHandler() {
+		setCurrentPage("/sentencesTranslation");
 		router.push("/sentencesTranslation");
 	}
 
@@ -21,6 +24,7 @@ export default function Menu() {
 	}
 
 	function addSentencesButtonHandler() {
+		setCurrentPage("/addSentences");
 		router.push("/addSentences");
 	}
 

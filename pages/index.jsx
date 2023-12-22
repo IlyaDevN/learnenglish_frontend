@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useContext, useEffect } from "react";
 import { ContentContext } from "../context";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { Cookies } from "react-cookie";
 import ModalMenu from "../components/ModalMenu";
 
