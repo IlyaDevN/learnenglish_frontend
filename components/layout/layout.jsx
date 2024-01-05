@@ -4,12 +4,13 @@ import { ContentContext } from "../../context";
 import { useContext } from "react";
 import Header from "../header";
 import ModalMenu from "../ModalMenu";
+import Footer from "../Footer";
 
 export default function Layout({ children }) {
   const { isAuth } = useContext(ContentContext);
 
   return (
-    <div>
+    <div className="flex flex-col">
       <Image
         className="fixed left-0 top-0 w-screen h-full -z-10"
         src={bgSrc}
@@ -18,6 +19,7 @@ export default function Layout({ children }) {
 	  {isAuth && <Header/>}
       {children}
 	  <ModalMenu />
+	  {isAuth && <Footer/>}
     </div>
   );
 }
