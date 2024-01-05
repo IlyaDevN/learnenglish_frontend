@@ -23,14 +23,14 @@ export default function Login() {
       >
         <div className="flex justify-evenly mb-7">
           <AuthButton
-            setIsRegistered={setIsRegistered}
+            onclick={setIsRegistered}
 			isRegistered={isRegistered}
 			isButtonActive={isRegistered ? true : false}
           >
             вход
           </AuthButton>
           <AuthButton
-            setIsRegistered={setIsRegistered}
+            onclick={setIsRegistered}
 			isRegistered={isRegistered}
 			isButtonActive={isRegistered ? false : true}
           >
