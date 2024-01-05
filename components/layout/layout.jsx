@@ -10,14 +10,16 @@ export default function Layout({ children }) {
   const { isAuth } = useContext(ContentContext);
 
   return (
-    <div className="flex flex-col">
+    <div className="h-screen flex flex-col">
       <Image
         className="fixed left-0 top-0 w-screen h-full -z-10"
         src={bgSrc}
         alt="background"
       />
 	  {isAuth && <Header/>}
-      {children}
+	  <main className="flex-grow flex-shrink-0">
+	  {children}
+	  </main>
 	  <ModalMenu />
 	  {isAuth && <Footer/>}
     </div>
