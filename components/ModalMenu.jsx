@@ -10,7 +10,7 @@ export default function ModalMenu() {
 
   const MODAL_PATHS = {
     startPage: "/",
-    sentenceTranslation: "/menu",
+    sentenceTranslation: "/sentencesMenu",
   };
 
   const router = useRouter();

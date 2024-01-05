@@ -4,43 +4,69 @@ import { UiButton } from "../components/ui/UiButton";
 import { ContentField } from "../components/ui/ContentField";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
 import { useState, useRef, useEffect } from "react";
-import ModalMenu from "../components/ModalMenu";
+import SelectLesson from "../components/ui/SelectLesson";
+import Counter from "../components/Counter";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
   weight: ["700", "900"],
 });
 
-export default function SentencesTranslation() {
+export default function ServerSentences() {
   const [initialData, setInitialData] = useState();
   const [sentences, setSentences] = useState([]);
   const [randomNumber, setRandomNumber] = useState();
   const [currentAnswer, setCurrentAnswer] = useState();
-  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [isDataAvailable, setIsDataAvailable] = useState(false);
   const [inputContent, setInputContent] = useState("");
+  const [translationsCounter, setTranslationsCounter] = useState(0);
   const count = useRef();
+  
+  const LESSONS = {
+	1: "https://ilyadevn.github.io/JsonApi/lesson_1.json",
+	2: "https://ilyadevn.github.io/JsonApi/lesson_2.json"
+  }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        "https://ilyadevn.github.io/JsonApi/data.json",
+  async function selectHandler(value) {
+
+	if(isDataAvailable) {
+		handleReset();
+	}
+
+	const response = await fetch(
+        LESSONS[value],
       );
       const data = await response.json();
       setInitialData(data.db);
-      setSentences([...sentences, ...data.db]);
+      setSentences(data.db);
       setRandomNumber(getRandomNumber(0, data.db.length));
       count.current = data.db.length;
-      setIsDataLoading(true);
-    };
+      setIsDataAvailable(true);
+  }
 
-    fetchData();
-  }, []);
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const response = await fetch(
+//         "https://ilyadevn.github.io/JsonApi/lesson_1.json",
+//       );
+//       const data = await response.json();
+//       setInitialData(data.db);
+//       setSentences([...sentences, ...data.db]);
+//       setRandomNumber(getRandomNumber(0, data.db.length));
+//       count.current = data.db.length;
+//       setIsDataAvailable(true);
+//     };
+
+//     fetchData();
+//   }, []);
 
   function handleNextSentence() {
+	if(!isDataAvailable) {
+		return;
+	}
     if (count.current === 0) {
       return;
     }
-
     const sentencesCopy = sentences.slice();
     sentencesCopy.splice(randomNumber, 1);
     setSentences(sentencesCopy);
@@ -48,9 +74,13 @@ export default function SentencesTranslation() {
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
+	setTranslationsCounter(oldCount => oldCount + 1);
   }
 
   function handleShowTranslation() {
+	if(!isDataAvailable) {
+		return;
+	}
     if (sentences.length) {
       setCurrentAnswer(sentences[randomNumber].answer);
     } else {
@@ -59,11 +89,15 @@ export default function SentencesTranslation() {
   }
 
   function handleReset() {
+	if(!isDataAvailable) {
+		return;
+	}
     setSentences(initialData);
     count.current = initialData.length;
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
+	setTranslationsCounter(0);
   }
 
   function getRandomNumber(min, max) {
@@ -80,8 +114,12 @@ export default function SentencesTranslation() {
           "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
         )}
       >
+		<div className="flex gap-5">
+			<SelectLesson onChange={selectHandler}/>
+			<Counter value={translationsCounter}/>
+		</div>
         <ContentField>
-          {isDataLoading &&
+          {isDataAvailable &&
             (sentences.length
               ? sentences[randomNumber].question
               : "The lesson is over")}

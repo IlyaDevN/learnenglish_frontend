@@ -3,7 +3,6 @@ import { useContext, useEffect } from "react";
 import { ContentContext } from "../context";
 import { useRouter } from "next/router";
 import { Cookies } from "react-cookie";
-import ModalMenu from "../components/ModalMenu";
 
 export default function HomePage() {
   const { isAuth, setIsAuth, currentUser, setCurrentUser } = useContext(ContentContext);
@@ -15,7 +14,6 @@ export default function HomePage() {
     if (user) {
       setIsAuth(true);
       setCurrentUser(user);
-    //   router.push("/menu");
     } else {
       router.push("/login");
     }

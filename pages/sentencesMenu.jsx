@@ -10,17 +10,18 @@ const sourceSans3 = Source_Sans_3({
 	weight: ["900"],
   });
 
-export default function Menu() {
+export default function SentencesMenu() {
 	const { setCurrentPage } = useContext(ContentContext);
 	const router = useRouter();
 
 	function serverSentetencesTranslationButtonHandler() {
-		setCurrentPage("/sentencesTranslation");
-		router.push("/sentencesTranslation");
+		setCurrentPage("/serverSentences");
+		router.push("/serverSentences");
 	}
 
 	function ownSentetencesTranslationButtonHandler() {
-
+		setCurrentPage("/ownSentences");
+		router.push("/ownSentences");
 	}
 
 	function addSentencesButtonHandler() {

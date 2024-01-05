@@ -17,9 +17,6 @@ export default function AddSentences() {
   const [translation, setTranslation] = useState();
   const isFirstTime = useRef(true);
 
-//   console.log(currentUser);
-  console.log(isFirstTime.current);
-
   async function sendSentence() {
 	const cookies = new Cookies();
 	const currentUser = cookies.get("user");
