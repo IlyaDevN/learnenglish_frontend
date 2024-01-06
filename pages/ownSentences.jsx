@@ -68,7 +68,7 @@ export default function OwnSentences() {
 		return;
 	}
     if (sentences.length) {
-      setCurrentAnswer(sentences[randomNumber].answer);
+      setCurrentAnswer(sentences[randomNumber].eng_sentence);
     } else {
       setCurrentAnswer("Урок окончен");
     }
