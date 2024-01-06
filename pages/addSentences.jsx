@@ -63,14 +63,14 @@ export default function AddSentences() {
           </p>
           <InputSentenceField
             className="min-w-full"
-            placeholder="Введите предложение"
+            placeholder="Введите предложение на английском"
             rows={4}
 			value={sentence}
             onChange={(e) => setSentence(e.target.value)}
           />
           <InputSentenceField
             className="min-w-full"
-            placeholder="Введите перевод"
+            placeholder="Введите перевод на русском"
             rows={4}
 			value={translation}
             onChange={(e) => setTranslation(e.target.value)}
