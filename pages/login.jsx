@@ -38,7 +38,7 @@ export default function Login() {
           </AuthButton>
         </div>
 		{isRegistered 
-		? <AuthForm /> 
+		? <AuthForm/>
 		: <RegisterForm setIsRegistered={setIsRegistered}/>}
       </div>
     </div>
