@@ -78,7 +78,7 @@ export default function ServerSentences() {
 		return;
 	}
     if (sentences.length) {
-      setCurrentAnswer(sentences[randomNumber].answer);
+      setCurrentAnswer(sentences[randomNumber].eng_sentence);
     } else {
       setCurrentAnswer("Урок окончен");
     }
@@ -117,7 +117,7 @@ export default function ServerSentences() {
         <ContentField>
           {isDataAvailable &&
             (sentences.length
-              ? sentences[randomNumber].question
+              ? sentences[randomNumber].rus_sentence
               : "The lesson is over")}
         </ContentField>
         <ContentField className={currentAnswer ? "" : "text-opacity-50"}>
