@@ -33,10 +33,10 @@ export default function ServerSentences() {
         LESSONS[value],
       );
       const data = await response.json();
-      setInitialData(data.db);
-      setSentences(data.db);
-      setRandomNumber(getRandomNumber(0, data.db.length));
-      count.current = data.db.length;
+      setInitialData(data);
+      setSentences(data);
+      setRandomNumber(getRandomNumber(0, data.length));
+      count.current = data.length;
       setIsDataAvailable(true);
   }
 
