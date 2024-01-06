@@ -12,7 +12,7 @@ const sourceSans3 = Source_Sans_3({
   weight: ["400", "700", "900"],
 });
 
-export default function AuthForm() {
+export default function LoginForm() {
   const REGEXP = {
     NAME: /^[а-яА-ЯёЁa-zA-ZЁёЇїІіЄєҐґ']{2,20}$/,
     EMAIL: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,

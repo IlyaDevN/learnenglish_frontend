@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Source_Sans_3 } from "next/font/google";
 import AuthButton from "../components/ui/AuthButton";
-import AuthForm from "../components/AuthForm";
+import LoginForm from "../components/LoginForm";
 import { useState, } from "react";
 import RegisterForm from "../components/RegisterForm";
 
@@ -38,7 +38,7 @@ export default function Login() {
           </AuthButton>
         </div>
 		{isRegistered 
-		? <AuthForm/>
+		? <LoginForm/>
 		: <RegisterForm setIsRegistered={setIsRegistered}/>}
       </div>
     </div>
