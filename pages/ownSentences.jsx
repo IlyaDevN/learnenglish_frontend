@@ -5,6 +5,7 @@ import { ContentField } from "../components/ui/ContentField";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
 import { useState, useRef, useEffect } from "react";
 import { Cookies } from "react-cookie";
+import Counter from "../components/Counter";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -16,28 +17,16 @@ export default function OwnSentences() {
   const [sentences, setSentences] = useState([]);
   const [randomNumber, setRandomNumber] = useState();
   const [currentAnswer, setCurrentAnswer] = useState();
-  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [isDataAvailable, setisDataAvailable] = useState(false);
   const [inputContent, setInputContent] = useState("");
+  const [translationsCounter, setTranslationsCounter] = useState(0);
   const count = useRef();
 
   useEffect(() => {
+    const cookies = new Cookies();
+    const currentUser = cookies.get("user");
+
     const fetchData = async () => {
-      const response = await fetch(
-        "https://ilyadevn.github.io/JsonApi/data.json",
-      );
-      const data = await response.json();
-	  console.log(data);
-      setInitialData(data.db);
-      setSentences([...sentences, ...data.db]);
-      setRandomNumber(getRandomNumber(0, data.db.length));
-      count.current = data.db.length;
-      setIsDataLoading(true);
-    };
-
-    const fetchDat = async () => {
-      const cookies = new Cookies();
-      const currentUser = cookies.get("user");
-
       const response = await fetch(
         "http://englishback.ua/getOwnSentences.php",
         {
@@ -47,18 +36,23 @@ export default function OwnSentences() {
         },
       );
       const data = await response.json();
-      console.dir(data);
+      setInitialData(data);
+      setSentences([...sentences, ...data]);
+      setRandomNumber(getRandomNumber(0, data.length));
+      count.current = data.length;
+      setisDataAvailable(true);
     };
 
     fetchData();
-    fetchDat();	
   }, []);
 
   function handleNextSentence() {
+	if(!isDataAvailable) {
+		return;
+	}
     if (count.current === 0) {
       return;
     }
-
     const sentencesCopy = sentences.slice();
     sentencesCopy.splice(randomNumber, 1);
     setSentences(sentencesCopy);
@@ -66,9 +60,13 @@ export default function OwnSentences() {
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
+	setTranslationsCounter(oldCount => oldCount + 1);
   }
 
   function handleShowTranslation() {
+	if(!isDataAvailable) {
+		return;
+	}
     if (sentences.length) {
       setCurrentAnswer(sentences[randomNumber].answer);
     } else {
@@ -77,11 +75,15 @@ export default function OwnSentences() {
   }
 
   function handleReset() {
+	if(!isDataAvailable) {
+		return;
+	}
     setSentences(initialData);
     count.current = initialData.length;
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
+	setTranslationsCounter(0);
   }
 
   function getRandomNumber(min, max) {
@@ -96,11 +98,12 @@ export default function OwnSentences() {
           sourceSans3.className,
           "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
         )}
-      >
+      >	
+	  <Counter value={translationsCounter}/>
         <ContentField>
-          {isDataLoading &&
+          {isDataAvailable &&
             (sentences.length
-              ? sentences[randomNumber].question
+              ? sentences[randomNumber].rus_sentence
               : "The lesson is over")}
         </ContentField>
         <ContentField className={currentAnswer ? "" : "text-opacity-50"}>
