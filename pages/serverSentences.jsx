@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { LESSONS } from "../staticData/lessons";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { ContentField } from "../components/ui/ContentField";
@@ -21,11 +22,6 @@ export default function ServerSentences() {
   const [inputContent, setInputContent] = useState("");
   const [translationsCounter, setTranslationsCounter] = useState(0);
   const count = useRef();
-  
-  const LESSONS = {
-	1: "https://ilyadevn.github.io/JsonApi/lesson_1.json",
-	2: "https://ilyadevn.github.io/JsonApi/lesson_2.json"
-  }
 
   async function selectHandler(value) {
 
