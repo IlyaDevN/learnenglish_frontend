@@ -2,7 +2,7 @@ import Image from "next/image";
 import bgSrc from "./bg.jpg";
 import { ContentContext } from "../../context";
 import { useContext } from "react";
-import Header from "../header";
+import Header from "../Header";
 import ModalMenu from "../ModalMenu";
 import Footer from "../Footer";
 
