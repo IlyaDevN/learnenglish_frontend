@@ -63,7 +63,6 @@ export default function LoginForm() {
 	  cookies.set("user", data.email, { path: '/', maxAge: "3600" });
 	  setIsAuth(true);
       setCurrentUser(data.email);
-      alert("Welcome!");
     //   router.push("/menu");
       router.push("/");
     } else {
