@@ -2,8 +2,7 @@ import clsx from "clsx";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
-import { ContentContext } from "../context";
-import { useContext, useRef, useState } from "react";
+import { useState } from "react";
 import { Cookies } from "react-cookie";
 
 const sourceSans3 = Source_Sans_3({
@@ -12,10 +11,9 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export default function AddSentences() {
-//   const { currentUser, setCurrentUser } = useContext(ContentContext);
+	
   const [sentence, setSentence] = useState();
   const [translation, setTranslation] = useState();
-  const isFirstTime = useRef(true);
 
   async function sendSentence() {
 	const cookies = new Cookies();
@@ -26,15 +24,6 @@ export default function AddSentences() {
       sentence: sentence,
       translation: translation,
     };
-
-    if (isFirstTime.current) {
-      const response = await fetch("http://englishback.ua/dbCreation.php", {
-        method: "post",
-        header: { "Content-type": "application/json" },
-        body: JSON.stringify(data.currentUser),
-      });
-      isFirstTime.current = false;
-    }
 
     const response = await fetch("http://englishback.ua/addSentences.php", {
       method: "post",
