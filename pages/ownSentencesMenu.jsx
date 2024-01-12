@@ -10,14 +10,9 @@ const sourceSans3 = Source_Sans_3({
 	weight: ["900"],
   });
 
-export default function SentencesMenu() {
+export default function OwnSentencesMenu() {
 	const { setCurrentPage } = useContext(ContentContext);
 	const router = useRouter();
-
-	function serverSentetencesTranslationButtonHandler() {
-		setCurrentPage("/serverSentences");
-		router.push("/serverSentences");
-	}
 
 	function ownSentetencesTranslationButtonHandler() {
 		setCurrentPage("/ownSentences");
@@ -39,7 +34,6 @@ export default function SentencesMenu() {
 	    >
 			<div className="flex flex-col items-center gap-5">
 				<p className="text-2xl font-black text-yellow-900 uppercase">выберите задание</p>
-				<UiButton className="w-full" onClick={serverSentetencesTranslationButtonHandler}>Перевод предложений с сервера</UiButton>
 				<UiButton className="w-full" onClick={ownSentetencesTranslationButtonHandler}>Перевод своих предложений</UiButton>
 				<UiButton className="w-full" onClick={addSentencesButtonHandler}>Создать свои предложения</UiButton>
 			</div>

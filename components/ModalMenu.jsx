@@ -10,7 +10,8 @@ export default function ModalMenu() {
 
   const MODAL_PATHS = {
     startPage: "/",
-    sentenceTranslation: "/sentencesMenu",
+    serverSentencesMenu: "/serverSentencesMenu",
+	ownSentencesMenu: "/ownSentencesMenu"
   };
 
   const router = useRouter();
@@ -46,8 +47,15 @@ export default function ModalMenu() {
           </li>
           <li>
             <ModalMenuButton
-              name="перевод предложений"
-              destination={MODAL_PATHS.sentenceTranslation}
+              name="перевод предложений с сервера"
+              destination={MODAL_PATHS.serverSentencesMenu}
+              onClick={modalMenuButtonHandler}
+            />
+          </li>
+		  <li>
+            <ModalMenuButton
+              name="перевод собственных предложений"
+              destination={MODAL_PATHS.ownSentencesMenu}
               onClick={modalMenuButtonHandler}
             />
           </li>
