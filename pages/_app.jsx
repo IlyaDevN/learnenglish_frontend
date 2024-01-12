@@ -17,15 +17,27 @@ export default function App({ Component, pageProps }) {
     readCookie();
   }, []);
 
+  cookieUpdate();
+
   function readCookie() {
-    const user = new Cookies().get("user");
+	const cookies = new Cookies();
+    const user = cookies.get("user");
     if (user) {
       setIsAuth(true);
       setCurrentUser(user);
-    //   router.push("/menu");
     } else {
       router.push("/login");
     }
+  }
+
+  function cookieUpdate() {
+	const cookies = new Cookies();
+    const user = cookies.get("user");
+	if (user) {
+		cookies.set("user", user, { path: '/', maxAge: "3600" });
+	} else {
+		router.push("/login");
+	  }
   }
 
   return (
