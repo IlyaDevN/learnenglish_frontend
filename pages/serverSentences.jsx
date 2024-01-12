@@ -118,7 +118,7 @@ export default function ServerSentences() {
           {isDataAvailable &&
             (sentences.length
               ? sentences[randomNumber].rus_sentence
-              : "The lesson is over")}
+              : "Конец урока.")}
         </ContentField>
         <InputSentenceField
           placeholder="Напишите перевод"
