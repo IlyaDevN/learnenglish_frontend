@@ -128,8 +128,8 @@ export default function ServerSentences() {
           value={inputContent}
           onChange={(e) => setInputContent(e.target.value)}
         />
+		<UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
         <UiButton onClick={handleShowTranslation}>Показать перевод</UiButton>
-        <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
       </div>
     </div>
