@@ -24,42 +24,39 @@ export default function ServerSentences() {
   const count = useRef();
 
   async function selectHandler(value) {
+    if (isDataAvailable) {
+      handleReset();
+    }
 
-	if(isDataAvailable) {
-		handleReset();
-	}
-
-	const response = await fetch(
-        LESSONS[value],
-      );
-      const data = await response.json();
-      setInitialData(data);
-      setSentences(data);
-      setRandomNumber(getRandomNumber(0, data.length));
-      count.current = data.length;
-      setIsDataAvailable(true);
+    const response = await fetch(LESSONS[value]);
+    const data = await response.json();
+    setInitialData(data);
+    setSentences(data);
+    setRandomNumber(getRandomNumber(0, data.length));
+    count.current = data.length;
+    setIsDataAvailable(true);
   }
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const response = await fetch(
-//         "https://ilyadevn.github.io/JsonApi/lesson_1.json",
-//       );
-//       const data = await response.json();
-//       setInitialData(data.db);
-//       setSentences([...sentences, ...data.db]);
-//       setRandomNumber(getRandomNumber(0, data.db.length));
-//       count.current = data.db.length;
-//       setIsDataAvailable(true);
-//     };
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //       const response = await fetch(
+  //         "https://ilyadevn.github.io/JsonApi/lesson_1.json",
+  //       );
+  //       const data = await response.json();
+  //       setInitialData(data.db);
+  //       setSentences([...sentences, ...data.db]);
+  //       setRandomNumber(getRandomNumber(0, data.db.length));
+  //       count.current = data.db.length;
+  //       setIsDataAvailable(true);
+  //     };
 
-//     fetchData();
-//   }, []);
+  //     fetchData();
+  //   }, []);
 
   function handleNextSentence() {
-	if(!isDataAvailable) {
-		return;
-	}
+    if (!isDataAvailable) {
+      return;
+    }
     if (count.current === 0) {
       return;
     }
@@ -70,13 +67,13 @@ export default function ServerSentences() {
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
-	setTranslationsCounter(oldCount => oldCount + 1);
+    setTranslationsCounter((oldCount) => oldCount + 1);
   }
 
   function handleShowTranslation() {
-	if(!isDataAvailable) {
-		return;
-	}
+    if (!isDataAvailable) {
+      return;
+    }
     if (sentences.length) {
       setCurrentAnswer(sentences[randomNumber].eng_sentence);
     } else {
@@ -85,15 +82,15 @@ export default function ServerSentences() {
   }
 
   function handleReset() {
-	if(!isDataAvailable) {
-		return;
-	}
+    if (!isDataAvailable) {
+      return;
+    }
     setSentences(initialData);
     count.current = initialData.length;
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
-	setTranslationsCounter(0);
+    setTranslationsCounter(0);
   }
 
   function getRandomNumber(min, max) {
@@ -110,10 +107,10 @@ export default function ServerSentences() {
           "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
         )}
       >
-		<div className="flex gap-5">
-			<SelectLesson onChange={selectHandler}/>
-			<Counter value={translationsCounter}/>
-		</div>
+        <div className="flex gap-5">
+          <SelectLesson onChange={selectHandler} />
+          <Counter value={translationsCounter} />
+        </div>
         <ContentField>
           {isDataAvailable &&
             (sentences.length
@@ -125,11 +122,18 @@ export default function ServerSentences() {
           value={inputContent}
           onChange={(e) => setInputContent(e.target.value)}
         />
-		<ContentField className={currentAnswer ? "" : "text-opacity-50"}>
-          {currentAnswer || "Нажмите на кнопку показать перевод"}
-        </ContentField>
-		<UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
-        <UiButton onClick={handleShowTranslation}>Показать перевод</UiButton>
+        <UiButton
+          className={clsx(
+            currentAnswer
+              ? "text-left text-lg text-white font-normal normal-case "
+              : "",
+            "min-h-[84px] rounded-lg",
+          )}
+          onClick={handleShowTranslation}
+        >
+          {currentAnswer || "Показать перевод"}
+        </UiButton>
+        <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
       </div>
     </div>
