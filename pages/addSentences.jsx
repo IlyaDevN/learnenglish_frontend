@@ -31,11 +31,14 @@ export default function AddSentences() {
       body: JSON.stringify(data),
     });
 
+	const result = await response.json();
+
 	if(response.status === 201) {
-		alert("Sentence created");
 		setSentence("");
 		setTranslation("");
 	}
+
+	alert(result);
   }
 
   return (
