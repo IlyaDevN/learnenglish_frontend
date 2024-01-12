@@ -24,6 +24,11 @@ export default function OwnSentencesMenu() {
 		router.push("/addOwnSentences");
 	}
 
+	function editOwnSentencesButtonHandler() {
+		setCurrentPage("/editOwnSentences");
+		router.push("/editOwnSentences");
+	}
+
   return (
    <div className="px-4 py-7">
    	 <div
@@ -36,6 +41,7 @@ export default function OwnSentencesMenu() {
 				<p className="text-2xl font-black text-yellow-900 uppercase">выберите задание</p>
 				<UiButton className="w-full" onClick={ownSentetencesTranslationButtonHandler}>Перевод своих предложений</UiButton>
 				<UiButton className="w-full" onClick={addSentencesButtonHandler}>Создать свои предложения</UiButton>
+				<UiButton className="w-full" onClick={editOwnSentencesButtonHandler}>Редактировать предложения</UiButton>
 			</div>
 		</div>
    </div>
