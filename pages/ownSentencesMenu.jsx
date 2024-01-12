@@ -20,8 +20,8 @@ export default function OwnSentencesMenu() {
 	}
 
 	function addSentencesButtonHandler() {
-		setCurrentPage("/addSentences");
-		router.push("/addSentences");
+		setCurrentPage("/addOwnSentences");
+		router.push("/addOwnSentences");
 	}
 
   return (

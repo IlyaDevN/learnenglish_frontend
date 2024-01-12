@@ -10,7 +10,7 @@ const sourceSans3 = Source_Sans_3({
   weight: ["700", "900"],
 });
 
-export default function AddSentences() {
+export default function AddOwnSentences() {
 	
   const [sentence, setSentence] = useState();
   const [translation, setTranslation] = useState();
