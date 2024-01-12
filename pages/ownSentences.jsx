@@ -47,9 +47,9 @@ export default function OwnSentences() {
   }, []);
 
   function handleNextSentence() {
-	if(!isDataAvailable) {
-		return;
-	}
+    if (!isDataAvailable) {
+      return;
+    }
     if (count.current === 0) {
       return;
     }
@@ -60,13 +60,13 @@ export default function OwnSentences() {
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
-	setTranslationsCounter(oldCount => oldCount + 1);
+    setTranslationsCounter((oldCount) => oldCount + 1);
   }
 
   function handleShowTranslation() {
-	if(!isDataAvailable) {
-		return;
-	}
+    if (!isDataAvailable) {
+      return;
+    }
     if (sentences.length) {
       setCurrentAnswer(sentences[randomNumber].eng_sentence);
     } else {
@@ -75,15 +75,15 @@ export default function OwnSentences() {
   }
 
   function handleReset() {
-	if(!isDataAvailable) {
-		return;
-	}
+    if (!isDataAvailable) {
+      return;
+    }
     setSentences(initialData);
     count.current = initialData.length;
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
-	setTranslationsCounter(0);
+    setTranslationsCounter(0);
   }
 
   function getRandomNumber(min, max) {
@@ -98,23 +98,30 @@ export default function OwnSentences() {
           sourceSans3.className,
           "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
         )}
-      >	
-	  <Counter value={translationsCounter}/>
+      >
+        <Counter value={translationsCounter} />
         <ContentField>
           {isDataAvailable &&
             (sentences.length
               ? sentences[randomNumber].rus_sentence
               : "The lesson is over")}
         </ContentField>
-        <ContentField className={currentAnswer ? "" : "text-opacity-50"}>
-          {currentAnswer || "Нажмите на кнопку показать перевод"}
-        </ContentField>
         <InputSentenceField
           placeholder="Напишите перевод"
           value={inputContent}
           onChange={(e) => setInputContent(e.target.value)}
         />
-        <UiButton onClick={handleShowTranslation}>Показать перевод</UiButton>
+        <UiButton
+          className={clsx(
+            currentAnswer
+              ? "text-left text-lg text-white font-normal normal-case "
+              : "",
+            "min-h-[84px] rounded-lg",
+          )}
+          onClick={handleShowTranslation}
+        >
+          {currentAnswer || "Показать перевод"}
+        </UiButton>
         <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
       </div>
