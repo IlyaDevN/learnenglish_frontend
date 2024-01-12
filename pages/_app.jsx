@@ -15,9 +15,7 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     readCookie();
-  }, []);
-
-  cookieUpdate();
+  }, [currentPage]);
 
   function readCookie() {
 	const cookies = new Cookies();
@@ -25,19 +23,10 @@ export default function App({ Component, pageProps }) {
     if (user) {
       setIsAuth(true);
       setCurrentUser(user);
+	  cookies.set("user", user, { path: '/', maxAge: "3600" });
     } else {
       router.push("/login");
     }
-  }
-
-  function cookieUpdate() {
-	const cookies = new Cookies();
-    const user = cookies.get("user");
-	if (user) {
-		cookies.set("user", user, { path: '/', maxAge: "3600" });
-	} else {
-		router.push("/login");
-	  }
   }
 
   return (
