@@ -120,14 +120,14 @@ export default function ServerSentences() {
               ? sentences[randomNumber].rus_sentence
               : "The lesson is over")}
         </ContentField>
-        <ContentField className={currentAnswer ? "" : "text-opacity-50"}>
-          {currentAnswer || "Нажмите на кнопку показать перевод"}
-        </ContentField>
         <InputSentenceField
           placeholder="Напишите перевод"
           value={inputContent}
           onChange={(e) => setInputContent(e.target.value)}
         />
+		<ContentField className={currentAnswer ? "" : "text-opacity-50"}>
+          {currentAnswer || "Нажмите на кнопку показать перевод"}
+        </ContentField>
 		<UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
         <UiButton onClick={handleShowTranslation}>Показать перевод</UiButton>
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
