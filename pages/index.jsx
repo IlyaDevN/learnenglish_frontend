@@ -1,8 +1,8 @@
 import clsx from "clsx";
-import { useContext, useEffect } from "react";
-import { ContentContext } from "../context";
-import { useRouter } from "next/router";
-import { Cookies } from "react-cookie";
+// import { useContext, useEffect } from "react";
+// import { ContentContext } from "../context";
+// import { useRouter } from "next/router";
+// import { Cookies } from "react-cookie";
 import { Source_Sans_3 } from "next/font/google";
 
 const sourceSans3 = Source_Sans_3({
@@ -11,20 +11,20 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export default function HomePage() {
-  const { isAuth, setIsAuth, currentUser, setCurrentUser } = useContext(ContentContext);
-  const router = useRouter();
+//   const { isAuth, setIsAuth, currentUser, setCurrentUser } = useContext(ContentContext);
+//   const router = useRouter();
   
-  useEffect(() => {
-    const user = new Cookies().get("user");
+//   useEffect(() => {
+//     const user = new Cookies().get("user");
 
-    if (user) {
-      setIsAuth(true);
-      setCurrentUser(user);
-    } else {
-      router.push("/login");
-    }
-  }, []);
-
+//     if (user) {
+//       setIsAuth(true);
+//       setCurrentUser(user);
+//     } else {
+//       router.push("/login");
+//     }
+//   }, []);
+//   router.push("/");
   return (
     <div className="px-4 py-7">
       <div

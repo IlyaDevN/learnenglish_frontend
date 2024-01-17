@@ -1,13 +1,13 @@
 import Image from "next/image";
 import bgSrc from "./bg.jpg";
-import { ContentContext } from "../../context";
-import { useContext } from "react";
+// import { ContentContext } from "../../context";
+// import { useContext } from "react";
 import Header from "../Header";
 import ModalMenu from "../ModalMenu";
 import Footer from "../Footer";
 
 export default function Layout({ children }) {
-  const { isAuth } = useContext(ContentContext);
+//   const { isAuth } = useContext(ContentContext);
 
   return (
     <div className="h-screen flex flex-col">
@@ -16,12 +16,14 @@ export default function Layout({ children }) {
         src={bgSrc}
         alt="background"
       />
-	  {isAuth && <Header/>}
+	  {/* {isAuth && <Header/>} */}
+	  <Header/>
 	  <main className="flex-grow flex-shrink-0">
 	  {children}
 	  </main>
 	  <ModalMenu />
-	  {isAuth && <Footer/>}
+	  {/* {isAuth && <Footer/>} */}
+	  <Footer/>
     </div>
   );
 }

@@ -11,7 +11,7 @@ export default function ModalMenu() {
   const MODAL_PATHS = {
     startPage: "/",
     serverSentencesMenu: "/serverSentencesMenu",
-	ownSentencesMenu: "/ownSentencesMenu"
+	// ownSentencesMenu: "/ownSentencesMenu"
   };
 
   const router = useRouter();
@@ -52,13 +52,13 @@ export default function ModalMenu() {
               onClick={modalMenuButtonHandler}
             />
           </li>
-		  <li>
+		  {/* <li>
             <ModalMenuButton
               name="перевод собственных предложений"
               destination={MODAL_PATHS.ownSentencesMenu}
               onClick={modalMenuButtonHandler}
             />
-          </li>
+          </li> */}
         </ul>
       </div>
     </CSSTransition>
