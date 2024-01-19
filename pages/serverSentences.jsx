@@ -1,10 +1,10 @@
 import clsx from "clsx";
-import { LESSONS } from "../staticData/lessons";
+import { TASKS } from "../staticData";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { ContentField } from "../components/ui/ContentField";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import SelectLesson from "../components/ui/SelectLesson";
 import Counter from "../components/Counter";
 
@@ -21,14 +21,19 @@ export default function ServerSentences() {
   const [isDataAvailable, setIsDataAvailable] = useState(false);
   const [inputContent, setInputContent] = useState("");
   const [translationsCounter, setTranslationsCounter] = useState(0);
+  const [currentTask, setCurrentTask] = useState();
   const count = useRef();
+
+  useEffect(() => {
+	setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
+  }, [])
 
   async function selectHandler(value) {
     if (isDataAvailable) {
       handleReset();
     }
 
-    const response = await fetch(LESSONS[value]);
+    const response = await fetch(value);
     const data = await response.json();
     setInitialData(data);
     setSentences(data);
@@ -108,7 +113,7 @@ export default function ServerSentences() {
         )}
       >
         <div className="flex gap-5">
-          <SelectLesson onChange={selectHandler} />
+          <SelectLesson onChange={selectHandler} options={TASKS[currentTask]}/>
           <Counter value={translationsCounter} />
         </div>
         <ContentField>
@@ -127,7 +132,7 @@ export default function ServerSentences() {
             currentAnswer
               ? "text-left text-lg text-white font-normal normal-case "
               : "",
-            "min-h-[84px] rounded-lg",
+            "min-h-[84px] h-auto rounded-lg tracking-wider",
           )}
           onClick={handleShowTranslation}
         >

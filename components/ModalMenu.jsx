@@ -10,8 +10,7 @@ export default function ModalMenu() {
 
   const MODAL_PATHS = {
     startPage: "/",
-    // serverSentencesMenu: "/serverSentencesMenu",
-    serverSentencesMenu: "/serverSentences",
+    serverSentencesMenu: "/serverSentencesMenu",
 	// ownSentencesMenu: "/ownSentencesMenu"
   };
 

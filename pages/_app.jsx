@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }) {
 		isModalActive,
 		setIsModalActive,
 		currentPage,
-		setCurrentPage
+		setCurrentPage,
       }}
     >
       <Layout>
