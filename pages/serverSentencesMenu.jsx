@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { ContentContext } from "../context";
 import { TASKS } from "../staticData";
-console.log(TASKS);
+
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
   weight: ["900"],
