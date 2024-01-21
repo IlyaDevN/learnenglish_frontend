@@ -90,6 +90,9 @@ export default function ServerSentences() {
     if (!isDataAvailable) {
       return;
     }
+	if(!confirm("Вы действительно хотите начать сначала?")) {
+		return;
+	}
     setSentences(initialData);
     count.current = initialData.length;
     setRandomNumber(getRandomNumber(0, count.current));
