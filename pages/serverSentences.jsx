@@ -25,12 +25,12 @@ export default function ServerSentences() {
   const count = useRef();
 
   useEffect(() => {
-	setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
-  }, [])
+    setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
+  }, []);
 
   async function selectHandler(value) {
     if (isDataAvailable) {
-      handleReset();
+      resetTraining();
     }
 
     const response = await fetch(value);
@@ -90,9 +90,13 @@ export default function ServerSentences() {
     if (!isDataAvailable) {
       return;
     }
-	if(!confirm("Вы действительно хотите начать сначала?")) {
-		return;
-	}
+    if (!confirm("Вы действительно хотите начать сначала?")) {
+      return;
+    }
+    resetTraining();
+  }
+
+  function resetTraining() {
     setSentences(initialData);
     count.current = initialData.length;
     setRandomNumber(getRandomNumber(0, count.current));
@@ -116,7 +120,7 @@ export default function ServerSentences() {
         )}
       >
         <div className="flex gap-5">
-          <SelectLesson onChange={selectHandler} options={TASKS[currentTask]}/>
+          <SelectLesson onChange={selectHandler} options={TASKS[currentTask]} />
           <Counter value={translationsCounter} />
         </div>
         <ContentField>
