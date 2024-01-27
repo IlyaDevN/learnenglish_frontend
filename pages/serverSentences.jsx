@@ -137,7 +137,7 @@ export default function ServerSentences() {
         <UiButton
           className={clsx(
             currentAnswer
-              ? "text-left text-lg text-white font-normal normal-case "
+              ? "text-left text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 "
               : "",
             "min-h-[84px] h-auto rounded-lg tracking-wider",
           )}
