@@ -82,7 +82,7 @@ export default function ServerSentences() {
     if (sentences.length) {
       setCurrentAnswer(sentences[randomNumber].eng_sentence);
     } else {
-      setCurrentAnswer("Урок окончен");
+      setCurrentAnswer("Урок окончен.");
     }
   }
 
@@ -127,7 +127,7 @@ export default function ServerSentences() {
           {isDataAvailable &&
             (sentences.length
               ? sentences[randomNumber].rus_sentence
-              : "Конец урока.")}
+              : "The end.")}
         </ContentField>
         <InputSentenceField
           placeholder="Напишите перевод"
