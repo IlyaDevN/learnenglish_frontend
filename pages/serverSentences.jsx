@@ -7,6 +7,7 @@ import { InputSentenceField } from "../components/ui/InputSentenceField";
 import { useState, useRef, useEffect, useContext } from "react";
 import SelectLesson from "../components/ui/SelectLesson";
 import Counter from "../components/Counter";
+import ReverseLangButton from "../components/ui/ReverseLangButton";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -22,6 +23,7 @@ export default function ServerSentences() {
   const [inputContent, setInputContent] = useState("");
   const [translationsCounter, setTranslationsCounter] = useState(0);
   const [currentTask, setCurrentTask] = useState();
+  const [isRusEng, setIsRusEng] = useState(true);
   const count = useRef();
 
   useEffect(() => {
@@ -41,6 +43,12 @@ export default function ServerSentences() {
     count.current = data.length;
     setIsDataAvailable(true);
   }
+
+  useEffect(() => {
+    if (currentAnswer) {
+      handleShowTranslation();
+    }
+  }, [isRusEng]);
 
   //   useEffect(() => {
   //     const fetchData = async () => {
@@ -80,7 +88,11 @@ export default function ServerSentences() {
       return;
     }
     if (sentences.length) {
-      setCurrentAnswer(sentences[randomNumber].eng_sentence);
+      setCurrentAnswer(
+        isRusEng
+          ? sentences[randomNumber].eng_sentence
+          : sentences[randomNumber].rus_sentence,
+      );
     } else {
       setCurrentAnswer("Урок окончен.");
     }
@@ -119,14 +131,17 @@ export default function ServerSentences() {
           "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
         )}
       >
-        <div className="flex gap-5">
+        <div className="flex justify-between flex-wrap">
           <SelectLesson onChange={selectHandler} options={TASKS[currentTask]} />
           <Counter value={translationsCounter} />
+          <ReverseLangButton onClick={setIsRusEng} isRusEng={isRusEng} />
         </div>
         <ContentField>
           {isDataAvailable &&
             (sentences.length
-              ? sentences[randomNumber].rus_sentence
+              ? isRusEng
+                ? sentences[randomNumber].rus_sentence
+                : sentences[randomNumber].eng_sentence
               : "The end.")}
         </ContentField>
         <InputSentenceField
