@@ -19,6 +19,7 @@ export default function ServerSentences() {
   const [sentences, setSentences] = useState([]);
   const [randomNumber, setRandomNumber] = useState();
   const [currentAnswer, setCurrentAnswer] = useState();
+  const [isCurrentWordTranslated, setIsCurrentWordTranslated] = useState(false);
   const [isDataAvailable, setIsDataAvailable] = useState(false);
   const [inputContent, setInputContent] = useState("");
   const [translationsCounter, setTranslationsCounter] = useState(0);
@@ -80,6 +81,7 @@ export default function ServerSentences() {
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
+    setIsCurrentWordTranslated(false);
     setTranslationsCounter((oldCount) => oldCount + 1);
   }
 
@@ -115,6 +117,11 @@ export default function ServerSentences() {
     setCurrentAnswer("");
     setInputContent("");
     setTranslationsCounter(0);
+    setIsCurrentWordTranslated(false);
+  }
+
+  function showWordTranslation() {
+    setIsCurrentWordTranslated((currentWord) => !currentWord);
   }
 
   function getRandomNumber(min, max) {
@@ -136,6 +143,26 @@ export default function ServerSentences() {
           <Counter value={translationsCounter} />
           <ReverseLangButton onClick={setIsRusEng} isRusEng={isRusEng} />
         </div>
+        {currentTask === "words" && (
+          <UiButton
+		  	onClick={showWordTranslation}
+			className={clsx(
+				isCurrentWordTranslated && "text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
+				"min-h-[84px] h-auto rounded-lg tracking-wider"
+				)}
+			>
+            {isDataAvailable &&
+              (sentences.length
+                ? isRusEng
+                  ? isCurrentWordTranslated
+					? sentences[randomNumber].eng_word
+					: sentences[randomNumber].rus_word
+                  : isCurrentWordTranslated
+					? sentences[randomNumber].rus_word
+                	: sentences[randomNumber].eng_word
+                : "")}
+          </UiButton>
+        )}
         <ContentField>
           {isDataAvailable &&
             (sentences.length
@@ -151,9 +178,7 @@ export default function ServerSentences() {
         />
         <UiButton
           className={clsx(
-            currentAnswer
-              ? "text-left text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 "
-              : "",
+            currentAnswer && "text-left text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
             "min-h-[84px] h-auto rounded-lg tracking-wider",
           )}
           onClick={handleShowTranslation}
