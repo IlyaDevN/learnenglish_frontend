@@ -4,7 +4,7 @@ import ProfileButton from "./ui/profileButton/ProfileButton";
 import { useContext } from "react";
 import { ContentContext } from "../context";
 import { useRouter } from "next/router";
-import { MoveBackButton } from "./ui/movaBackButton";
+import { MoveBackButton } from "./ui/MoveBackButton";
 
 export default function Header() {
   const { isModalActive, setIsModalActive } = useContext(ContentContext);
