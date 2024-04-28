@@ -69,38 +69,38 @@ export default function ServerSentences() {
   //     fetchData();
   //   }, []);
 
-    function handleNextSentence() {
-      if (!isDataAvailable) {
-        return;
-      }
-      if (count.current === 0) {
-        return;
-      }
-      const sentencesCopy = sentences.slice();
-      sentencesCopy.splice(randomNumber, 1);
-      setSentences(sentencesCopy);
-      count.current -= 1;
-      setRandomNumber(getRandomNumber(0, count.current));
-      setCurrentAnswer("");
-      setInputContent("");
-      setIsCurrentWordTranslated(false);
-      setTranslationsCounter((oldCount) => oldCount + 1);
+  function handleNextSentence() {
+    if (!isDataAvailable) {
+      return;
     }
+    if (count.current === 0) {
+      return;
+    }
+    const sentencesCopy = sentences.slice();
+    sentencesCopy.splice(randomNumber, 1);
+    setSentences(sentencesCopy);
+    count.current -= 1;
+    setRandomNumber(getRandomNumber(0, count.current));
+    setCurrentAnswer("");
+    setInputContent("");
+    setIsCurrentWordTranslated(false);
+    setTranslationsCounter((oldCount) => oldCount + 1);
+  }
 
-    function handleShowTranslation() {
-      if (!isDataAvailable) {
-        return;
-      }
-      if (sentences.length) {
-        setCurrentAnswer(
-          isRusEng
-            ? sentences[randomNumber].eng_sentence
-            : sentences[randomNumber].rus_sentence,
-        );
-      } else {
-        setCurrentAnswer("Урок окончен.");
-      }
+  function handleShowTranslation() {
+    if (!isDataAvailable) {
+      return;
     }
+    if (sentences.length) {
+      setCurrentAnswer(
+        isRusEng
+          ? sentences[randomNumber].eng_sentence
+          : sentences[randomNumber].rus_sentence,
+      );
+    } else {
+      setCurrentAnswer("Урок окончен.");
+    }
+  }
 
   useEffect(() => {
     function keydownHandler(e) {
@@ -150,11 +150,11 @@ export default function ServerSentences() {
   }
 
   return (
-    <div className="px-4 py-7">
+    <div className="px-4">
       <div
         className={clsx(
           sourceSans3.className,
-          "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
+          "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
         )}
       >
         <div className="flex justify-between flex-wrap">

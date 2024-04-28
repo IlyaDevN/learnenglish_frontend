@@ -26,7 +26,7 @@ export default function Header() {
   return (
     <div
       className={clsx(
-        "w-full h-14 px-4 py-3 bg-lime-500 bg-opacity-80 flex justify-between items-center",
+        "fixed top-0 w-full h-14 px-4 py-3 bg-lime-500 bg-opacity-80 flex justify-between items-center",
       )}
     >
       <BurgerButton onClick={changeModalState} />

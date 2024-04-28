@@ -26,11 +26,11 @@ export default function HomePage() {
 //   }, []);
 //   router.push("/");
   return (
-    <div className="px-4 py-7">
+    <div className="px-4">
       <div
         className={clsx(
           sourceSans3.className,
-          "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80",
+          "w-full max-w-4xl mx-auto bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80",
         )}
       >
 		<h1 className="text-2xl font-black text-yellow-900 uppercase text-center">Добро пожаловать</h1>

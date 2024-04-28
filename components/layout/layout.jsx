@@ -18,7 +18,7 @@ export default function Layout({ children }) {
       />
 	  {/* {isAuth && <Header/>} */}
 	  <Header/>
-	  <main className="flex-grow flex-shrink-0">
+	  <main className="py-20">
 	  {children}
 	  </main>
 	  <ModalMenu />
