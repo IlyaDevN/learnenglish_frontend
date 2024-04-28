@@ -6,7 +6,9 @@ export function InputSentenceField({
   onChange,
   placeholder,
   rows,
+  textarea_ref
 }) {
+
   return (
     <textarea
       className={clsx(
@@ -17,6 +19,7 @@ export function InputSentenceField({
       value={value}
       onChange={onChange}
       rows={rows}
+	  ref={textarea_ref}
     ></textarea>
   );
 }

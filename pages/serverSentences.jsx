@@ -4,7 +4,7 @@ import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { ContentField } from "../components/ui/ContentField";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect } from "react";
 import SelectLesson from "../components/ui/SelectLesson";
 import Counter from "../components/Counter";
 import ReverseLangButton from "../components/ui/ReverseLangButton";
@@ -26,6 +26,7 @@ export default function ServerSentences() {
   const [currentTask, setCurrentTask] = useState();
   const [isRusEng, setIsRusEng] = useState(true);
   const count = useRef();
+  const textarea_ref = useRef();
 
   useEffect(() => {
     setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
@@ -43,6 +44,7 @@ export default function ServerSentences() {
     setRandomNumber(getRandomNumber(0, data.length));
     count.current = data.length;
     setIsDataAvailable(true);
+    textarea_ref.current.focus();
   }
 
   useEffect(() => {
@@ -67,38 +69,55 @@ export default function ServerSentences() {
   //     fetchData();
   //   }, []);
 
-  function handleNextSentence() {
-    if (!isDataAvailable) {
-      return;
+    function handleNextSentence() {
+      if (!isDataAvailable) {
+        return;
+      }
+      if (count.current === 0) {
+        return;
+      }
+      const sentencesCopy = sentences.slice();
+      sentencesCopy.splice(randomNumber, 1);
+      setSentences(sentencesCopy);
+      count.current -= 1;
+      setRandomNumber(getRandomNumber(0, count.current));
+      setCurrentAnswer("");
+      setInputContent("");
+      setIsCurrentWordTranslated(false);
+      setTranslationsCounter((oldCount) => oldCount + 1);
     }
-    if (count.current === 0) {
-      return;
-    }
-    const sentencesCopy = sentences.slice();
-    sentencesCopy.splice(randomNumber, 1);
-    setSentences(sentencesCopy);
-    count.current -= 1;
-    setRandomNumber(getRandomNumber(0, count.current));
-    setCurrentAnswer("");
-    setInputContent("");
-    setIsCurrentWordTranslated(false);
-    setTranslationsCounter((oldCount) => oldCount + 1);
-  }
 
-  function handleShowTranslation() {
-    if (!isDataAvailable) {
-      return;
+    function handleShowTranslation() {
+      if (!isDataAvailable) {
+        return;
+      }
+      if (sentences.length) {
+        setCurrentAnswer(
+          isRusEng
+            ? sentences[randomNumber].eng_sentence
+            : sentences[randomNumber].rus_sentence,
+        );
+      } else {
+        setCurrentAnswer("Урок окончен.");
+      }
     }
-    if (sentences.length) {
-      setCurrentAnswer(
-        isRusEng
-          ? sentences[randomNumber].eng_sentence
-          : sentences[randomNumber].rus_sentence,
-      );
-    } else {
-      setCurrentAnswer("Урок окончен.");
+
+  useEffect(() => {
+    function keydownHandler(e) {
+      if (e.code === "Enter") {
+        e.preventDefault();
+        if (currentAnswer) {
+          handleNextSentence();
+        } else {
+          handleShowTranslation();
+        }
+      }
     }
-  }
+
+    document.addEventListener("keydown", keydownHandler);
+
+    return () => document.removeEventListener("keydown", keydownHandler);
+  }, [currentAnswer, handleNextSentence, handleShowTranslation]);
 
   function handleReset() {
     if (!isDataAvailable) {
@@ -145,21 +164,22 @@ export default function ServerSentences() {
         </div>
         {currentTask === "words" && (
           <UiButton
-		  	onClick={showWordTranslation}
-			className={clsx(
-				isCurrentWordTranslated && "text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
-				"min-h-[84px] h-auto rounded-lg tracking-wider"
-				)}
-			>
+            onClick={showWordTranslation}
+            className={clsx(
+              isCurrentWordTranslated &&
+                "text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
+              "min-h-[84px] h-auto rounded-lg tracking-wider",
+            )}
+          >
             {isDataAvailable &&
               (sentences.length
                 ? isRusEng
                   ? isCurrentWordTranslated
-					? sentences[randomNumber].eng_word
-					: sentences[randomNumber].rus_word
+                    ? sentences[randomNumber].eng_word
+                    : sentences[randomNumber].rus_word
                   : isCurrentWordTranslated
-					? sentences[randomNumber].rus_word
-                	: sentences[randomNumber].eng_word
+                  ? sentences[randomNumber].rus_word
+                  : sentences[randomNumber].eng_word
                 : "")}
           </UiButton>
         )}
@@ -175,11 +195,13 @@ export default function ServerSentences() {
           placeholder="Напишите перевод"
           value={inputContent}
           onChange={(e) => setInputContent(e.target.value)}
+          textarea_ref={textarea_ref}
         />
         <UiButton
           className={clsx(
-            currentAnswer && "text-left text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
-            "min-h-[84px] h-auto rounded-lg tracking-wider",
+            currentAnswer &&
+              "text-left text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
+            "min-h-[84px] h-auto rounded-lg",
           )}
           onClick={handleShowTranslation}
         >
