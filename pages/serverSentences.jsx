@@ -1,13 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import clsx from "clsx";
 import { TASKS } from "../staticData";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { ContentField } from "../components/ui/ContentField";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import SelectLesson from "../components/ui/SelectLesson";
 import Counter from "../components/Counter";
 import ReverseLangButton from "../components/ui/ReverseLangButton";
+import AudioPlayer from "../components/ui/AudioPlayer";
+import { getTheSound } from "../voiceAPI";
+import { ContentContext } from "../context";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -27,6 +31,8 @@ export default function ServerSentences() {
   const [isRusEng, setIsRusEng] = useState(true);
   const count = useRef();
   const textarea_ref = useRef();
+  const [questionAudioSrc, setQuestionAudioSrc] = useState();
+  const { isSoundOn } = useContext(ContentContext);
 
   useEffect(() => {
     setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
@@ -46,6 +52,13 @@ export default function ServerSentences() {
     setIsDataAvailable(true);
     textarea_ref.current.focus();
   }
+
+  useEffect(() => {
+	if(!isSoundOn || !isDataAvailable) {
+		return;
+	}
+	getTheSound(sentences, isRusEng, randomNumber, setQuestionAudioSrc);
+  }, [randomNumber, isRusEng]);
 
   useEffect(() => {
     if (currentAnswer) {
@@ -209,6 +222,7 @@ export default function ServerSentences() {
         </UiButton>
         <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
+		<AudioPlayer src={questionAudioSrc}/>
       </div>
     </div>
   );

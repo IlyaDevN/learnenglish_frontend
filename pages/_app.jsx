@@ -10,6 +10,7 @@ export default function App({ Component, pageProps }) {
   const [currentUser, setCurrentUser] = useState();
   const [currentPage, setCurrentPage] = useState("/");
   const [isModalActive, setIsModalActive] = useState(false);
+  const [isSoundOn, setIsSoundOn] = useState(false);
 
 //   const router = useRouter();
 
@@ -40,6 +41,8 @@ export default function App({ Component, pageProps }) {
 		setIsModalActive,
 		currentPage,
 		setCurrentPage,
+		isSoundOn,
+		setIsSoundOn
       }}
     >
       <Layout>
