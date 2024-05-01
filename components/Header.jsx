@@ -24,16 +24,18 @@ export default function Header() {
   }
 
   return (
-    <div
+    <header
       className={clsx(
-        "fixed top-0 w-full h-14 px-4 py-3 bg-lime-500 bg-opacity-80 flex justify-between items-center",
+        "fixed flex justify-center items-center top-0 w-full h-14 px-4 bg-lime-500 bg-opacity-80",
       )}
     >
-      <BurgerButton onClick={changeModalState} />
-      {router.asPath != "/" && (
-        <MoveBackButton onClick={moveBack}>предыдущее меню</MoveBackButton>
-      )}
-      <ProfileButton />
-    </div>
+      <div className="w-full max-w-4xl flex justify-between items-center">
+        <BurgerButton onClick={changeModalState} />
+        {router.asPath != "/" && (
+          <MoveBackButton onClick={moveBack}>предыдущее меню</MoveBackButton>
+        )}
+        <ProfileButton />
+      </div>
+    </header>
   );
 }

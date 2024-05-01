@@ -1,14 +1,6 @@
-const RUSSIAN = "ru-ru";
-const ENGLISH_GB = "en-gb";
-// const ENGLISH_US = "en-us";
-
-export async function getTheSound( sentences, isRusEng, randomNumber, setQuestionAudioSrc ) {
+export async function getTheSound(phrase, voice, language, setAudioSrc) {
   // https://www.voicerss.org/
   // https://rapidapi.com/voicerss/api/text-to-speech-1
-
-  const phrase = getPhrase(sentences, isRusEng, randomNumber);
-  const language = getLanguage(isRusEng);
-  const voice = getVoiceAuthor(isRusEng);
 
   const voiceRssKey = "52d213c3ffdc4966bc0981d33851bd59";
   const url = `https://voicerss-text-to-speech.p.rapidapi.com/?key=${voiceRssKey}`;
@@ -33,41 +25,9 @@ export async function getTheSound( sentences, isRusEng, randomNumber, setQuestio
   try {
     const response = await fetch(url, options);
     const result = await response.text();
-    setQuestionAudioSrc(result);
+	setAudioSrc(result);
+    
   } catch (error) {
     console.error(error);
   }
-}
-
-function getPhrase(sentences, isRusEng, randomNumber) {
-
-	if(sentences.length) {
-		if(isRusEng) {
-			return sentences[randomNumber].rus_sentence;
-		} else {
-			return sentences[randomNumber].eng_sentence;
-		}
-	} else {
-		if(isRusEng) {
-			return "Конец";
-		} else {
-			return "The end";
-		}			
-	}
-}
-
-function getLanguage(isRusEng) {
-	if(isRusEng) {
-		return RUSSIAN;
-	} else {
-		return ENGLISH_GB;
-	}
-}
-
-function getVoiceAuthor(isRusEng) {
-	if(isRusEng) {
-		return "Olga";
-	} else {
-		return "Alice";
-	}
 }

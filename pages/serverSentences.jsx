@@ -32,7 +32,11 @@ export default function ServerSentences() {
   const count = useRef();
   const textarea_ref = useRef();
   const [questionAudioSrc, setQuestionAudioSrc] = useState();
+  const [answerAudioSrc, setAnswerAudioSrc] = useState();
   const { isSoundOn } = useContext(ContentContext);
+  const RUSSIAN = "ru-ru";
+  const ENGLISH_GB = "en-gb";
+  // const ENGLISH_US = "en-us";
 
   useEffect(() => {
     setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
@@ -60,7 +64,45 @@ export default function ServerSentences() {
 	if(!isSoundOn || !isDataAvailable) {
 		return;
 	}
-	getTheSound(sentences, isRusEng, randomNumber, setQuestionAudioSrc);
+
+	function getPhrase() {
+		if(sentences.length) {
+			if(isRusEng) {
+				return sentences[randomNumber].rus_sentence;
+			} else {
+				return sentences[randomNumber].eng_sentence;
+			}
+		} else {
+			if(isRusEng) {
+				return "Конец";
+			} else {
+				return "The end";
+			}			
+		}
+	}
+
+	function getLanguage() {
+		if(isRusEng) {
+			return RUSSIAN;
+		} else {
+			return ENGLISH_GB;
+		}
+	}
+	
+	function getVoiceAuthor() {
+		if(isRusEng) {
+			return "Olga";
+		} else {
+			return "Alice";
+		}
+	}
+
+	const phrase = getPhrase();
+	const voice = getVoiceAuthor();
+	const language = getLanguage();
+
+	getTheSound(phrase, voice, language, setQuestionAudioSrc);
+
   }, [randomNumber, isRusEng]);
 
   useEffect(() => {
@@ -116,6 +158,48 @@ export default function ServerSentences() {
     } else {
       setCurrentAnswer("Урок окончен.");
     }
+
+	if(!isSoundOn) {
+		return;
+	}
+
+	function getPhrase() {
+		if(sentences.length) {
+			if(isRusEng) {
+				return sentences[randomNumber].eng_sentence;
+			} else {
+				return sentences[randomNumber].rus_sentence;
+			}
+		} else {
+			if(isRusEng) {
+				return "Конец";
+			} else {
+				return "The end";
+			}			
+		}
+	}
+
+	function getLanguage() {
+		if(isRusEng) {
+			return ENGLISH_GB;
+		} else {
+			return RUSSIAN;
+		}
+	}
+	
+	function getVoiceAuthor() {
+		if(isRusEng) {
+			return "Alice";
+		} else {
+			return "Olga";
+		}
+	}
+
+	const phrase = getPhrase();
+	const voice = getVoiceAuthor();
+	const language = getLanguage();
+
+	getTheSound(phrase, voice, language, setAnswerAudioSrc);
   }
 
   useEffect(() => {
@@ -226,6 +310,7 @@ export default function ServerSentences() {
         <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
 		<AudioPlayer src={questionAudioSrc}/>
+		<AudioPlayer src={answerAudioSrc}/>
       </div>
     </div>
   );
