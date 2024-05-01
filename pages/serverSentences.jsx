@@ -40,7 +40,10 @@ export default function ServerSentences() {
 
   async function selectHandler(value) {
     if (isDataAvailable) {
-      resetTraining();
+	  setCurrentAnswer("");
+      setInputContent("");
+	  setTranslationsCounter(0);
+	  setIsCurrentWordTranslated(false);
     }
 
     const response = await fetch(value);
@@ -50,7 +53,7 @@ export default function ServerSentences() {
     setRandomNumber(getRandomNumber(0, data.length));
     count.current = data.length;
     setIsDataAvailable(true);
-    textarea_ref.current.focus();
+	textarea_ref.current.focus();
   }
 
   useEffect(() => {
