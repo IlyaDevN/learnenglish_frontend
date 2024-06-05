@@ -93,5 +93,10 @@ export const english_galaxy = [
 		id: 156,
 		name: "Урок 156",
 		address: "https://ilyadevn.github.io/JsonApi/english_galaxy/lesson_156.json"
+	},
+	{	
+		id: 157,
+		name: "Урок 157",
+		address: "https://ilyadevn.github.io/JsonApi/english_galaxy/lesson_157.json"
 	}
 ]
