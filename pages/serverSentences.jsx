@@ -105,6 +105,12 @@ export default function ServerSentences() {
 
   }, [randomNumber, isRusEng]);
 
+  useEffect(()=> { //Missing empty sentences)
+	if(sentences[randomNumber]?.rus_sentence === "." || sentences[randomNumber]?.rus_sentence === "?") {
+		handleNextSentence();
+	}
+  }, [count.current])
+
   useEffect(() => {
     if (currentAnswer) {
       handleShowTranslation();
@@ -142,6 +148,9 @@ export default function ServerSentences() {
     setCurrentAnswer("");
     setInputContent("");
     setIsCurrentWordTranslated(false);
+	if(sentences[randomNumber].rus_sentence === "." || sentences[randomNumber].rus_sentence === "?") {
+		return;
+	}
     setTranslationsCounter((oldCount) => oldCount + 1);
   }
 
