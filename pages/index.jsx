@@ -1,9 +1,10 @@
 import clsx from "clsx";
 // import { useContext, useEffect } from "react";
 // import { ContentContext } from "../context";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 // import { Cookies } from "react-cookie";
 import { Source_Sans_3 } from "next/font/google";
+import { UiButton } from "../components/ui/UiButton";
 
 const sourceSans3 = Source_Sans_3({
 	subsets: ["latin", "cyrillic"],
@@ -12,7 +13,7 @@ const sourceSans3 = Source_Sans_3({
 
 export default function HomePage() {
 //   const { isAuth, setIsAuth, currentUser, setCurrentUser } = useContext(ContentContext);
-//   const router = useRouter();
+  const router = useRouter();
   
 //   useEffect(() => {
 //     const user = new Cookies().get("user");
@@ -25,6 +26,11 @@ export default function HomePage() {
 //     }
 //   }, []);
 //   router.push("/");
+
+  function goTo() {
+	router.push("/serverSentencesMenu");
+  }
+
   return (
     <div className="px-4">
       <div
@@ -35,6 +41,9 @@ export default function HomePage() {
       >
 		<h1 className="text-2xl font-black text-yellow-900 uppercase text-center">Добро пожаловать</h1>
       </div>
+	  <UiButton
+		className="block mt-8 mx-auto w-full max-w-4xl"
+	    onClick={goTo}>Перевод предложений</UiButton>
     </div>
   );
 }
