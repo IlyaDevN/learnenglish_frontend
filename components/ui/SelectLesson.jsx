@@ -1,14 +1,17 @@
-export default function SelectLesson({ onChange, options }) {
+import clsx from "clsx";
+
+export default function SelectLesson({ className, onChange, options, selectName }) {
+	
   return (
     <div>
       <select
-        className="bg-blue-500 focus:outline-none border-4 rounded-lg border-yellow-400 text-xl text-white"
+        className={clsx("bg-blue-500 focus:outline-none border-4 rounded-lg border-yellow-400 text-xl text-white", className)}
         name="lessons"
         onChange={(event) => onChange(event.target.value)}
         defaultValue=""
       >
-        <option disabled value="">
-          Выберите урок
+        <option value="">
+          {selectName}
         </option>
         {options?.map((option) => (
           <option key={option.id} value={option.address}>

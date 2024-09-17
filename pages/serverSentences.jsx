@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import clsx from "clsx";
 import { TASKS } from "../staticData";
+import { levels } from "../staticData/english_galaxy";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { ContentField } from "../components/ui/ContentField";
@@ -28,6 +29,7 @@ export default function ServerSentences() {
   const [inputContent, setInputContent] = useState("");
   const [translationsCounter, setTranslationsCounter] = useState(0);
   const [currentTask, setCurrentTask] = useState();
+  const [currentLessonsList, setCurrentLessonsList] = useState();
   const [isRusEng, setIsRusEng] = useState(true);
   const count = useRef();
   const textarea_ref = useRef();
@@ -42,13 +44,34 @@ export default function ServerSentences() {
     setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
   }, []);
 
-  async function selectHandler(value) {
+  function selectLevel(value) {
+	setIsDataAvailable(false);
+	setSentences([]);
+	setRandomNumber(getRandomNumber(0, count.current));
+    setCurrentAnswer("");
+    setInputContent("");
+    setTranslationsCounter(0);
+    setIsCurrentWordTranslated(false);
+
+	const lessonsList = TASKS[currentTask];
+	const sortedLessonsList = lessonsList.filter((item) => item.level == value);
+	setCurrentLessonsList(sortedLessonsList);
+  }
+  
+  async function selectLesson(value) {
     if (isDataAvailable) {
 	  setCurrentAnswer("");
       setInputContent("");
 	  setTranslationsCounter(0);
 	  setIsCurrentWordTranslated(false);
+	  setIsDataAvailable(false);
+	  setSentences([]);
+	  setRandomNumber(getRandomNumber(0, count.current));
     }
+
+	if(!value) {
+		return;
+	}
 
     const response = await fetch(value);
     const data = await response.json();
@@ -267,7 +290,8 @@ export default function ServerSentences() {
         )}
       >
         <div className="flex justify-between flex-wrap">
-          <SelectLesson onChange={selectHandler} options={TASKS[currentTask]} />
+		  {currentTask == "english_galaxy" && <SelectLesson onChange={selectLevel} options={levels} selectName={"Уровень"}></SelectLesson>}
+          <SelectLesson className="min-w-[110px]" onChange={selectLesson} options={currentTask == "english_galaxy" ? currentLessonsList : TASKS[currentTask]} selectName={"Урок"}/>
           <Counter value={translationsCounter} />
           <ReverseLangButton onClick={setIsRusEng} isRusEng={isRusEng} />
         </div>
