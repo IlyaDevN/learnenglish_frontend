@@ -36,9 +36,10 @@ export default function ServerSentences() {
   const [questionAudioSrc, setQuestionAudioSrc] = useState();
   const [answerAudioSrc, setAnswerAudioSrc] = useState();
   const { isSoundOn } = useContext(ContentContext);
-  const RUSSIAN = "ru-ru";
-  const ENGLISH_GB = "en-gb";
-  // const ENGLISH_US = "en-us";
+  const LANGUAGE_CODE_RUSSIAN = "ru-Ru";
+  const LANGUAGE_CODE_ENGLISH = "en-US";
+  const VOICE_NAME_RUSSIAN = "ru-RU-Standard-C";
+  const VOICE_NAME_ENGLISH = "en-US-Standard-C"
 
   useEffect(() => {
     setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
@@ -57,7 +58,7 @@ export default function ServerSentences() {
 	const sortedLessonsList = lessonsList.filter((item) => item.level == value);
 	setCurrentLessonsList(sortedLessonsList);
   }
-  
+
   async function selectLesson(value) {
     if (isDataAvailable) {
 	  setCurrentAnswer("");
@@ -104,27 +105,11 @@ export default function ServerSentences() {
 		}
 	}
 
-	function getLanguage() {
-		if(isRusEng) {
-			return RUSSIAN;
-		} else {
-			return ENGLISH_GB;
-		}
-	}
-	
-	function getVoiceAuthor() {
-		if(isRusEng) {
-			return "Olga";
-		} else {
-			return "Alice";
-		}
-	}
-
 	const phrase = getPhrase();
-	const voice = getVoiceAuthor();
-	const language = getLanguage();
+	const voiceName = isRusEng ? VOICE_NAME_RUSSIAN : VOICE_NAME_ENGLISH;
+	const language = isRusEng ? LANGUAGE_CODE_RUSSIAN : LANGUAGE_CODE_ENGLISH;
 
-	getTheSound(phrase, voice, language, setQuestionAudioSrc);
+	getTheSound(phrase, voiceName, language, setQuestionAudioSrc);
 
   }, [randomNumber, isRusEng]);
 
@@ -211,27 +196,11 @@ export default function ServerSentences() {
 		}
 	}
 
-	function getLanguage() {
-		if(isRusEng) {
-			return ENGLISH_GB;
-		} else {
-			return RUSSIAN;
-		}
-	}
-	
-	function getVoiceAuthor() {
-		if(isRusEng) {
-			return "Alice";
-		} else {
-			return "Olga";
-		}
-	}
-
 	const phrase = getPhrase();
-	const voice = getVoiceAuthor();
-	const language = getLanguage();
+	const voiceName = isRusEng ? VOICE_NAME_ENGLISH : VOICE_NAME_RUSSIAN;
+	const language = isRusEng ? LANGUAGE_CODE_ENGLISH : LANGUAGE_CODE_RUSSIAN;
 
-	getTheSound(phrase, voice, language, setAnswerAudioSrc);
+	getTheSound(phrase, voiceName, language, setAnswerAudioSrc);
   }
 
   useEffect(() => {
