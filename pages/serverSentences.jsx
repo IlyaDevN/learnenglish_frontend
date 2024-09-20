@@ -23,7 +23,6 @@ export default function ServerSentences() {
   const [sentences, setSentences] = useState([]);
   const [randomNumber, setRandomNumber] = useState();
   const [currentAnswer, setCurrentAnswer] = useState();
-  const [isCurrentWordTranslated, setIsCurrentWordTranslated] = useState(false);
   const [isDataAvailable, setIsDataAvailable] = useState(false);
   const [inputContent, setInputContent] = useState("");
   const [translationsCounter, setTranslationsCounter] = useState(0);
@@ -51,7 +50,6 @@ export default function ServerSentences() {
     setCurrentAnswer("");
     setInputContent("");
     setTranslationsCounter(0);
-    setIsCurrentWordTranslated(false);
 
 	const lessonsList = TASKS[currentTask];
 	const sortedLessonsList = lessonsList.filter((item) => item.level == value);
@@ -63,7 +61,6 @@ export default function ServerSentences() {
 	  setCurrentAnswer("");
       setInputContent("");
 	  setTranslationsCounter(0);
-	  setIsCurrentWordTranslated(false);
 	  setIsDataAvailable(false);
 	  setSentences([]);
 	  setRandomNumber(getRandomNumber(0, count.current));
@@ -154,10 +151,11 @@ export default function ServerSentences() {
     setRandomNumber(getRandomNumber(0, count.current));
     setCurrentAnswer("");
     setInputContent("");
-    setIsCurrentWordTranslated(false);
+
 	if(sentences[randomNumber].rus_sentence === "." || sentences[randomNumber].rus_sentence === "?") {
 		return;
 	}
+
     setTranslationsCounter((oldCount) => oldCount + 1);
   }
 
@@ -236,11 +234,6 @@ export default function ServerSentences() {
     setCurrentAnswer("");
     setInputContent("");
     setTranslationsCounter(0);
-    setIsCurrentWordTranslated(false);
-  }
-
-  function showWordTranslation() {
-    setIsCurrentWordTranslated((currentWord) => !currentWord);
   }
 
   function getRandomNumber(min, max) {
@@ -262,27 +255,6 @@ export default function ServerSentences() {
 		  <Counter value={translationsCounter} />
           <SelectLesson onChange={selectLesson} options={currentTask == "english_galaxy" ? currentLessonsList : TASKS[currentTask]} selectName={"Урок"}/>
         </div>
-        {/* {currentTask === "words" && (
-          <UiButton
-            onClick={showWordTranslation}
-            className={clsx(
-              isCurrentWordTranslated &&
-                "text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
-              "min-h-[84px] h-auto rounded-lg tracking-wider",
-            )}
-          >
-            {isDataAvailable &&
-              (sentences.length
-                ? isRusEng
-                  ? isCurrentWordTranslated
-                    ? sentences[randomNumber].eng_word
-                    : sentences[randomNumber].rus_word
-                  : isCurrentWordTranslated
-                  ? sentences[randomNumber].rus_word
-                  : sentences[randomNumber].eng_word
-                : "")}
-          </UiButton>
-        )} */}
         <ContentField>
           {isDataAvailable &&
             (sentences.length
