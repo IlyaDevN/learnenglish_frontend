@@ -9,7 +9,6 @@ import { InputSentenceField } from "../components/ui/InputSentenceField";
 import { useState, useRef, useEffect, useContext } from "react";
 import SelectLesson from "../components/ui/SelectLesson";
 import Counter from "../components/Counter";
-import ReverseLangButton from "../components/ui/ReverseLangButton";
 import AudioPlayer from "../components/ui/AudioPlayer";
 import { getTheSound } from "../voiceAPI";
 import { ContentContext } from "../context";
@@ -30,12 +29,12 @@ export default function ServerSentences() {
   const [translationsCounter, setTranslationsCounter] = useState(0);
   const [currentTask, setCurrentTask] = useState();
   const [currentLessonsList, setCurrentLessonsList] = useState();
-  const [isRusEng, setIsRusEng] = useState(true);
-  const count = useRef();
-  const textarea_ref = useRef();
   const [questionAudioSrc, setQuestionAudioSrc] = useState();
   const [answerAudioSrc, setAnswerAudioSrc] = useState();
+  const { isRusEng } = useContext(ContentContext);
   const { isSoundOn } = useContext(ContentContext);
+  const count = useRef();
+  const textarea_ref = useRef();
   const LANGUAGE_CODE_RUSSIAN = "ru-Ru";
   const LANGUAGE_CODE_ENGLISH = "en-US";
   const VOICE_NAME_RUSSIAN = "ru-RU-Standard-C";
@@ -260,11 +259,10 @@ export default function ServerSentences() {
       >
         <div className="flex justify-between flex-wrap">
 		  {currentTask == "english_galaxy" && <SelectLesson onChange={selectLevel} options={levels} selectName={"Уровень"}></SelectLesson>}
-          <SelectLesson className="min-w-[110px]" onChange={selectLesson} options={currentTask == "english_galaxy" ? currentLessonsList : TASKS[currentTask]} selectName={"Урок"}/>
-          <Counter value={translationsCounter} />
-          <ReverseLangButton onClick={setIsRusEng} isRusEng={isRusEng} />
+		  <Counter value={translationsCounter} />
+          <SelectLesson onChange={selectLesson} options={currentTask == "english_galaxy" ? currentLessonsList : TASKS[currentTask]} selectName={"Урок"}/>
         </div>
-        {currentTask === "words" && (
+        {/* {currentTask === "words" && (
           <UiButton
             onClick={showWordTranslation}
             className={clsx(
@@ -284,7 +282,7 @@ export default function ServerSentences() {
                   : sentences[randomNumber].eng_word
                 : "")}
           </UiButton>
-        )}
+        )} */}
         <ContentField>
           {isDataAvailable &&
             (sentences.length
