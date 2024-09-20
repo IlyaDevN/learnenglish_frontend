@@ -34,7 +34,7 @@ export default function ServerSentences() {
   const { isRusEng } = useContext(ContentContext);
   const { isSoundOn } = useContext(ContentContext);
   const count = useRef();
-  const textarea_ref = useRef();
+//   const textarea_ref = useRef(); //input autofocus
   const LANGUAGE_CODE_RUSSIAN = "ru-Ru";
   const LANGUAGE_CODE_ENGLISH = "en-US";
   const VOICE_NAME_RUSSIAN = "ru-RU-Standard-C";
@@ -80,7 +80,7 @@ export default function ServerSentences() {
     setRandomNumber(getRandomNumber(0, data.length));
     count.current = data.length;
     setIsDataAvailable(true);
-	textarea_ref.current.focus();
+	// textarea_ref.current.focus(); //input autofocus
   }
 
   useEffect(() => {
@@ -295,7 +295,7 @@ export default function ServerSentences() {
           placeholder="Напишите перевод"
           value={inputContent}
           onChange={(e) => setInputContent(e.target.value)}
-          textarea_ref={textarea_ref}
+        //   textarea_ref={textarea_ref} //input autofocus
         />
         <UiButton
           className={clsx(

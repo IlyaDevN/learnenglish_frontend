@@ -6,7 +6,7 @@ export function InputSentenceField({
   onChange,
   placeholder,
   rows,
-  textarea_ref
+//   textarea_ref //input autofocus
 }) {
 
   return (
@@ -19,7 +19,7 @@ export function InputSentenceField({
       value={value}
       onChange={onChange}
       rows={rows}
-	  ref={textarea_ref}
+	//   ref={textarea_ref} //input autofocus
     ></textarea>
   );
 }
