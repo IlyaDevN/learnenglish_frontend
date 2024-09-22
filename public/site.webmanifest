@@ -1,4 +1,6 @@
 {
+  "display": "standalone",
+  "start_url": ".",
   "name": "English Learning",
   "short_name": "English",
   "icons": [
