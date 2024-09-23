@@ -33,7 +33,8 @@
 // }
 
 export async function getTheSound(phrase, voiceName, language, setAudioSrc) {
-  
+	console.log("voice request start");
+	
 	const key = "AIzaSyB_xCqXNevMrDIWl66wjA6OGcOzdgp8tbo";
 	const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${key}`;
 	const options = {
@@ -63,6 +64,7 @@ export async function getTheSound(phrase, voiceName, language, setAudioSrc) {
 	  const response = await fetch(url, options);
 	  const result = await response.json();
 	  setAudioSrc(`data:audio/mp3;base64,${result.audioContent}`);
+	  console.log("voice request finished");
 	} catch (error) {
 	  console.error(error);
 	}
