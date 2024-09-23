@@ -197,7 +197,9 @@ export default function ServerSentences() {
 	const voiceName = isRusEng ? VOICE_NAME_ENGLISH : VOICE_NAME_RUSSIAN;
 	const language = isRusEng ? LANGUAGE_CODE_ENGLISH : LANGUAGE_CODE_RUSSIAN;
 
+	console.log("Before getSound");
 	getTheSound(phrase, voiceName, language, setAnswerAudioSrc);
+	console.log("After getSound");
   }
 
   useEffect(() => {
