@@ -9,8 +9,16 @@ module.exports = {
     extend: {
 		lineHeight: {
 			"tight": "1.2",
+		},
+		colors: {
+			"light_blue": "#8DC8F0",
+			"dark_blue": "#1593DF",
+			"light_green": "#97CE4E",
+			"dark_green": "#58AA2C",
+			"light_yellow": "#FAE355",
+			"dark_yellow": "#D49D26"
 		}
-	},
+	}
   },
   plugins: [],
 };

@@ -7,7 +7,7 @@ import { ContentContext } from "../../../context";
 
 export function SoundButton({ className }) {
   const { isSoundOn, setIsSoundOn } = useContext(ContentContext);
-  
+
   function buttonHandler() {
     setIsSoundOn(!isSoundOn);
   }
@@ -15,7 +15,10 @@ export function SoundButton({ className }) {
   return (
     <button
       className={clsx(
-        "p-1 bg-blue-500 border-4 border-yellow-400 rounded-full",
+        isSoundOn
+          ? "bg-gradient-to-br from-light_blue to-dark_blue"
+          : "bg-gradient-to-br from-light_green to-dark_green",
+        "p-1 border-4 border-yellow-400 rounded-full",
         className,
       )}
       onClick={buttonHandler}
