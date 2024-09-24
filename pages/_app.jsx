@@ -11,6 +11,7 @@ export default function App({ Component, pageProps }) {
   const [currentPage, setCurrentPage] = useState("/");
   const [isModalActive, setIsModalActive] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(false);
+  const [isTimerOn, setIsTimerOn] = useState(false);
   const [isRusEng, setIsRusEng] = useState(true);
 
 //   const router = useRouter();
@@ -45,7 +46,9 @@ export default function App({ Component, pageProps }) {
 		isRusEng,
 		setIsRusEng,
 		isSoundOn,
-		setIsSoundOn
+		setIsSoundOn,
+		isTimerOn,
+		setIsTimerOn
       }}
     >
       <Layout>

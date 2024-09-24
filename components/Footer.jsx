@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { Source_Sans_3 } from "next/font/google";
 import { useRouter } from "next/router";
 import { SoundButton } from "./ui/soundButton/SoundButton";
+import { TimerButton } from "./ui/timerButton/TimerButton";
 import ReverseLangButton from "./ui/ReverseLangButton";
 
 const sourceSans3 = Source_Sans_3({
@@ -21,6 +22,7 @@ export default function Footer() {
     >
       <div className="w-full max-w-4xl px-[20px] m-auto flex justify-between">
 	  {router.asPath == "/serverSentences" && <SoundButton /> }
+	  {router.asPath == "/serverSentences" && <TimerButton /> }
       {router.asPath == "/serverSentences" && <ReverseLangButton /> }
       </div>
     </footer>
