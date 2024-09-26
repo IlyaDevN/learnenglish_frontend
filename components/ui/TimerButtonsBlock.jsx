@@ -4,7 +4,7 @@ import { useState, useEffect, useRef} from "react";
 
 export default function TimerButtonBlock({ nextSentence, showTranslation, isDataAvailable }) {
 
-  const [timerTimeout, setTimerTimeout] = useState(12);
+  const [timerTimeout, setTimerTimeout] = useState(18);
   const [timerCount, setTimerCount] = useState(timerTimeout);
   const [timeInterval, setTimeInterval] = useState(null);
   const [isStarted, setIsStarted] = useState(false);
