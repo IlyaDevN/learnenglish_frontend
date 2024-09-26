@@ -12,6 +12,7 @@ import Counter from "../components/Counter";
 import AudioPlayer from "../components/ui/AudioPlayer";
 import { getTheSound } from "../voiceAPI";
 import { ContentContext } from "../context";
+import TimerButtonBlock from "../components/ui/TimerButtonsBlock";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -32,6 +33,7 @@ export default function ServerSentences() {
   const [answerAudioSrc, setAnswerAudioSrc] = useState();
   const { isRusEng } = useContext(ContentContext);
   const { isSoundOn } = useContext(ContentContext);
+  const { isTimerOn } = useContext(ContentContext);
   const count = useRef();
 //   const textarea_ref = useRef(); //input autofocus
   const LANGUAGE_CODE_RUSSIAN = "ru-Ru";
@@ -281,10 +283,14 @@ export default function ServerSentences() {
         >
           {currentAnswer || "Показать перевод"}
         </UiButton>
-        <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
+		{isTimerOn
+		? <TimerButtonBlock nextSentence={handleNextSentence} showTranslation={handleShowTranslation} isDataAvailable={isDataAvailable} /> 
+		: <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
+		}
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
 		<AudioPlayer src={questionAudioSrc}/>
 		<AudioPlayer src={answerAudioSrc}/>
+		{/* <h1>Timeout: {myTimeout}ms</h1> */}
       </div>
     </div>
   );

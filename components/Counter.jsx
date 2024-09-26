@@ -1,7 +1,11 @@
-export default function Counter({value}) {
+import clsx from "clsx";
+
+export default function Counter({value, className}) {
 
 	return (
-		<div className="w-[38px] text-center align-middle leading-[30px] bg-white border-4 rounded-full border-yellow-400 text-xl text-yellow-900">
+		<div className={clsx("w-[38px] flex justify-center items-center bg-white border-4 rounded-full border-yellow-400 text-xl text-yellow-900",
+			className
+		)}>
 			{value}
 		</div>
 	)
