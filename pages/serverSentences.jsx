@@ -256,7 +256,7 @@ export default function ServerSentences() {
       >
         <div className="flex justify-between flex-wrap">
 		  {currentTask == "english_galaxy" && <SelectLesson onChange={selectLevel} options={levels} selectName={"Уровень"}></SelectLesson>}
-		  <Counter value={translationsCounter} />
+		  <Counter value={translationsCounter} className={"w-[38px]"}/>
           <SelectLesson onChange={selectLesson} options={currentTask == "english_galaxy" ? currentLessonsList : TASKS[currentTask]} selectName={"Урок"}/>
         </div>
         <ContentField>
