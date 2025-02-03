@@ -31,6 +31,7 @@ export default function ServerSentences() {
   const [currentLessonsList, setCurrentLessonsList] = useState();
   const [questionAudioSrc, setQuestionAudioSrc] = useState();
   const [answerAudioSrc, setAnswerAudioSrc] = useState();
+  const [loading, setLoading] = useState(false);
   const { isRusEng } = useContext(ContentContext);
   const { isSoundOn } = useContext(ContentContext);
   const { isTimerOn } = useContext(ContentContext);
@@ -73,6 +74,7 @@ export default function ServerSentences() {
 	}
 
 	if(value == "mix") {
+		setLoading(true);
 		const lessonsAmount = currentLessonsList.length - 1;
 		let allTheSentences = [];
 		for(let i = 1; i <= lessonsAmount; i++) {
@@ -87,9 +89,11 @@ export default function ServerSentences() {
 		count.current = allTheSentences.length;
 		setIsDataAvailable(true);
 		console.log(allTheSentences.length);
+		setLoading(false);
 		return;
 	}
 	
+	setLoading(true);
     const response = await fetch(value);
     const data = await response.json();
     setInitialData(data);
@@ -97,6 +101,7 @@ export default function ServerSentences() {
     setRandomNumber(getRandomNumber(0, data.length));
     count.current = data.length;
     setIsDataAvailable(true);
+	setLoading(false);
 	// textarea_ref.current.focus(); //input autofocus
   }
 
@@ -274,7 +279,7 @@ export default function ServerSentences() {
       >
         <div className="flex justify-between flex-wrap">
 		  {currentTask == "english_galaxy" && <SelectLesson onChange={selectLevel} options={levels} selectName={"Уровень"}></SelectLesson>}
-		  <Counter value={translationsCounter} className={"w-[38px]"}/>
+		  <Counter value={translationsCounter} className={"w-[38px]"} loading={loading}/>
           <SelectLesson onChange={selectLesson} options={currentTask == "english_galaxy" ? currentLessonsList : TASKS[currentTask]} selectName={"Урок"}/>
         </div>
         <ContentField>
