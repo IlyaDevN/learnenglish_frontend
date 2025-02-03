@@ -72,6 +72,24 @@ export default function ServerSentences() {
 		return;
 	}
 
+	if(value == "mix") {
+		const lessonsAmount = currentLessonsList.length - 1;
+		let allTheSentences = [];
+		for(let i = 1; i <= lessonsAmount; i++) {
+			let currentLesson = currentLessonsList[i];
+			const response = await fetch(currentLesson.address);
+    		const data = await response.json();
+			allTheSentences.push(...data);
+		}
+		setInitialData(allTheSentences);
+		setSentences(allTheSentences);
+		setRandomNumber(getRandomNumber(0, allTheSentences.length));
+		count.current = allTheSentences.length;
+		setIsDataAvailable(true);
+		console.log(allTheSentences.length);
+		return;
+	}
+	
     const response = await fetch(value);
     const data = await response.json();
     setInitialData(data);

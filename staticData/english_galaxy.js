@@ -27,6 +27,12 @@ export const levels = [
 
 export const english_galaxy = [
 	{	
+		id: 1000,
+		level: "A0",
+		name: "Mix",
+		address: "mix",
+	},
+	{	
 		id: 1,
 		level: "A0",
 		name: "Урок 1",
@@ -249,6 +255,12 @@ export const english_galaxy = [
 		address: "https://ilyadevn.github.io/JsonApi/english_galaxy/A0/lesson_37.json"
 	},
 	{	
+		id: 4000,
+		level: "B1",
+		name: "Mix",
+		address: "mix",
+	},
+	{	
 		id: 151,
 		level: "B1",
 		name: "Урок 151",
@@ -295,6 +307,12 @@ export const english_galaxy = [
 		level: "B1",
 		name: "Урок 158",
 		address: "https://ilyadevn.github.io/JsonApi/english_galaxy/B1/lesson_158.json"
+	},
+	{	
+		id: 6000,
+		level: "C1",
+		name: "Mix",
+		address: "mix",
 	},
 	{	
 		id: 251,
