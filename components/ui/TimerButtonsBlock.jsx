@@ -29,6 +29,11 @@ export default function TimerButtonBlock({ nextSentence, showTranslation, isData
 	showTranslation();
   }, [translationChangeState])
 
+  useEffect(()=> {
+	resetTimer();
+	setTimerCount(timerTimeout);
+  },[timerTimeout])
+
   const startTimer = () => {
 	if(!isDataAvailable) {
 		alert("Выберите уровень, а затем урок");
@@ -66,14 +71,27 @@ export default function TimerButtonBlock({ nextSentence, showTranslation, isData
 	setIsStarted()
   };
 
+  function increaseTime() {
+	setTimerTimeout((oldValue) => oldValue + 1);
+  }
+
+  function decreaseTime() {
+	setTimerTimeout((oldValue) => oldValue - 1);
+  }
+
   return (
-	<div>
+	<div className="flex gap-4 flex-col">
 		<div className="flex justify-between">
 			<UiButton className="min-w-[100px]" onClick={startTimer}>Старт</UiButton>
 			{/* <UiButton onClick={pauseTimer}>Pause</UiButton> */}
 			<Counter value={timerCount} className={"w-14"}/>
 			<UiButton className="min-w-[100px]" onClick={resetTimer}>Стоп</UiButton>
     	</div>
+		<div className="flex justify-between"> 
+			<UiButton className={"w-14"} onClick={decreaseTime}>-</UiButton>
+			<div className="flex justify-center items-center bg-white px-4 border-4 rounded-full border-yellow-400 text-xl text-yellow-900" >Настройка времени</div>
+			<UiButton className={"w-14"} onClick={increaseTime}>+</UiButton>
+		</div> 
 	</div>
     
   );
