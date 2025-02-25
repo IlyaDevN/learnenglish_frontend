@@ -1,6 +1,7 @@
 import Counter from "../Counter";
 import { UiButton } from "./UiButton";
 import { useState, useEffect, useRef} from "react";
+import NoSleep from "nosleep.js";
 
 export default function TimerButtonBlock({ nextSentence, showTranslation, isDataAvailable }) {
 
@@ -33,6 +34,25 @@ export default function TimerButtonBlock({ nextSentence, showTranslation, isData
 	resetTimer();
 	setTimerCount(timerTimeout);
   },[timerTimeout])
+
+  useEffect(() => {
+    let isEnableNoSleep = false;
+    const noSleep = new NoSleep();
+    document.addEventListener(
+      `click`,
+      function enableNoSleep() {
+        document.removeEventListener(`click`, enableNoSleep, false);
+        noSleep.enable();
+        isEnableNoSleep = true;
+      },
+      false
+    );
+    return () => {
+      if (isEnableNoSleep) {
+        noSleep.disable();
+      }
+    };
+  }, []);
 
   const startTimer = () => {
 	if(!isDataAvailable) {
@@ -68,7 +88,7 @@ export default function TimerButtonBlock({ nextSentence, showTranslation, isData
   const resetTimer = () => {
     setTimerCount(timerTimeout);
     clearInterval(timeInterval);
-	setIsStarted()
+	setIsStarted(false);
   };
 
   function increaseTime() {
@@ -89,7 +109,9 @@ export default function TimerButtonBlock({ nextSentence, showTranslation, isData
     	</div>
 		<div className="flex justify-between"> 
 			<UiButton className={"w-14"} onClick={decreaseTime}>-</UiButton>
-			<div className="flex justify-center items-center bg-white px-4 border-4 rounded-full border-yellow-400 text-xl text-yellow-900" >Настройка времени</div>
+			<div className="flex justify-center items-center bg-white px-4 border-4 rounded-full border-yellow-400 text-xl text-yellow-900 uppercase" >
+				Таймер
+			</div>
 			<UiButton className={"w-14"} onClick={increaseTime}>+</UiButton>
 		</div> 
 	</div>
