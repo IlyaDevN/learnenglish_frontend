@@ -4,6 +4,7 @@ import bgSrc from "./bg.jpg";
 // import { useContext } from "react";
 import Header from "../Header";
 import ModalMenu from "../ModalMenu";
+import ModalMenuSettings from "../ModalMenuSettings";
 import Footer from "../Footer";
 
 export default function Layout({ children }) {
@@ -22,6 +23,7 @@ export default function Layout({ children }) {
 	  {children}
 	  </main>
 	  <ModalMenu />
+	  <ModalMenuSettings />
 	  {/* {isAuth && <Footer/>} */}
 	  <Footer/>
     </div>

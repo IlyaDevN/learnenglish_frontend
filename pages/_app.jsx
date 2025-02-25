@@ -10,8 +10,10 @@ export default function App({ Component, pageProps }) {
   const [currentUser, setCurrentUser] = useState();
   const [currentPage, setCurrentPage] = useState("/");
   const [isModalActive, setIsModalActive] = useState(false);
+  const [isModalSettingsActive, setIsModalSettingsActive] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(false);
   const [isTimerOn, setIsTimerOn] = useState(false);
+  const [isSettingsOn, setIsSettingsOn] = useState(false);
   const [isRusEng, setIsRusEng] = useState(true);
 
 //   const router = useRouter();
@@ -41,6 +43,8 @@ export default function App({ Component, pageProps }) {
         setCurrentUser,
 		isModalActive,
 		setIsModalActive,
+		isModalSettingsActive,
+		setIsModalSettingsActive,
 		currentPage,
 		setCurrentPage,
 		isRusEng,
@@ -48,7 +52,9 @@ export default function App({ Component, pageProps }) {
 		isSoundOn,
 		setIsSoundOn,
 		isTimerOn,
-		setIsTimerOn
+		setIsTimerOn,
+		isSettingsOn,
+		setIsSettingsOn
       }}
     >
       <Layout>

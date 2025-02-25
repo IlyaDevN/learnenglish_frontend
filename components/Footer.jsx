@@ -3,6 +3,7 @@ import { Source_Sans_3 } from "next/font/google";
 import { useRouter } from "next/router";
 import { SoundButton } from "./ui/soundButton/SoundButton";
 import { TimerButton } from "./ui/timerButton/TimerButton";
+import { SettingsButton } from "./ui/settingsButton/SettingsButton";
 import ReverseLangButton from "./ui/ReverseLangButton";
 
 const sourceSans3 = Source_Sans_3({
@@ -24,6 +25,7 @@ export default function Footer() {
 	  {router.asPath == "/serverSentences" && <SoundButton /> }
 	  {router.asPath == "/serverSentences" && <TimerButton /> }
       {router.asPath == "/serverSentences" && <ReverseLangButton /> }
+      {router.asPath == "/serverSentences" && <SettingsButton /> }
       </div>
     </footer>
   );
