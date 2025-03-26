@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }) {
   const [currentPage, setCurrentPage] = useState("/");
   const [isModalActive, setIsModalActive] = useState(false);
   const [isModalSettingsActive, setIsModalSettingsActive] = useState(false);
-  const [isSoundOn, setIsSoundOn] = useState(false);
+  const [isSoundOn, setIsSoundOn] = useState(true);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [isSettingsOn, setIsSettingsOn] = useState(false);
   const [isRusEng, setIsRusEng] = useState(true);
