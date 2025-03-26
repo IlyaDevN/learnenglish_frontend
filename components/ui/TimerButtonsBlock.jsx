@@ -3,7 +3,7 @@ import { UiButton } from "./UiButton";
 import { useState, useEffect, useRef} from "react";
 import NoSleep from "nosleep.js";
 
-export default function TimerButtonBlock({ nextSentence, showTranslation, isDataAvailable }) {
+export default function TimerButtonBlock({ nextSentence, showTranslation, isDataAvailable, playSoundQuestion, isSoundOn }) {
 
   const [timerTimeout, setTimerTimeout] = useState(18);
   const [timerCount, setTimerCount] = useState(timerTimeout);
@@ -63,7 +63,12 @@ export default function TimerButtonBlock({ nextSentence, showTranslation, isData
 	if(isStarted) {
 		return;
 	}
+
 	setIsStarted(true);
+
+	if(isSoundOn) {
+		playSoundQuestion();
+	}
 
     setTimeInterval(
       setInterval(() => {

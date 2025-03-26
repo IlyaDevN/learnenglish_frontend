@@ -338,7 +338,13 @@ export default function ServerSentences() {
           {currentAnswer || "Показать перевод"}
         </UiButton>
 		{isTimerOn
-			? <TimerButtonBlock nextSentence={handleNextSentence} showTranslation={handleShowTranslation} isDataAvailable={isDataAvailable} /> 
+			? <TimerButtonBlock 
+				nextSentence={handleNextSentence} 
+				showTranslation={handleShowTranslation} 
+				isDataAvailable={isDataAvailable} 
+				playSoundQuestion={playSoundQuestion}
+				isSoundOn={isSoundOn}
+			  /> 
 			: <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
 		}
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
