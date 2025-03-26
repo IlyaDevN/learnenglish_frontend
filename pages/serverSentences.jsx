@@ -36,6 +36,8 @@ export default function ServerSentences() {
   const { isSoundOn } = useContext(ContentContext);
   const { isTimerOn } = useContext(ContentContext);
   const count = useRef();
+  const audioRefQuestion = useRef(null);
+  const audioRefAnswer = useRef(null);
 //   const textarea_ref = useRef(); //input autofocus
   const LANGUAGE_CODE_RUSSIAN = "ru-Ru";
   const LANGUAGE_CODE_ENGLISH = "en-US";
@@ -88,7 +90,6 @@ export default function ServerSentences() {
 		setRandomNumber(getRandomNumber(0, allTheSentences.length));
 		count.current = allTheSentences.length;
 		setIsDataAvailable(true);
-		console.log(allTheSentences.length);
 		setLoading(false);
 		return;
 	}
@@ -130,13 +131,27 @@ export default function ServerSentences() {
 	const voiceName = isRusEng ? VOICE_NAME_RUSSIAN : VOICE_NAME_ENGLISH;
 	const language = isRusEng ? LANGUAGE_CODE_RUSSIAN : LANGUAGE_CODE_ENGLISH;
 
-	console.log("Before getSound");
-	getTheSound(phrase, voiceName, language, setQuestionAudioSrc);
-	console.log("After getSound");
+	async function fetchData() {
+		try {
+		  await getTheSound(phrase, voiceName, language, setQuestionAudioSrc);
+		  audioRefQuestion.current.addEventListener("canplaythrough", playSoundQuestion);
+		} catch (error) {
+		  console.error('getTheSound question error:', error);
+		}
+	}
+	
+	fetchData();
+
+	return () => {
+		if (audioRefQuestion.current) {
+			audioRefQuestion.current.pause();
+			audioRefQuestion.current.removeEventListener("canplaythrough", playSoundQuestion);
+		}
+	};
 
   }, [randomNumber, isRusEng]);
 
-  useEffect(()=> { //Missing empty sentences)
+  useEffect(()=> { //Missing empty sentences
 	if(sentences[randomNumber]?.rus_sentence === "." || sentences[randomNumber]?.rus_sentence === "?") {
 		handleNextSentence();
 	}
@@ -148,21 +163,17 @@ export default function ServerSentences() {
     }
   }, [isRusEng]);
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       const response = await fetch(
-  //         "https://ilyadevn.github.io/JsonApi/lesson_1.json",
-  //       );
-  //       const data = await response.json();
-  //       setInitialData(data.db);
-  //       setSentences([...sentences, ...data.db]);
-  //       setRandomNumber(getRandomNumber(0, data.db.length));
-  //       count.current = data.db.length;
-  //       setIsDataAvailable(true);
-  //     };
+  function playSoundQuestion() {
+	if(audioRefQuestion.current){
+		audioRefQuestion.current.play();
+	}
+  }
 
-  //     fetchData();
-  //   }, []);
+  function playSoundAnswer() {
+	if(audioRefAnswer.current){
+		audioRefAnswer.current.play();
+	}
+  }
 
   function handleNextSentence() {
     if (!isDataAvailable) {
@@ -224,7 +235,27 @@ export default function ServerSentences() {
 	const voiceName = isRusEng ? VOICE_NAME_ENGLISH : VOICE_NAME_RUSSIAN;
 	const language = isRusEng ? LANGUAGE_CODE_ENGLISH : LANGUAGE_CODE_RUSSIAN;
 
-	getTheSound(phrase, voiceName, language, setAnswerAudioSrc);
+	async function fetchData() {
+		try {
+		  	if(currentAnswer) {
+		  		return;
+			} else {
+				await getTheSound(phrase, voiceName, language, setAnswerAudioSrc);
+			}
+		  	audioRefAnswer.current.addEventListener("canplaythrough", playSoundAnswer);
+		} catch (error) {
+		  	console.error('getTheSound answer error:', error);
+		}
+	}
+	
+	fetchData();
+
+	return () => {
+		if (audioRefAnswer.current) {
+			audioRefAnswer.current.pause();
+			audioRefAnswer.current.removeEventListener("canplaythrough", playSoundAnswer);
+		}
+	};
   }
 
   useEffect(() => {
@@ -307,13 +338,12 @@ export default function ServerSentences() {
           {currentAnswer || "Показать перевод"}
         </UiButton>
 		{isTimerOn
-		? <TimerButtonBlock nextSentence={handleNextSentence} showTranslation={handleShowTranslation} isDataAvailable={isDataAvailable} /> 
-		: <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
+			? <TimerButtonBlock nextSentence={handleNextSentence} showTranslation={handleShowTranslation} isDataAvailable={isDataAvailable} /> 
+			: <UiButton onClick={handleNextSentence}>Следующее предложение</UiButton>
 		}
         <UiButton onClick={handleReset}>Начать сначала</UiButton>
-		<AudioPlayer src={questionAudioSrc}/>
-		<AudioPlayer src={answerAudioSrc}/>
-		{/* <h1>Timeout: {myTimeout}ms</h1> */}
+		<AudioPlayer src={questionAudioSrc} audioRef={audioRefQuestion}/>
+		<AudioPlayer src={answerAudioSrc} audioRef={audioRefAnswer}/>
       </div>
     </div>
   );
