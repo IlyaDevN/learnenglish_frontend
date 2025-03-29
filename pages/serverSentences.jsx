@@ -4,6 +4,7 @@ import { TASKS } from "../staticData";
 import { levels } from "../staticData/english_galaxy";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
+import { PlayButton } from "../components/ui/playButton/PlayButton";
 import { ContentField } from "../components/ui/ContentField";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
 import { useState, useRef, useEffect, useContext } from "react";
@@ -38,15 +39,60 @@ export default function ServerSentences() {
   const count = useRef();
   const audioRefQuestion = useRef(null);
   const audioRefAnswer = useRef(null);
+  const tempCountQuestion = useRef(null);
+  const tempCountAnswer = useRef(null);
+  const firstRenderQuestion = useRef(true);
+  const firstRenderAnswer = useRef(true);
 //   const textarea_ref = useRef(); //input autofocus
   const LANGUAGE_CODE_RUSSIAN = "ru-Ru";
   const LANGUAGE_CODE_ENGLISH = "en-US";
   const VOICE_NAME_RUSSIAN = "ru-RU-Standard-C";
   const VOICE_NAME_ENGLISH = "en-US-Standard-C"
 
+  console.log("RENDER");
+
   useEffect(() => {
     setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
   }, []);
+
+  useEffect(() => { //get first question after loading
+
+	if(!isSoundOn || !isDataAvailable) {
+		return;
+	}
+
+	getSoundQuestion();
+
+  }, [randomNumber, isRusEng]);
+
+  useEffect(()=> { //Missing empty sentences
+	if(sentences[randomNumber]?.rus_sentence === "." || sentences[randomNumber]?.rus_sentence === "?") {
+		handleNextSentence();
+	}
+  }, [count.current])
+
+  useEffect(() => { 
+    if (currentAnswer) {
+      handleShowTranslation();
+    }
+  }, [isRusEng]);
+
+  useEffect(() => {
+    function keydownHandler(e) {
+      if (e.code === "Enter") {
+        e.preventDefault();
+        if (currentAnswer) {
+          handleNextSentence();
+        } else {
+          handleShowTranslation();
+        }
+      }
+    }
+
+    document.addEventListener("keydown", keydownHandler);
+
+    return () => document.removeEventListener("keydown", keydownHandler);
+  }, [currentAnswer, handleNextSentence, handleShowTranslation]);
 
   function selectLevel(value) {
 	setIsDataAvailable(false);
@@ -106,75 +152,6 @@ export default function ServerSentences() {
 	// textarea_ref.current.focus(); //input autofocus
   }
 
-  useEffect(() => {
-	if(!isSoundOn || !isDataAvailable) {
-		return;
-	}
-
-	function getPhrase() {
-		if(sentences.length) {
-			if(isRusEng) {
-				return sentences[randomNumber].rus_sentence;
-			} else {
-				return sentences[randomNumber].eng_sentence;
-			}
-		} else {
-			if(isRusEng) {
-				return "Конец";
-			} else {
-				return "The end";
-			}			
-		}
-	}
-
-	const phrase = getPhrase();
-	const voiceName = isRusEng ? VOICE_NAME_RUSSIAN : VOICE_NAME_ENGLISH;
-	const language = isRusEng ? LANGUAGE_CODE_RUSSIAN : LANGUAGE_CODE_ENGLISH;
-
-	async function fetchData() {
-		try {
-		  await getTheSound(phrase, voiceName, language, setQuestionAudioSrc);
-		  audioRefQuestion.current.addEventListener("canplaythrough", playSoundQuestion);
-		} catch (error) {
-		  console.error('getTheSound question error:', error);
-		}
-	}
-	
-	fetchData();
-
-	return () => {
-		if (audioRefQuestion.current) {
-			audioRefQuestion.current.pause();
-			audioRefQuestion.current.removeEventListener("canplaythrough", playSoundQuestion);
-		}
-	};
-
-  }, [randomNumber, isRusEng]);
-
-  useEffect(()=> { //Missing empty sentences
-	if(sentences[randomNumber]?.rus_sentence === "." || sentences[randomNumber]?.rus_sentence === "?") {
-		handleNextSentence();
-	}
-  }, [count.current])
-
-  useEffect(() => {
-    if (currentAnswer) {
-      handleShowTranslation();
-    }
-  }, [isRusEng]);
-
-  function playSoundQuestion() {
-	if(audioRefQuestion.current){
-		audioRefQuestion.current.play();
-	}
-  }
-
-  function playSoundAnswer() {
-	if(audioRefAnswer.current){
-		audioRefAnswer.current.play();
-	}
-  }
-
   function handleNextSentence() {
     if (!isDataAvailable) {
       return;
@@ -197,83 +174,126 @@ export default function ServerSentences() {
     setTranslationsCounter((oldCount) => oldCount + 1);
   }
 
-  function handleShowTranslation() {
-    if (!isDataAvailable) {
-      return;
-    }
-    if (sentences.length) {
-      setCurrentAnswer(
-        isRusEng
-          ? sentences[randomNumber].eng_sentence
-          : sentences[randomNumber].rus_sentence,
-      );
-    } else {
-      setCurrentAnswer("Урок окончен.");
-    }
-
-	if(!isSoundOn) {
-		return;
-	}
-
-	function getPhrase() {
-		if(sentences.length) {
-			if(isRusEng) {
-				return sentences[randomNumber].eng_sentence;
-			} else {
-				return sentences[randomNumber].rus_sentence;
-			}
+  	function handleShowTranslation() {
+		if (!isDataAvailable || currentAnswer) {
+			return;
+		}
+		if (sentences.length) {
+			setCurrentAnswer(
+				isRusEng
+				? sentences[randomNumber].eng_sentence
+				: sentences[randomNumber].rus_sentence,
+			);
 		} else {
-			if(isRusEng) {
-				return "Конец";
-			} else {
-				return "The end";
-			}			
+			setCurrentAnswer(
+				isRusEng
+				? "The lesson is over."
+				: "Урок окончен.",
+			);
 		}
-	}
 
-	const phrase = getPhrase();
-	const voiceName = isRusEng ? VOICE_NAME_ENGLISH : VOICE_NAME_RUSSIAN;
-	const language = isRusEng ? LANGUAGE_CODE_ENGLISH : LANGUAGE_CODE_RUSSIAN;
-
-	async function fetchData() {
-		try {
-		  	if(currentAnswer) {
-		  		return;
-			} else {
-				await getTheSound(phrase, voiceName, language, setAnswerAudioSrc);
-			}
-		  	audioRefAnswer.current.addEventListener("canplaythrough", playSoundAnswer);
-		} catch (error) {
-		  	console.error('getTheSound answer error:', error);
+		if(isSoundOn) {
+			getSoundAnswer();
 		}
-	}
+  	}
 	
-	fetchData();
-
-	return () => {
-		if (audioRefAnswer.current) {
-			audioRefAnswer.current.pause();
-			audioRefAnswer.current.removeEventListener("canplaythrough", playSoundAnswer);
+	useEffect(()=> {
+		if(firstRenderQuestion.current) {
+			firstRenderQuestion.current = false;
+			return;
 		}
-	};
-  }
 
-  useEffect(() => {
-    function keydownHandler(e) {
-      if (e.code === "Enter") {
-        e.preventDefault();
-        if (currentAnswer) {
-          handleNextSentence();
-        } else {
-          handleShowTranslation();
-        }
-      }
-    }
+		playSoundQuestion();
+		console.log("useEffect question PLAY");
 
-    document.addEventListener("keydown", keydownHandler);
+	},[questionAudioSrc])
 
-    return () => document.removeEventListener("keydown", keydownHandler);
-  }, [currentAnswer, handleNextSentence, handleShowTranslation]);
+	function getSoundQuestion() {
+		if(tempCountQuestion.current == translationsCounter) {
+			audioRefQuestion.current.play()
+			return;
+		}
+
+		function getPhrase() {
+	
+			if(sentences.length) {
+				if(isRusEng) {
+					return sentences[randomNumber].rus_sentence;
+				} else {
+					return sentences[randomNumber].eng_sentence;
+				}
+			} else {
+				if(isRusEng) {
+					return "Урок окончен.";
+				} else {
+					return "The lessons is over.";
+				}			
+			}
+		}
+
+		const phrase = getPhrase();
+		const voiceName = isRusEng ? VOICE_NAME_RUSSIAN : VOICE_NAME_ENGLISH;
+		const language = isRusEng ? LANGUAGE_CODE_RUSSIAN : LANGUAGE_CODE_ENGLISH;
+	
+		getTheSound(phrase, voiceName, language, setQuestionAudioSrc);
+		console.log("getSoundQuestion");
+		tempCountQuestion.current = translationsCounter;
+	}
+
+	function playSoundQuestion() {
+		if(audioRefQuestion.current){
+			audioRefQuestion.current.play();
+		}
+	}
+
+	useEffect(()=> {
+		if(firstRenderAnswer.current) {
+			firstRenderAnswer.current = false;
+			return;
+		}
+
+		playSoundAnswer();
+		console.log("useEffect answer PLAY");
+
+	},[answerAudioSrc])
+
+	function getSoundAnswer() {
+
+		if(tempCountAnswer.current == translationsCounter) {
+			audioRefAnswer.current.play()
+			return;
+		}
+
+		function getPhrase() {
+			if(sentences.length) {
+				if(isRusEng) {
+					return sentences[randomNumber].eng_sentence;
+				} else {
+					return sentences[randomNumber].rus_sentence;
+				}
+			} else {
+				if(isRusEng) {
+					return "Конец";
+				} else {
+					return "The end";
+				}			
+			}
+		}
+
+		const phrase = getPhrase();
+		const voiceName = isRusEng ? VOICE_NAME_ENGLISH : VOICE_NAME_RUSSIAN;
+		const language = isRusEng ? LANGUAGE_CODE_ENGLISH : LANGUAGE_CODE_RUSSIAN;
+		
+		getTheSound(phrase, voiceName, language, setAnswerAudioSrc);
+		console.log("getSoundAnswer");
+		tempCountAnswer.current = translationsCounter;
+	}	
+
+	function playSoundAnswer() {
+		if(audioRefAnswer.current){
+			audioRefAnswer.current.play();
+		}
+	}
 
   function handleReset() {
     if (!isDataAvailable) {
@@ -320,6 +340,7 @@ export default function ServerSentences() {
                 ? sentences[randomNumber].rus_sentence
                 : sentences[randomNumber].eng_sentence
               : "The end.")}
+			<PlayButton getSoundQuestion={getSoundQuestion} isQuestion={true}></PlayButton>
         </ContentField>
         <InputSentenceField
           placeholder="Напишите перевод"
@@ -327,16 +348,19 @@ export default function ServerSentences() {
           onChange={(e) => setInputContent(e.target.value)}
         //   textarea_ref={textarea_ref} //input autofocus
         />
-        <UiButton
+		<div className="relative">
+		<UiButton
           className={clsx(
             currentAnswer &&
-              "text-left text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
+              "pr-14 text-left text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
             "min-h-[84px] h-auto rounded-lg",
           )}
           onClick={handleShowTranslation}
         >
           {currentAnswer || "Показать перевод"}
         </UiButton>
+		{currentAnswer && <PlayButton className={"right-[13px]"} getSoundAnswer={getSoundAnswer} isQuestion={false}></PlayButton>}
+		</div>
 		{isTimerOn
 			? <TimerButtonBlock 
 				nextSentence={handleNextSentence} 
