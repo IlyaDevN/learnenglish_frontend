@@ -209,6 +209,10 @@ export default function ServerSentences() {
 	},[questionAudioSrc])
 
 	function getSoundQuestion() {
+		if (!isDataAvailable) {
+			return;
+		}
+
 		if(tempCountQuestion.current == translationsCounter) {
 			audioRefQuestion.current.play()
 			return;
@@ -258,6 +262,9 @@ export default function ServerSentences() {
 	},[answerAudioSrc])
 
 	function getSoundAnswer() {
+		if (!isDataAvailable) {
+			return;
+		}
 
 		if(tempCountAnswer.current == translationsCounter) {
 			audioRefAnswer.current.play()
