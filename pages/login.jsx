@@ -14,11 +14,11 @@ export default function Login() {
   const [isRegistered, setIsRegistered] = useState(true);
 	
   return (
-    <div className="px-4 py-7">
+    <div className="px-4">
       <div
         className={clsx(
           sourceSans3.className,
-          "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80",
+          "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80",
         )}
       >
         <div className="flex justify-evenly mb-7">

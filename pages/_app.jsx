@@ -2,8 +2,8 @@ import "../styles/global.css";
 import Layout from "../components/layout/layout";
 import { ContentContext } from "../context";
 import { useEffect, useState } from "react";
-// import { Cookies } from "react-cookie";
-// import { useRouter } from "next/router";
+import { Cookies } from "react-cookie";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
   const [isAuth, setIsAuth] = useState(false);
@@ -16,23 +16,23 @@ export default function App({ Component, pageProps }) {
   const [isSettingsOn, setIsSettingsOn] = useState(false);
   const [isRusEng, setIsRusEng] = useState(true);
 
-//   const router = useRouter();
+  const router = useRouter();
 
-//   useEffect(() => {
-//     readCookie();
-//   }, [currentPage]);
+  useEffect(() => {
+    readCookie();
+  }, [currentPage]);
 
-//   function readCookie() {
-// 	const cookies = new Cookies();
-//     const user = cookies.get("user");
-//     if (user) {
-//       setIsAuth(true);
-//       setCurrentUser(user);
-// 	  cookies.set("user", user, { path: '/', maxAge: "3600" });
-//     } else {
-//       router.push("/login");
-//     }
-//   }
+  function readCookie() {
+	const cookies = new Cookies();
+    const user = cookies.get("user");
+    if (user) {
+      setIsAuth(true);
+      setCurrentUser(user);
+	  cookies.set("user", user, { path: '/', maxAge: "3600" });
+    } else {
+      router.push("/login");
+    }
+  }
 
   return (
     <ContentContext.Provider
