@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { Source_Sans_3 } from "next/font/google";
-import AuthButton from "../components/ui/AuthButton";
 import { useState } from "react";
 import RegisterForm from "../components/RegisterForm";
 
@@ -20,16 +19,10 @@ export default function Register() {
           "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80",
         )}
       >
-        <div className="flex justify-evenly mb-7">
-          <AuthButton
-            onclick={setIsRegistered}
-            isRegistered={isRegistered}
-            isButtonActive={isRegistered ? false : true}
-          >
-            регистрация
-          </AuthButton>
-        </div>
-          <RegisterForm setIsRegistered={setIsRegistered} />
+        <p className="text-center mb-7 text-2xl font-black text-yellow-900 uppercase">
+          регистрация
+        </p>
+        <RegisterForm setIsRegistered={setIsRegistered} />
       </div>
     </div>
   );
