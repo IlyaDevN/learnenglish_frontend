@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { Source_Sans_3 } from "next/font/google";
-import { useState } from "react";
 import RegisterForm from "../components/RegisterForm";
 
 const sourceSans3 = Source_Sans_3({
@@ -9,7 +8,6 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export default function Register() {
-  const [isRegistered, setIsRegistered] = useState(true);
 
   return (
     <div className="px-4">
@@ -22,7 +20,7 @@ export default function Register() {
         <p className="text-center mb-7 text-2xl font-black text-yellow-900 uppercase">
           регистрация
         </p>
-        <RegisterForm setIsRegistered={setIsRegistered} />
+        <RegisterForm/>
       </div>
     </div>
   );

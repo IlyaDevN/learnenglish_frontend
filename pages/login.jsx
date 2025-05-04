@@ -1,7 +1,9 @@
 import clsx from "clsx";
 import { Source_Sans_3 } from "next/font/google";
 import LoginForm from "../components/LoginForm";
-import { useState, } from "react";
+import { useRouter } from "next/router";
+import { UiButton } from "../components/ui/UiButton";
+import { Cookies } from "react-cookie";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -9,8 +11,14 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export default function Login() {
-  const [isRegistered, setIsRegistered] = useState(true);
-	
+  const router = useRouter();
+
+  function gestModeButtonHandler() {
+	const cookies = new Cookies();
+	cookies.set("user", "guest", { path: '/', maxAge: "3600" });
+	router.push("/");
+  }
+
   return (
     <div className="px-4">
       <div
@@ -23,6 +31,12 @@ export default function Login() {
 			вход
 		  </p>
 			<LoginForm/>
+			<UiButton className={"w-full mb-5"} onClick={() => router.push("/register")}>
+				регистрация
+			</UiButton>
+			<UiButton className={"w-full"} onClick={gestModeButtonHandler}>
+				гостевой режим
+			</UiButton>
       </div>
     </div>
   );

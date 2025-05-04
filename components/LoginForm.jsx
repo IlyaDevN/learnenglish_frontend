@@ -47,35 +47,38 @@ export default function LoginForm() {
   }
 
   async function sendForm(data) {
-    const response = await fetch("http://englishback.ua/auth.php", {
-      method: "post",
-      header: { "Content-type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    // console.log(response);
-    // const result = await response.json();
-    // console.log(result);
-    if (response.status === 200) {
-      //   alert(`Thank you! ${result.message}`);
-      //   const result = await response.json();
-      //   console.log(result);
-	  const cookies = new Cookies();
-	  cookies.set("user", data.email, { path: '/', maxAge: "3600" });
-	  setIsAuth(true);
-      setCurrentUser(data.email);
-    //   router.push("/menu");
-      router.push("/");
-    } else {
-      //   alert(`Oops! ${result.message}`);
-      alert("User is not found!");
-    }
+	
+	try {
+		const response = await fetch("http://localhost:8000/api/login/", {
+			method: "post",
+			headers: { "Content-type": "application/json" },
+			body: JSON.stringify(data),
+		});
+
+		const result = await response.json();
+
+		if (response.status === 200) {
+			alert(`Thank you! ${result.message}`);
+			const cookies = new Cookies();
+			cookies.set("user", data.email, { path: '/', maxAge: "3600" });
+			setIsAuth(true);
+			setCurrentUser(data.email);
+			router.push("/");
+		} else {
+			alert(`Oops! ${result.message}`);
+		}
+	} catch (error) {
+		console.error("Fetch error:", error);
+		alert("An error occurred while communicating with the server.");
+	}
+	
   }
 
   return (
     <form
       className={clsx(
         sourceSans3.className,
-        "w-full flex flex-col gap-5 bg-opacity-80",
+        "w-full flex flex-col gap-5 bg-opacity-80 mb-5",
       )}
       name="authForm"
     >

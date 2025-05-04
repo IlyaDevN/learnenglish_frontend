@@ -3,14 +3,13 @@ import InputBlock from "./ui/InputBlock";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "./ui/UiButton";
 import Link from "next/link";
-import { useState } from "react";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
   weight: ["400", "700", "900"],
 });
 
-export default function RegisterForm({ setIsRegistered }) {
+export default function RegisterForm() {
   const REGEXP = {
     NAME: /^[а-яА-ЯёЁa-zA-ZЁёЇїІіЄєҐґ']{2,20}$/,
     EMAIL: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -21,14 +20,16 @@ export default function RegisterForm({ setIsRegistered }) {
     event.preventDefault();
     const form = document.forms.registerForm;
     const data = {
-      name: form.elements.user_name.value,
+	  username: form.elements.user_name.value,
       email: form.elements.user_email.value,
       password: form.elements.user_password.value,
+	  first_name: "",
+	  last_name: ""
     };
 
     const passwordConfirm = form.elements.user_password_confirm.value;
 
-    if (!REGEXP.NAME.test(data.name)) {
+    if (!REGEXP.NAME.test(data.username)) {
       alert("Имя некорректное");
       return;
     }
@@ -49,26 +50,29 @@ export default function RegisterForm({ setIsRegistered }) {
   }
 
   async function sendForm(data) {
-    const response = await fetch("http://englishback.ua/index.php", {
-      method: "post",
-      header: { "Content-type": "application/json" },
-      body: JSON.stringify(data),
-    });
 
-    // const result = await response.json();
-
-    if (response.status === 201) {
-      setIsRegistered("true");
-      //   alert(`Thank you! ${result.message}`);
-      alert("Регистрация завершена");
-      document.forms.registerForm.reset();
-      return;
-    }
-    if (response.status === 205) {
-      alert("Этот e-mail уже зарегистрирован");
-      return;
-    }
-    alert("Упс, что-то пошло не так");
+	try {
+		const response = await fetch("http://localhost:8000/api/register/", {
+			method: "post",
+			headers: { "Content-type": "application/json" },
+			body: JSON.stringify(data),
+		});
+	  
+		if (response.status === 201) {
+			alert(`Thank you! ${result.message}`);
+			document.forms.registerForm.reset();
+			return;
+		}
+		if (response.status === 205) {
+			alert("Этот e-mail уже зарегистрирован");
+			return;
+		}
+		  alert("Упс, что-то пошло не так");
+	} catch (error) {
+		console.error("Fetch error:", error);
+		alert("An error occurred while communicating with the server.");
+	}
+    
   }
 
   return (
