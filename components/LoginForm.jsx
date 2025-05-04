@@ -58,7 +58,7 @@ export default function LoginForm() {
             const result = await response.json();
 
             if (response.status === 200) {
-                alert(`Thank you! ${result.message}`);
+                // alert(`Thank you! ${result.message}`);
                 const cookies = new Cookies();
                 cookies.set("user", data.email, { path: "/", maxAge: "3600" });
                 setIsAuth(true);

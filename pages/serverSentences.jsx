@@ -14,6 +14,7 @@ import AudioPlayer from "../components/ui/AudioPlayer";
 import { getTheSound } from "../voiceAPI";
 import { ContentContext } from "../context";
 import TimerButtonBlock from "../components/ui/TimerButtonsBlock";
+import { Cookies } from "react-cookie";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -47,9 +48,8 @@ export default function ServerSentences() {
   const LANGUAGE_CODE_RUSSIAN = "ru-Ru";
   const LANGUAGE_CODE_ENGLISH = "en-US";
   const VOICE_NAME_RUSSIAN = "ru-RU-Standard-C";
-  const VOICE_NAME_ENGLISH = "en-US-Standard-C"
-
-  console.log("RENDER");
+  const VOICE_NAME_ENGLISH = "en-US-Standard-C";
+  const cookies = new Cookies();
 
   useEffect(() => {
     setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
@@ -159,6 +159,36 @@ export default function ServerSentences() {
     if (count.current === 0) {
       return;
     }
+
+    const userEmail = cookies.get("user");
+	console.log(inputContent || null);
+	
+	const data = {
+		originalText: isRusEng ? sentences[randomNumber].rus_sentence : sentences[randomNumber].eng_sentence,
+		userTranslation: inputContent,
+		userEmail: userEmail,
+	};
+
+	fetch("http://localhost:8000/api/log_translation/", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data),
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		return response.json();
+	})
+	.then(data => {
+		// console.log("Success:", data); 
+	})
+	.catch(error => {
+		console.error("Error:", error);
+	});
+
     const sentencesCopy = sentences.slice();
     sentencesCopy.splice(randomNumber, 1);
     setSentences(sentencesCopy);

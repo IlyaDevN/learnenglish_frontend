@@ -60,8 +60,10 @@ export default function RegisterForm() {
                 },
             );
 
+			const result = await response.json();
+
             if (response.status === 201) {
-                alert(`Thank you! ${result.message}`);
+                alert(`${result.username}, your registration complete!`);
                 document.forms.registerForm.reset();
                 return;
             }

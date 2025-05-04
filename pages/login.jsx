@@ -15,7 +15,7 @@ export default function Login() {
 
     function gestModeButtonHandler() {
         const cookies = new Cookies();
-        cookies.set("user", "guest", { path: "/", maxAge: "3600" });
+        cookies.set("user", "guest@gmail.com", { path: "/", maxAge: "3600" });
         router.push("/");
     }
 
