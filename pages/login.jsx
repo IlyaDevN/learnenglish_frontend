@@ -3,7 +3,6 @@ import { Source_Sans_3 } from "next/font/google";
 import AuthButton from "../components/ui/AuthButton";
 import LoginForm from "../components/LoginForm";
 import { useState, } from "react";
-import RegisterForm from "../components/RegisterForm";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -29,17 +28,8 @@ export default function Login() {
           >
             вход
           </AuthButton>
-          <AuthButton
-            onclick={setIsRegistered}
-			isRegistered={isRegistered}
-			isButtonActive={isRegistered ? false : true}
-          >
-            регистрация
-          </AuthButton>
         </div>
-		{isRegistered 
-		? <LoginForm/>
-		: <RegisterForm setIsRegistered={setIsRegistered}/>}
+			<LoginForm/>
       </div>
     </div>
   );
