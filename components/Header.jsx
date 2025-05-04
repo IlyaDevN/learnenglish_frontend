@@ -31,7 +31,7 @@ export default function Header() {
     >
       <div className="w-full max-w-4xl flex justify-between items-center">
         <BurgerButton onClick={changeModalState} />
-        {router.asPath != "/" && (
+        {router.asPath != "/" && router.asPath != "/login" && router.asPath != "/register" && (
           <MoveBackButton onClick={moveBack}>предыдущее меню</MoveBackButton>
         )}
         <ProfileButton />
