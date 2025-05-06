@@ -59,10 +59,12 @@ export default function LoginForm() {
 
             if (response.status === 200) {
                 // alert(`Thank you! ${result.message}`);
-                const cookies = new Cookies();
-                cookies.set("user", data.email, { path: "/", maxAge: "3600" });
-                setIsAuth(true);
+				setIsAuth(true);
                 setCurrentUser(data.email);
+                const cookies = new Cookies();
+				const now = new Date();
+				const expiryDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); //  30 дней 
+                cookies.set("user", data.email, { path: "/", expires: expiryDate });
                 router.push("/");
             } else {
                 alert(`Oops! ${result.message}`);
