@@ -15,6 +15,7 @@ import { getTheSound } from "../voiceAPI";
 import { ContentContext } from "../context";
 import TimerButtonBlock from "../components/ui/TimerButtonsBlock";
 import { Cookies } from "react-cookie";
+import { getCookie } from "../functions";
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -161,7 +162,6 @@ export default function ServerSentences() {
     }
 
     const userEmail = cookies.get("user");
-	console.log(inputContent || null);
 	
 	const data = {
 		originalText: isRusEng ? sentences[randomNumber].rus_sentence : sentences[randomNumber].eng_sentence,
@@ -169,25 +169,28 @@ export default function ServerSentences() {
 		userEmail: userEmail,
 	};
 
+	const csrftoken = getCookie('csrftoken');
+	
 	fetch("http://learnenglish.pp.ua/api/log_translation/", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			'X-CSRFToken': csrftoken, // Добавляем CSRF-токен в заголовки
 		},
 		body: JSON.stringify(data),
-	})
-	.then(response => {
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
-		return response.json();
-	})
-	.then(data => {
-		// console.log("Success:", data); 
-	})
-	.catch(error => {
-		console.error("Error:", error);
-	});
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			return response.json();
+		})
+		.then(responseData => {
+			// console.log("Success:", responseData);
+		})
+		.catch(error => {
+			console.error("Error:", error);
+		});
 
     const sentencesCopy = sentences.slice();
     sentencesCopy.splice(randomNumber, 1);

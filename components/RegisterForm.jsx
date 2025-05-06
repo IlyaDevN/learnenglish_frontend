@@ -3,6 +3,7 @@ import InputBlock from "./ui/InputBlock";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "./ui/UiButton";
 import Link from "next/link";
+import { getCookie } from "../functions";
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -50,33 +51,38 @@ export default function RegisterForm() {
     }
 
     async function sendForm(data) {
-        try {
-            const response = await fetch(
-                "http://learnenglish.pp.ua/api/register/",
-                {
-                    method: "post",
-                    headers: { "Content-type": "application/json" },
-                    body: JSON.stringify(data),
-                },
-            );
-
+		try {
+			const csrftoken = getCookie('csrftoken');
+			
+			const response = await fetch(
+				"http://learnenglish.pp.ua/api/register/",
+				{
+					method: "post",
+					headers: { 
+						"Content-type": "application/json",
+						'X-CSRFToken': csrftoken
+					},
+					body: JSON.stringify(data),
+				},
+			);
+	
 			const result = await response.json();
-
-            if (response.status === 201) {
-                alert(`${result.username}, your registration complete!`);
-                document.forms.registerForm.reset();
-                return;
-            }
-            if (response.status === 205) {
-                alert("Этот e-mail уже зарегистрирован");
-                return;
-            }
-            alert("Упс, что-то пошло не так");
-        } catch (error) {
-            console.error("Fetch error:", error);
-            alert("An error occurred while communicating with the server.");
-        }
-    }
+	
+			if (response.status === 201) {
+				alert(`${result.username}, your registration complete!`);
+				document.forms.registerForm.reset();
+				return;
+			}
+			if (response.status === 205) {
+				alert("Этот e-mail уже зарегистрирован");
+				return;
+			}
+			alert("Упс, что-то пошло не так");
+		} catch (error) {
+			console.error("Fetch error:", error);
+			alert("An error occurred while communicating with the server.");
+		}
+	}
 
     return (
         <form

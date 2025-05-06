@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { ContentContext } from "../context";
 import { useContext } from "react";
 import { Cookies } from "react-cookie";
+import { getCookie } from "../functions";
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -48,30 +49,33 @@ export default function LoginForm() {
     }
 
     async function sendForm(data) {
-        try {
-            const response = await fetch("http://learnenglish.pp.ua/api/login/", {
-                method: "post",
-                headers: { "Content-type": "application/json" },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            if (response.status === 200) {
-                // alert(`Thank you! ${result.message}`);
-                const cookies = new Cookies();
-                cookies.set("user", data.email, { path: "/", maxAge: "3600" });
-                setIsAuth(true);
-                setCurrentUser(data.email);
-                router.push("/");
-            } else {
-                alert(`Oops! ${result.message}`);
-            }
-        } catch (error) {
-            console.error("Fetch error:", error);
-            alert("An error occurred while communicating with the server.");
-        }
-    }
+		try {
+			const csrfToken = getCookie('csrftoken')
+			const response = await fetch("http://learnenglish.pp.ua/api/login/", {
+				method: "post",
+				headers: {
+					"Content-type": "application/json",
+					'X-CSRFToken': csrfToken
+				},
+				body: JSON.stringify(data),
+			});
+	
+			const result = await response.json();
+	
+			if (response.status === 200) {
+				const cookies = new Cookies();
+				cookies.set("user", data.email, { path: "/", maxAge: "3600" });
+				setIsAuth(true);
+				setCurrentUser(data.email);
+				router.push("/");
+			} else {
+				alert(`Oops! ${result.message}`);
+			}
+		} catch (error) {
+			console.error("Fetch error:", error);
+			alert("An error occurred while communicating with the server.");
+		}
+	}	
 
     return (
         <form
