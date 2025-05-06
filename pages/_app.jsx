@@ -28,7 +28,9 @@ export default function App({ Component, pageProps }) {
         if (user) {
             setIsAuth(true);
             setCurrentUser(user);
-            cookies.set("user", user, { path: "/", maxAge: "3600" });
+			const now = new Date();
+			const expiryDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); //  30 дней 
+            cookies.set("user", user, { path: "/", expires: expiryDate });
         } else {
             router.push("/login");
         }

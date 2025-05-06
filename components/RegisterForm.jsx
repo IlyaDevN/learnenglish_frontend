@@ -3,7 +3,6 @@ import InputBlock from "./ui/InputBlock";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "./ui/UiButton";
 import Link from "next/link";
-import { getCookie } from "../functions";
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
