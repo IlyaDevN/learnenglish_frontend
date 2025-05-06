@@ -52,15 +52,12 @@ export default function RegisterForm() {
 
     async function sendForm(data) {
 		try {
-			const csrftoken = getCookie('csrftoken');
-			
 			const response = await fetch(
 				"http://learnenglish.pp.ua/api/register/",
 				{
 					method: "post",
 					headers: { 
-						"Content-type": "application/json",
-						'X-CSRFToken': csrftoken
+						"Content-type": "application/json"
 					},
 					body: JSON.stringify(data),
 				},
