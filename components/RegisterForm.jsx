@@ -2,6 +2,7 @@ import clsx from "clsx";
 import InputBlock from "./ui/InputBlock";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "./ui/UiButton";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 const sourceSans3 = Source_Sans_3({
@@ -15,6 +16,8 @@ export default function RegisterForm() {
         EMAIL: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
         PASSWORD: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
     };
+
+	const router = useRouter();
 
     function formHandler(event) {
         event.preventDefault();
@@ -67,6 +70,7 @@ export default function RegisterForm() {
 			if (response.status === 201) {
 				alert(`${result.username}, your registration complete!`);
 				document.forms.registerForm.reset();
+				router.push("/");
 				return;
 			}
 			if (response.status === 205) {
