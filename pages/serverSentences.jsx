@@ -169,7 +169,7 @@ export default function ServerSentences() {
 		userEmail: userEmail,
 	};
 
-	fetch("http://localhost:8000/api/log_translation/", {
+	fetch("http://learnenglish.pp.ua/api/log_translation/", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",

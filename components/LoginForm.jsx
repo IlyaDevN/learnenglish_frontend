@@ -49,7 +49,7 @@ export default function LoginForm() {
 
     async function sendForm(data) {
         try {
-            const response = await fetch("http://localhost:8000/api/login/", {
+            const response = await fetch("http://learnenglish.pp.ua/api/login/", {
                 method: "post",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify(data),

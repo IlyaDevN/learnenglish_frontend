@@ -52,7 +52,7 @@ export default function RegisterForm() {
     async function sendForm(data) {
         try {
             const response = await fetch(
-                "http://localhost:8000/api/register/",
+                "http://learnenglish.pp.ua/api/register/",
                 {
                     method: "post",
                     headers: { "Content-type": "application/json" },
