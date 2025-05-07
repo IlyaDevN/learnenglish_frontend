@@ -2,7 +2,6 @@ import "../styles/global.css";
 import Layout from "../components/layout/layout";
 import { ContentContext } from "../context";
 import { useEffect, useState } from "react";
-import { Cookies } from "react-cookie";
 import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
@@ -15,26 +14,34 @@ export default function App({ Component, pageProps }) {
     const [isTimerOn, setIsTimerOn] = useState(false);
     const [isSettingsOn, setIsSettingsOn] = useState(false);
     const [isRusEng, setIsRusEng] = useState(true);
-
     const router = useRouter();
 
     useEffect(() => {
-        readCookie();
-    }, [currentPage]);
+        const checkAuth = async () => {
+            try {
+                const res = await fetch('http://learnenglish.pp.ua/api/check-auth/');
+                const data = await res.json();
 
-    function readCookie() {
-        const cookies = new Cookies();
-        const user = cookies.get("user");
-        if (user) {
-            setIsAuth(true);
-            setCurrentUser(user);
-			const now = new Date();
-			const expiryDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); //  30 дней 
-            cookies.set("user", user, { path: "/", expires: expiryDate });
-        } else {
-            router.push("/login");
-        }
-    }
+                if (res.ok && data.isAuthenticated) {
+                    setIsAuth(true);
+                    setCurrentUser(data.user);
+                } else {
+                    setIsAuth(false);
+                    if (router.pathname !== '/login') {
+                        router.push('/login');
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка проверки аутентификации:', error);
+                setIsAuth(false);
+                if (router.pathname !== '/login') {
+                    router.push('/login');
+                }
+            }
+        };
+
+        checkAuth();
+    }, []); // Пустой массив зависимостей - эффект запустится только один раз
 
     return (
         <ContentContext.Provider

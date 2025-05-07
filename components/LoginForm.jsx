@@ -49,29 +49,20 @@ export default function LoginForm() {
 
     async function sendForm(data) {
         try {
-            const response = await fetch("http://learnenglish.pp.ua/api/login/", {
+            const res= await fetch("http://learnenglish.pp.ua/api/login/", {
                 method: "post",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify(data),
             });
 
-            const result = await response.json();
-
-            if (response.status === 200) {
-                // alert(`Thank you! ${result.message}`);
-				setIsAuth(true);
-                setCurrentUser(data.email);
-                const cookies = new Cookies();
-				const now = new Date();
-				const expiryDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); //  30 дней 
-                cookies.set("user", data.email, { path: "/", expires: expiryDate });
+            if (res.ok) {
                 router.push("/");
             } else {
-                alert(`Oops! ${result.message}`);
+                const info = await res.json();
+        		alert(info?.error || 'Не удалось войти в систему');
             }
         } catch (error) {
-            console.error("Fetch error:", error);
-            alert("An error occurred while communicating with the server.");
+		    console.error('Ошибка входа:', error);
         }
     }
 

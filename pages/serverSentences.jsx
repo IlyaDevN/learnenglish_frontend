@@ -35,9 +35,7 @@ export default function ServerSentences() {
   const [questionAudioSrc, setQuestionAudioSrc] = useState();
   const [answerAudioSrc, setAnswerAudioSrc] = useState();
   const [loading, setLoading] = useState(false);
-  const { isRusEng } = useContext(ContentContext);
-  const { isSoundOn } = useContext(ContentContext);
-  const { isTimerOn } = useContext(ContentContext);
+  const { isRusEng, isSoundOn, isTimerOn, currentUser } = useContext(ContentContext);
   const count = useRef();
   const audioRefQuestion = useRef(null);
   const audioRefAnswer = useRef(null);
@@ -160,15 +158,13 @@ export default function ServerSentences() {
     if (count.current === 0) {
       return;
     }
-
-    const userEmail = cookies.get("user");
 	
 	const data = {
 		originalText: isRusEng ? sentences[randomNumber].rus_sentence : sentences[randomNumber].eng_sentence,
 		userTranslation: inputContent,
-		userEmail: userEmail,
+		userEmail: currentUser.email,
 	};
-
+	
 	const csrftoken = getCookie('csrftoken');
 	
 	fetch("http://learnenglish.pp.ua/api/log_translation/", {
