@@ -13,10 +13,28 @@ const sourceSans3 = Source_Sans_3({
 export default function Login() {
     const router = useRouter();
 
-    function gestModeButtonHandler() {
-        const cookies = new Cookies();
-        cookies.set("user", "guest@gmail.com", { path: "/", maxAge: "3600" });
-        router.push("/");
+    async function gestModeButtonHandler() {
+		const data = {
+            email: "guest@gmail.com",
+            password: "guest12345",
+        };
+
+		try {
+            const res= await fetch("http://learnenglish.pp.ua/api/login/", {
+                method: "post",
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (res.ok) {
+                router.push("/");
+            } else {
+                const info = await res.json();
+        		alert(info?.error || 'Не удалось войти в систему');
+            }
+        } catch (error) {
+		    console.error('Ошибка входа:', error);
+        }
     }
 
     return (
