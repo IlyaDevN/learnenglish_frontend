@@ -280,9 +280,9 @@ export default function ServerSentences() {
 				}
 			} else {
 				if(isRusEng) {
-					return "Конец";
-				} else {
 					return "The end";
+				} else {
+					return "Конец";
 				}			
 			}
 		}
