@@ -101,6 +101,8 @@ export default function ServerSentences() {
     setCurrentAnswer("");
     setInputContent("");
     setTranslationsCounter(0);
+	tempCountQuestion.current = null;
+	tempCountAnswer.current = null;
 
 	const lessonsList = TASKS[currentTask];
 	const sortedLessonsList = lessonsList.filter((item) => item.level == value);
@@ -115,6 +117,8 @@ export default function ServerSentences() {
 	  setIsDataAvailable(false);
 	  setSentences([]);
 	  setRandomNumber(getRandomNumber(0, count.current));
+	  tempCountQuestion.current = null;
+	  tempCountAnswer.current = null;
     }
 
 	if(!value) {
