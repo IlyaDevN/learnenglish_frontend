@@ -55,7 +55,7 @@ export default function RegisterForm() {
     async function sendForm(data) {
 		try {
 			const response = await fetch(
-				"http://learnenglish.pp.ua/api/register/",
+				"https://learnenglish.pp.ua/api/register/",
 				{
 					method: "post",
 					headers: { 

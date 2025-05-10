@@ -20,7 +20,7 @@ export default function Login() {
         };
 
 		try {
-            const res= await fetch("http://learnenglish.pp.ua/api/login/", {
+            const res= await fetch("https://learnenglish.pp.ua/api/login/", {
                 method: "post",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify(data),

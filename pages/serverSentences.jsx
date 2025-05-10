@@ -167,7 +167,7 @@ export default function ServerSentences() {
 	
 	const csrftoken = getCookie('csrftoken');
 	
-	fetch("http://learnenglish.pp.ua/api/log_translation/", {
+	fetch("https://learnenglish.pp.ua/api/log_translation/", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",

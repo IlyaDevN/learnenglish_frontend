@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }) {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await fetch('http://learnenglish.pp.ua/api/check-auth/');
+                const res = await fetch('https://learnenglish.pp.ua/api/check-auth/');
                 const data = await res.json();
 
                 if (res.ok && data.isAuthenticated) {
