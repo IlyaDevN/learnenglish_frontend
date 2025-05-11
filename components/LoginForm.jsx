@@ -5,6 +5,7 @@ import { UiButton } from "./ui/UiButton";
 import { useRouter } from "next/router";
 import { ContentContext } from "../context";
 import { useContext } from "react";
+import { getCookie } from "../functions";
 import { Cookies } from "react-cookie";
 
 const sourceSans3 = Source_Sans_3({
@@ -48,10 +49,16 @@ export default function LoginForm() {
     }
 
     async function sendForm(data) {
+
+		const csrfToken = getCookie('csrftoken');
+
         try {
             const res= await fetch("https://learnenglish.pp.ua/api/login/", {
                 method: "post",
-                headers: { "Content-type": "application/json" },
+                headers: { 
+					"Content-type": "application/json",
+					'X-CSRFToken': csrfToken
+				},
                 body: JSON.stringify(data),
             });
 
