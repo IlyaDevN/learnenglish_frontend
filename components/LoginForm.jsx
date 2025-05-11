@@ -3,7 +3,7 @@ import InputBlock from "./ui/InputBlock";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "./ui/UiButton";
 import { useRouter } from "next/router";
-import { getCookie } from "../functions";
+import { getCookie } from "../utils";
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -44,16 +44,15 @@ export default function LoginForm() {
     }
 
     async function sendForm(data) {
-
-		const csrfToken = getCookie('csrftoken');
+        const csrfToken = getCookie("csrftoken");
 
         try {
-            const res= await fetch("https://learnenglish.pp.ua/api/login/", {
+            const res = await fetch("https://learnenglish.pp.ua/api/login/", {
                 method: "post",
-                headers: { 
-					"Content-type": "application/json",
-					'X-CSRFToken': csrfToken
-				},
+                headers: {
+                    "Content-type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
                 body: JSON.stringify(data),
             });
 
@@ -61,10 +60,10 @@ export default function LoginForm() {
                 router.push("/");
             } else {
                 const info = await res.json();
-        		alert(info?.error || 'Не удалось войти в систему');
+                alert(info?.error || "Не удалось войти в систему");
             }
         } catch (error) {
-		    console.error('Ошибка входа:', error);
+            console.error("Ошибка входа:", error);
         }
     }
 
