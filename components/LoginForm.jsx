@@ -3,10 +3,7 @@ import InputBlock from "./ui/InputBlock";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "./ui/UiButton";
 import { useRouter } from "next/router";
-import { ContentContext } from "../context";
-import { useContext } from "react";
 import { getCookie } from "../functions";
-import { Cookies } from "react-cookie";
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -21,8 +18,6 @@ export default function LoginForm() {
     };
 
     const router = useRouter();
-    const { isAuth, setIsAuth, currentUser, setCurrentUser } =
-        useContext(ContentContext);
 
     function formHandler(event) {
         event.preventDefault();
