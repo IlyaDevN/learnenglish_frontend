@@ -19,7 +19,7 @@ export default function Layout({ children }) {
       />
 	  {/* {isAuth && <Header/>} */}
 	  <Header/>
-	  <main className="py-20 fixed left-0 top-0 w-full">
+	  <main className="fixed left-0 top-20 w-full">
 	  {children}
 	  </main>
 	  <ModalMenu />
