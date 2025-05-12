@@ -14,8 +14,7 @@ import AudioPlayer from "../components/ui/AudioPlayer";
 import { getTheSound } from "../voiceAPI";
 import { ContentContext } from "../context";
 import TimerButtonBlock from "../components/ui/TimerButtonsBlock";
-import { Cookies } from "react-cookie";
-import { getCookie } from "../utils";
+import { sendTranslationLog } from "../utils/api";
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -32,6 +31,7 @@ export default function ServerSentences() {
     const [translationsCounter, setTranslationsCounter] = useState(0);
     const [currentTask, setCurrentTask] = useState();
     const [currentLessonsList, setCurrentLessonsList] = useState();
+	const [currentLevel, setCurrentLevel] = useState(null);
     const [questionAudioSrc, setQuestionAudioSrc] = useState();
     const [answerAudioSrc, setAnswerAudioSrc] = useState();
     const [loading, setLoading] = useState(false);
@@ -49,7 +49,6 @@ export default function ServerSentences() {
     const LANGUAGE_CODE_ENGLISH = "en-US";
     const VOICE_NAME_RUSSIAN = "ru-RU-Standard-C";
     const VOICE_NAME_ENGLISH = "en-US-Standard-C";
-    const cookies = new Cookies();
 
     useEffect(() => {
         setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
@@ -113,6 +112,7 @@ export default function ServerSentences() {
             (item) => item.level == value,
         );
         setCurrentLessonsList(sortedLessonsList);
+		setCurrentLevel(value);
     }
 
     async function selectLesson(value) {
@@ -174,32 +174,17 @@ export default function ServerSentences() {
             originalText: isRusEng
                 ? sentences[randomNumber].rus_sentence
                 : sentences[randomNumber].eng_sentence,
+			originalTranslation: isRusEng
+				? sentences[randomNumber].eng_sentence
+                : sentences[randomNumber].rus_sentence,
             userTranslation: inputContent,
             userEmail: currentUser.email,
+			lesson: sentences[randomNumber].lesson,
+      		level: currentLevel,
+      		sentenceId: sentences[randomNumber].lesson + sentences[randomNumber].id,
         };
 
-        const csrftoken = getCookie("csrftoken");
-
-        fetch("https://learnenglish.pp.ua/api/log_translation/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken, // Добавляем CSRF-токен в заголовки
-            },
-            body: JSON.stringify(data),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((responseData) => {
-                // console.log("Success:", responseData);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+        sendTranslationLog(data);
 
         const sentencesCopy = sentences.slice();
         sentencesCopy.splice(randomNumber, 1);

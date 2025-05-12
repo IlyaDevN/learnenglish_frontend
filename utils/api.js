@@ -25,3 +25,27 @@ export async function sendLoginRequest(data) {
     }
 }
 
+export async function sendTranslationLog(data) {
+	const csrftoken = getCookie("csrftoken");
+
+	fetch("https://learnenglish.pp.ua/api/log_translation/", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"X-CSRFToken": csrftoken,
+		},
+		body: JSON.stringify(data),
+	})
+	.then((response) => {
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		return response.json();
+	})
+	.then((responseData) => {
+		console.log("Success:", responseData);
+	})
+	.catch((error) => {
+		console.error("Error:", error);
+	});
+}
