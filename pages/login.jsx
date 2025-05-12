@@ -19,9 +19,7 @@ export default function Login() {
         PASSWORD: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
     };
 
-    async function guestFormHandler(event) {
-
-		event.preventDefault();
+    async function guestLogin() {
 		const data = {
             email: "guest@gmail.com",
             password: "guest12345",
@@ -105,7 +103,7 @@ export default function Login() {
 				<UiButton className={"w-full mb-5"} onClick={() => router.push("/register")}>
                     регистрация
 				</UiButton>
-				<UiButton className={"w-full"} onClick={guestFormHandler}>
+				<UiButton className={"w-full"} onClick={guestLogin}>
 					гостевой режим
 				</UiButton>
             </div>
