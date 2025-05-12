@@ -1,9 +1,10 @@
 import clsx from "clsx";
 import { Source_Sans_3 } from "next/font/google";
-import LoginForm from "../components/LoginForm";
 import { useRouter } from "next/router";
 import { UiButton } from "../components/ui/UiButton";
-import { Cookies } from "react-cookie";
+import { sendLoginRequest } from "../utils/api";
+// import LoginForm from "../components/LoginForm";
+import InputBlock from "../components/ui/InputBlock";
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -12,30 +13,61 @@ const sourceSans3 = Source_Sans_3({
 
 export default function Login() {
     const router = useRouter();
+	const REGEXP = {
+        // NAME: /^[а-яА-ЯёЁa-zA-ZЁёЇїІіЄєҐґ']{2,20}$/,
+        EMAIL: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+        PASSWORD: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    };
 
-    async function gestModeButtonHandler() {
+    async function guestFormHandler(event) {
+
+		event.preventDefault();
 		const data = {
             email: "guest@gmail.com",
             password: "guest12345",
         };
 
 		try {
-            const res= await fetch("https://learnenglish.pp.ua/api/login/", {
-                method: "post",
-                headers: { "Content-type": "application/json" },
-                body: JSON.stringify(data),
-            });
-
-            if (res.ok) {
-                router.push("/");
-            } else {
-                const info = await res.json();
-        		alert(info?.error || 'Не удалось войти в систему');
-            }
-        } catch (error) {
-		    console.error('Ошибка входа:', error);
-        }
+			const isLoggined = await sendLoginRequest(data);
+			if (isLoggined) {
+				router.push("/");
+			}
+		} catch (error) {
+			alert(error.message || "Не удалось войти в систему"); 
+		}
     }
+
+	async function formHandler(event) {
+
+		event.preventDefault();
+		const form = document.forms.authForm;
+		const data = {
+			email: form.elements.user_email.value,
+			password: form.elements.user_password.value,
+		};
+
+		// if (!REGEXP.NAME.test(data.name)) {
+		//     alert("Имя некорректное");
+		//     return;
+		// }
+		if (!REGEXP.EMAIL.test(data.email)) {
+			alert("e-mail не корректный");
+			return;
+		}
+		if (!REGEXP.PASSWORD.test(data.password)) {
+			alert("Пароль не корректный");
+			return;
+		}
+
+		try {
+			const isLoggined = await sendLoginRequest(data);
+			if (isLoggined) {
+				router.push("/");
+			}
+		} catch (error) {
+			alert(error.message || "Не удалось войти в систему"); 
+		}
+	}
 
     return (
         <div className="px-4">
@@ -48,16 +80,34 @@ export default function Login() {
                 <p className="text-center mb-7 text-2xl font-black text-yellow-900 uppercase">
                     вход
                 </p>
-                <LoginForm />
-                <UiButton
-                    className={"w-full mb-5"}
-                    onClick={() => router.push("/register")}
-                >
-                    регистрация
-                </UiButton>
-                <UiButton className={"w-full"} onClick={gestModeButtonHandler}>
-                    гостевой режим
-                </UiButton>
+                <form
+					className={clsx(
+						sourceSans3.className,
+						"w-full flex flex-col gap-5 bg-opacity-80 mb-5",
+					)}
+					name="authForm"
+				>
+					<InputBlock
+						fieldName="user_email"
+						fieldType="text"
+						tip="e-mail"
+						placeholder="Введите ваш e-mail"
+					/>
+					<InputBlock
+						fieldName={"user_password"}
+						fieldType="password"
+						tip="пароль"
+					/>
+					<UiButton type="submit" onClick={(event) => formHandler(event)}>
+						войти
+					</UiButton>
+					<UiButton className={"w-full"} onClick={() => router.push("/register")}>
+                    	регистрация
+					</UiButton>
+					<UiButton className={"w-full"} onClick={(event) => guestFormHandler(event)}>
+						гостевой режим
+					</UiButton>
+				</form>
             </div>
         </div>
     );
