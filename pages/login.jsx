@@ -101,13 +101,13 @@ export default function Login() {
 					<UiButton type="submit" onClick={(event) => formHandler(event)}>
 						войти
 					</UiButton>
-					<UiButton className={"w-full"} onClick={() => router.push("/register")}>
-                    	регистрация
-					</UiButton>
-					<UiButton className={"w-full"} onClick={(event) => guestFormHandler(event)}>
-						гостевой режим
-					</UiButton>
 				</form>
+				<UiButton className={"w-full mb-5"} onClick={() => router.push("/register")}>
+                    регистрация
+				</UiButton>
+				<UiButton className={"w-full"} onClick={guestFormHandler}>
+					гостевой режим
+				</UiButton>
             </div>
         </div>
     );
