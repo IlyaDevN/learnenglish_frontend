@@ -19,6 +19,7 @@ export default function InputField({ className, fieldName ,fieldType, placeholde
       type={fieldType}
       placeholder={placeholder}
       {...(fieldType === "password" ? {autoComplete: "current-password"} : {})}
+      {...(fieldName === "login_email" ? {autoComplete: "on"} : {})}
     />
   );
 }
