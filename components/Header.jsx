@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { MoveBackButton } from "./ui/MoveBackButton";
 
 export default function Header() {
-  const { isModalActive, setIsModalActive } = useContext(ContentContext);
+  const { isModalActive, setIsModalActive, isAuth } = useContext(ContentContext);
   const router = useRouter();
 
   function changeModalState() {
@@ -30,11 +30,11 @@ export default function Header() {
       )}
     >
       <div className="w-full max-w-4xl flex justify-between items-center">
-        <BurgerButton onClick={changeModalState} />
+		{isAuth && <BurgerButton onClick={changeModalState} />}
         {router.asPath != "/" && router.asPath != "/login" && router.asPath != "/register" && (
           <MoveBackButton onClick={moveBack}>предыдущее меню</MoveBackButton>
         )}
-        <ProfileButton />
+        {isAuth && <ProfileButton />}
       </div>
     </header>
   );
