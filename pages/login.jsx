@@ -39,8 +39,8 @@ export default function Login() {
 		event.preventDefault();
 		const form = document.forms.authForm;
 		const data = {
-			email: form.elements.user_email.value,
-			password: form.elements.user_password.value,
+			email: form.elements.login_email.value,
+			password: form.elements.login_password.value,
 		};
 
 		// if (!REGEXP.NAME.test(data.name)) {
