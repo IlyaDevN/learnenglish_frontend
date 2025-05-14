@@ -19,7 +19,7 @@ export default function Layout({ children }) {
       />
 	  {/* {isAuth && <Header/>} */}
 	  <Header/>
-	  <main className="fixed left-0 top-20 w-full">
+	  <main className="mt-20 w-full">
 	  {children}
 	  </main>
 	  <ModalMenu />
