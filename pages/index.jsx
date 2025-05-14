@@ -1,8 +1,5 @@
 import clsx from "clsx";
-// import { useContext, useEffect } from "react";
-// import { ContentContext } from "../context";
 import { useRouter } from "next/router";
-// import { Cookies } from "react-cookie";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 
@@ -12,20 +9,7 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export default function HomePage() {
-//   const { isAuth, setIsAuth, currentUser, setCurrentUser } = useContext(ContentContext);
   const router = useRouter();
-  
-//   useEffect(() => {
-//     const user = new Cookies().get("user");
-
-//     if (user) {
-//       setIsAuth(true);
-//       setCurrentUser(user);
-//     } else {
-//       router.push("/login");
-//     }
-//   }, []);
-//   router.push("/");
 
   function goTo() {
 	router.push("/serverSentencesMenu");
