@@ -85,15 +85,16 @@ export default function Login() {
 					name="authForm"
 				>
 					<InputBlock
-						fieldName="user_email"
+						fieldName="login_email"
 						fieldType="text"
 						tip="e-mail"
 						placeholder="Введите ваш e-mail"
 					/>
 					<InputBlock
-						fieldName={"user_password"}
+						fieldName="login_password"
 						fieldType="password"
 						tip="пароль"
+						placeholder="Введите ваш пароль"
 					/>
 					<UiButton type="submit" onClick={(event) => formHandler(event)}>
 						войти
