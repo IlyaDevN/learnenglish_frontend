@@ -28,7 +28,9 @@ export default function App({ Component, pageProps }) {
 				setCurrentUser(data.user);
 			} else {
 				setIsAuth(false);
-				if (router.pathname !== '/login') {
+				if (router.pathname == '/login' || router.pathname == '/register') {
+					return;
+				} else {
 					router.push('/login');
 				}
 			}
