@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ContentContext } from "../context";
 import ModalMenuButton from "./ui/ModalMenuButton";
 import clsx from "clsx";
@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 
 export default function ModalMenu() {
   const { isModalActive, setIsModalActive, currentPage, setCurrentPage } = useContext(ContentContext);
+  const [modalHeight, setModalHeight] = useState('100vh');
 
   const MODAL_PATHS = {
     startPage: "/",
@@ -15,6 +16,17 @@ export default function ModalMenu() {
   };
 
   const router = useRouter();
+
+    useEffect(() => {
+    const calculateHeight = () => {
+      const windowHeight = window.innerHeight;
+      setModalHeight(`${windowHeight - 112}px`);
+    };
+
+    if (isModalActive) {
+      calculateHeight();
+    }
+  }, [isModalActive]);
 
   function modalMenuButtonHandler(destination) {
     setIsModalActive(false);
@@ -34,8 +46,9 @@ export default function ModalMenu() {
       <div
         className={clsx(
           isModalActive ? "translate-x-0" : "-translate-x-full",
-          "w-full h-full bg-lime-500 opacity-80 absolute top-14 left-0 transition-transform duration-500",
+          "w-full bg-lime-500 opacity-80 absolute top-14 left-0 transition-transform duration-500"
         )}
+		style={{ height: modalHeight }}
       >
         <ul className="relative w-52 top-12 m-auto flex flex-col items-center gap-5">
           <li>
