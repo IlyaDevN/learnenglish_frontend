@@ -37,6 +37,7 @@ export default function App({ Component, pageProps }) {
 		}
 		
 		isAuthed();
+		setCurrentPage(router.pathname);
     }, [router]);
 
     return (

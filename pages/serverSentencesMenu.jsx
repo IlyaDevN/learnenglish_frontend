@@ -2,8 +2,6 @@ import clsx from "clsx";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
-import { ContentContext } from "../context";
 import { TASKS } from "../staticData";
 
 const sourceSans3 = Source_Sans_3({
@@ -12,18 +10,15 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export default function ServerSentencesMenu() {
-  const { setCurrentPage } = useContext(ContentContext);
   const router = useRouter();
   const TASKS_LIST = Object.keys(TASKS);
 
   function chooseTaskButtonHandler(value) {
 	localStorage.setItem("currentTask", JSON.stringify(value));
-    setCurrentPage("/serverSentences");
     router.push("/serverSentences");
   }
 
   // function addSentencesButtonHandler() {
-  // 	setCurrentPage("/addSentences");
   // 	router.push("/addSentences");
   // }
 
