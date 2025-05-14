@@ -93,24 +93,24 @@ export default function RegisterForm() {
             name="registerForm"
         >
             <InputBlock
-                fieldName="user_name"
+                fieldName="register_name"
                 fieldType="text"
                 tip="имя"
                 placeholder="Ведите ваше имя"
             />
             <InputBlock
-                fieldName="user_email"
+                fieldName="register_email"
                 fieldType="text"
                 tip="e-mail"
                 placeholder="Введите ваш e-mail"
             />
             <InputBlock
-                fieldName={"user_password"}
+                fieldName="register_password"
                 fieldType="password"
                 tip="пароль"
             />
             <InputBlock
-                fieldName="user_password_confirm"
+                fieldName="register_password_confirm"
                 fieldType="password"
                 tip="повторите пароль"
             />
