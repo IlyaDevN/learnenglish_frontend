@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { ContentContext } from "../context";
 import { useRouter } from "next/router";
 import { MoveBackButton } from "./ui/MoveBackButton";
+import { LogoutButton } from "./ui/logoutButton/LogoutButton";
 
 export default function Header() {
   const { isModalActive, setIsModalActive, isAuth } = useContext(ContentContext);
@@ -34,7 +35,7 @@ export default function Header() {
         {router.asPath != "/" && router.asPath != "/login" && router.asPath != "/register" && (
           <MoveBackButton onClick={moveBack}>предыдущее меню</MoveBackButton>
         )}
-        {isAuth && <ProfileButton />}
+        {isAuth && <LogoutButton />}
       </div>
     </header>
   );
