@@ -1,6 +1,7 @@
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { useRouter } from "next/router";
+import { sendRegistrationRequest } from "../utils/api";
 import InputBlock from "../components/ui/InputBlock";
 import Link from "next/link";
 import clsx from "clsx";
@@ -18,18 +19,18 @@ export default function Register() {
         PASSWORD: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
     };
 
-    function formHandler(event) {
+    async function formHandler(event) {
         event.preventDefault();
         const form = document.forms.registerForm;
         const data = {
-            username: form.elements.user_name.value,
-            email: form.elements.user_email.value,
-            password: form.elements.user_password.value,
+            username: form.elements.register_name.value,
+            email: form.elements.register_email.value,
+            password: form.elements.register_password.value,
             first_name: "",
             last_name: "",
         };
 
-        const passwordConfirm = form.elements.user_password_confirm.value;
+        const passwordConfirm = form.elements.register_password_confirm.value;
 
         if (!REGEXP.NAME.test(data.username)) {
             alert("Имя некорректное");
@@ -48,39 +49,15 @@ export default function Register() {
             return;
         }
 
-        sendForm(data);
-    }
-
-    async function sendForm(data) {
-        try {
-            const response = await fetch(
-                "https://learnenglish.pp.ua/api/register/",
-                {
-                    method: "post",
-                    headers: {
-                        "Content-type": "application/json",
-                    },
-                    body: JSON.stringify(data),
-                },
-            );
-
-            const result = await response.json();
-
-            if (response.status === 201) {
-                alert(`${result.username}, your registration complete!`);
-                document.forms.registerForm.reset();
-                router.push("/");
-                return;
-            }
-            if (response.status === 205) {
-                alert("Этот e-mail уже зарегистрирован");
-                return;
-            }
-            alert("Упс, что-то пошло не так");
-        } catch (error) {
-            console.error("Fetch error:", error);
-            alert("An error occurred while communicating with the server.");
-        }
+		try {
+			const isSucceed = await sendRegistrationRequest(data);	
+			if(isSucceed) {
+				document.forms.registerForm.reset();
+				router.push("/");
+			}
+		} catch (error) {
+			alert(error.message || "Не удалось войти в систему."); 
+		}
     }
 
     return (
