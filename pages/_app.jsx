@@ -1,5 +1,3 @@
-// _app.jsx
-
 import "../styles/global.css";
 import Layout from "../components/layout/layout";
 import { ContentContext } from "../context";
@@ -20,24 +18,30 @@ export default function App({ Component, pageProps }) {
     const router = useRouter();
 
     useEffect(() => {
-		async function isAuthed() {
-			const data = await checkAuth();
-			
-			if(data?.isAuthenticated) {
-				setIsAuth(true);
-				setCurrentUser(data.user);
-			} else {
-				setIsAuth(false);
-				if (router.pathname == '/login' || router.pathname == '/register') {
-					return;
-				} else {
-					router.push('/login');
-				}
-			}
-		}
-		
-		isAuthed();
-		setCurrentPage(router.pathname);
+        async function isAuthed() {
+            if (router.pathname === '/login' || router.pathname === '/register') {
+                setIsAuth(false);
+                setCurrentUser(null);
+                return;
+            }
+
+            const data = await checkAuth();
+
+            if (data?.isAuthenticated) {
+                setIsAuth(true);
+                setCurrentUser(data.user);
+            } else {
+                setIsAuth(false);
+                setCurrentUser(null);
+
+                if (router.pathname !== '/login' && router.pathname !== '/register') {
+                    router.push('/login');
+                }
+            }
+        }
+
+        isAuthed();
+        setCurrentPage(router.pathname);
     }, [router]);
 
     return (
