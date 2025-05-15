@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import BurgerButton from "./ui/BurgerButton";
-import ProfileButton from "./ui/profileButton/ProfileButton";
 import { useContext } from "react";
 import { ContentContext } from "../context";
 import { useRouter } from "next/router";
