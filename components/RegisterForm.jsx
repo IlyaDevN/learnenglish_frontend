@@ -108,11 +108,13 @@ export default function RegisterForm() {
                 fieldName="register_password"
                 fieldType="password"
                 tip="пароль"
+				placeholder="Введите ваш пароль"
             />
             <InputBlock
                 fieldName="register_password_confirm"
                 fieldType="password"
                 tip="повторите пароль"
+				placeholder="Повторите ваш пароль"
             />
             <UiButton type="submit" onClick={(event) => formHandler(event)}>
                 подтвердить
