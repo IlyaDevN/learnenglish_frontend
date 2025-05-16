@@ -32,6 +32,7 @@ export default function ServerSentences() {
     const [currentTask, setCurrentTask] = useState();
     const [currentLessonsList, setCurrentLessonsList] = useState();
 	const [currentLevel, setCurrentLevel] = useState(null);
+	const [isAnswerShown, setIsAnswerShown] = useState(false);
     const [questionAudioSrc, setQuestionAudioSrc] = useState();
     const [answerAudioSrc, setAnswerAudioSrc] = useState();
     const [loading, setLoading] = useState(false);
@@ -178,6 +179,7 @@ export default function ServerSentences() {
 				? sentences[randomNumber].eng_sentence
                 : sentences[randomNumber].rus_sentence,
             userTranslation: inputContent,
+			isTranslationOpen: isAnswerShown,
             userEmail: currentUser.email,
 			lesson: sentences[randomNumber].lesson,
       		level: currentLevel,
@@ -193,6 +195,7 @@ export default function ServerSentences() {
         setRandomNumber(getRandomNumber(0, count.current));
         setCurrentAnswer("");
         setInputContent("");
+		setIsAnswerShown(false);
 
         if (
             sentences[randomNumber].rus_sentence === "." ||
@@ -209,6 +212,7 @@ export default function ServerSentences() {
             return;
         }
         if (sentences.length) {
+			setIsAnswerShown(true);
             setCurrentAnswer(
                 isRusEng
                     ? sentences[randomNumber].eng_sentence
