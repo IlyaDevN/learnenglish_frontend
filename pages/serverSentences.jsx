@@ -325,7 +325,7 @@ export default function ServerSentences() {
                 }
             } else {
                 if (isRusEng) {
-                    return "The end";
+                    return "The lesson is over";
                 } else {
                     return "Конец";
                 }
@@ -440,7 +440,7 @@ export default function ServerSentences() {
                                 : sentences[randomNumber].eng_sentence
                             : isRusEng
 								? "Урок окончен."
-								:"The end.")}
+								:"The lesson is over.")}
                     <PlayButton
                         getSoundQuestion={getSoundQuestion}
                         isQuestion={true}
