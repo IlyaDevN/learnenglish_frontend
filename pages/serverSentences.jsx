@@ -276,11 +276,32 @@ export default function ServerSentences() {
         tempCountQuestion.current = translationsCounter;
     }
 
-    function playSoundQuestion() {
-        if (audioRefQuestion.current) {
-            audioRefQuestion.current.play();
-        }
-    }
+    // function playSoundQuestion() {
+    //     if (audioRefQuestion.current) {
+    //         audioRefQuestion.current.play();
+    //     }
+    // }
+
+	function playSoundQuestion(attempt = 1) {
+		if (audioRefQuestion.current) {
+			const playPromise = audioRefQuestion.current.play();
+			if (playPromise !== undefined) {
+				playPromise
+					.then(() => {
+						console.log("Play question error (attempt: ", attempt, ")");
+					})
+					.catch((error) => {
+						console.error("Play question error (attempt: ", attempt, "):", error);
+						if (attempt < 3) { // Максимальное количество попыток
+							console.log("Trying to play the question again...");
+							setTimeout(() => playSoundQuestion(attempt + 1), 250); // Задержка перед повтором
+						} else {
+							console.error("Failed to play the question after 3 attempts.");
+						}
+					});
+			}
+		}
+	}
 
     useEffect(() => {
         if (firstRenderAnswer.current) {
@@ -289,7 +310,6 @@ export default function ServerSentences() {
         }
 
         playSoundAnswer();
-        console.log("useEffect answer PLAY");
     }, [answerAudioSrc]);
 
     function getSoundAnswer() {
@@ -325,15 +345,35 @@ export default function ServerSentences() {
             : LANGUAGE_CODE_RUSSIAN;
 
         getTheSound(phrase, voiceName, language, setAnswerAudioSrc);
-        console.log("getSoundAnswer");
         tempCountAnswer.current = translationsCounter;
     }
 
-    function playSoundAnswer() {
-        if (audioRefAnswer.current) {
-            audioRefAnswer.current.play();
-        }
-    }
+    // function playSoundAnswer() {
+    //     if (audioRefAnswer.current) {
+    //         audioRefAnswer.current.play();
+    //     }
+    // }
+
+	function playSoundAnswer(attempt = 1) {
+		if (audioRefAnswer.current) {
+			const playPromise = audioRefAnswer.current.play();
+			if (playPromise !== undefined) {
+				playPromise
+					.then(() => {
+						console.log("Play answer error (attempt: ", attempt, ")");
+					})
+					.catch((error) => {
+						console.error("Play answer error (attempt: ", attempt, "):", error);
+						if (attempt < 3) { // Максимальное количество попыток
+							console.log("Trying to play the answer again...");
+							setTimeout(() => playSoundAnswer(attempt + 1), 250); // Задержка перед повтором
+						} else {
+							console.error("Failed to play the answer after 3 attempts.");
+						}
+					});
+			}
+		}
+	}
 
     function handleReset() {
         if (!isDataAvailable) {
