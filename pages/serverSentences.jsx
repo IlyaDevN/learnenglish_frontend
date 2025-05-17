@@ -236,7 +236,6 @@ export default function ServerSentences() {
         }
 
         playSoundQuestion();
-        console.log("useEffect question PLAY");
     }, [questionAudioSrc]);
 
     function getSoundQuestion() {
@@ -272,15 +271,8 @@ export default function ServerSentences() {
             : LANGUAGE_CODE_ENGLISH;
 
         getTheSound(phrase, voiceName, language, setQuestionAudioSrc);
-        console.log("getSoundQuestion");
         tempCountQuestion.current = translationsCounter;
     }
-
-    // function playSoundQuestion() {
-    //     if (audioRefQuestion.current) {
-    //         audioRefQuestion.current.play();
-    //     }
-    // }
 
 	function playSoundQuestion(attempt = 1) {
 		if (audioRefQuestion.current) {
@@ -288,7 +280,7 @@ export default function ServerSentences() {
 			if (playPromise !== undefined) {
 				playPromise
 					.then(() => {
-						console.log("Play question error (attempt: ", attempt, ")");
+						// console.log("Play question error (attempt: ", attempt, ")");
 					})
 					.catch((error) => {
 						console.error("Play question error (attempt: ", attempt, "):", error);
@@ -348,19 +340,13 @@ export default function ServerSentences() {
         tempCountAnswer.current = translationsCounter;
     }
 
-    // function playSoundAnswer() {
-    //     if (audioRefAnswer.current) {
-    //         audioRefAnswer.current.play();
-    //     }
-    // }
-
 	function playSoundAnswer(attempt = 1) {
 		if (audioRefAnswer.current) {
 			const playPromise = audioRefAnswer.current.play();
 			if (playPromise !== undefined) {
 				playPromise
 					.then(() => {
-						console.log("Play answer error (attempt: ", attempt, ")");
+						// console.log("Play answer error (attempt: ", attempt, ")");
 					})
 					.catch((error) => {
 						console.error("Play answer error (attempt: ", attempt, "):", error);
