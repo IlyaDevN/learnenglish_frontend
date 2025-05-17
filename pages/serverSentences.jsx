@@ -275,6 +275,7 @@ export default function ServerSentences() {
     }
 
 	function playSoundQuestion(attempt = 1) {
+		stopAllAudio();
 		if (audioRefQuestion.current) {
 			const playPromise = audioRefQuestion.current.play();
 			if (playPromise !== undefined) {
@@ -341,6 +342,7 @@ export default function ServerSentences() {
     }
 
 	function playSoundAnswer(attempt = 1) {
+		stopAllAudio();
 		if (audioRefAnswer.current) {
 			const playPromise = audioRefAnswer.current.play();
 			if (playPromise !== undefined) {
@@ -360,6 +362,18 @@ export default function ServerSentences() {
 			}
 		}
 	}
+
+	function stopAudio(audioRef) {
+		if (audioRef.current && !audioRef.current.paused) {
+			audioRef.current.pause();
+			//audioRef.current.currentTime = 0; // Сбросить на начало (по желанию)
+		}
+	}
+
+	function stopAllAudio() {
+        stopAudio(audioRefQuestion);
+        stopAudio(audioRefAnswer);
+    }
 
     function handleReset() {
         if (!isDataAvailable) {
