@@ -63,8 +63,9 @@ export default function ServerSentences() {
         }
 
         getSoundQuestion();
-    }, [randomNumber, isRusEng]);
-
+    }, [randomNumber, isRusEng, translationsCounter]);
+	//Если оставить только randomNumber, то он иногда повторяется и useEffect не срабатывает,
+	//добавление translationsCounter еще одной зависимостью устранит эту проблему.
     useEffect(() => {
         //Missing empty sentences
         if (
