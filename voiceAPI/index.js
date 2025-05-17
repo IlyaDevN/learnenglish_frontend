@@ -28,9 +28,12 @@ export async function getTheSound(phrase, voiceName, language, setAudioSrc) {
 	try {
 	  const response = await fetch(url, options);
 	  const result = await response.json();
-	  console.log("fetch audio");
+	  if(response.ok){
+		setAudioSrc(`data:audio/mp3;base64,${result.audioContent}`);
+	  } else {
+		console.log(`Sound request error, code: ${result.error.code},`, result.error.message, result.error.status);
+	  }
 	  
-	  setAudioSrc(`data:audio/mp3;base64,${result.audioContent}`);
 	} catch (error) {
 	  console.error("Sound request error", error);
 	}
