@@ -5,6 +5,7 @@ import { sendRegistrationRequest } from "../utils/api";
 import InputBlock from "../components/ui/InputBlock";
 import Link from "next/link";
 import clsx from "clsx";
+import Head from 'next/head';
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -61,6 +62,12 @@ export default function Register() {
     }
 
     return (
+		<>
+		<Head>
+			<title>Регистрация в LearnEnglish - Начните учить английский</title>
+			<meta name="description" content="Регистрируйтесь в LearnEnglish и начните улучшать свои навыки перевода английских предложений уже сегодня. Простой и быстрый старт." key="desc" />
+			<meta name="keywords" content="регистрация, создать аккаунт, учить английский, начать тренировку, бесплатное изучение английского" />
+        </Head>
         <div className="px-4">
             <div
                 className={clsx(
@@ -121,5 +128,6 @@ export default function Register() {
                 </form>
             </div>
         </div>
+		</>
     );
 }

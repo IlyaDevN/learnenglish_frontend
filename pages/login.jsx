@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { UiButton } from "../components/ui/UiButton";
 import { sendLoginRequest } from "../utils/api";
 import InputBlock from "../components/ui/InputBlock";
+import Head from 'next/head';
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -67,6 +68,11 @@ export default function Login() {
 	}
 
     return (
+		<><Head>
+			<title>Вход в аккаунт LearnEnglish - Продолжите тренировку</title>
+			<meta name="description" content="Войдите в свой аккаунт LearnEnglish, чтобы продолжить тренировки по переводу предложений на английском языке. Быстрый и безопасный доступ к вашим урокам." key="desc" />
+			<meta name="keywords" content="вход, авторизация, аккаунт, тренировка английского, логин LearnEnglish" />
+        </Head>
         <div className="px-4">
             <div
                 className={clsx(
@@ -108,5 +114,6 @@ export default function Login() {
 				</UiButton>
             </div>
         </div>
+		</>
     );
 }

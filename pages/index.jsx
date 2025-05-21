@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
+import Head from 'next/head';
 
 const sourceSans3 = Source_Sans_3({
 	subsets: ["latin", "cyrillic"],
@@ -16,6 +17,12 @@ export default function HomePage() {
   }
 
   return (
+	<>
+	<Head>
+        <title>LearnEnglish - Приложение для тренировки перевода английских предложений</title>
+        <meta name="description" content="Приложение для изучения английского языка на основе плейлистов Александра Бебриса, разработано для своего сына без коммерческого умысла" key="desc" />
+        <meta name="keywords" content="английский язык, тренировка перевода, изучение английского, практика английского, перевод предложений, грамматика английского, словарный запас" />
+    </Head>
     <div className="px-4">
       <div
         className={clsx(
@@ -29,5 +36,6 @@ export default function HomePage() {
 		className="block mt-8 mx-auto w-full max-w-4xl"
 	    onClick={goTo}>Перевод предложений</UiButton>
     </div>
+	</>
   );
 }

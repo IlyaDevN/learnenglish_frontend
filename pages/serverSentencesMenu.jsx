@@ -3,6 +3,7 @@ import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { useRouter } from "next/router";
 import { TASKS } from "../staticData";
+import Head from 'next/head';
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin", "cyrillic"],
@@ -23,6 +24,12 @@ export default function ServerSentencesMenu() {
   // }
 
   return (
+	<>
+	<Head>
+        <title>Выбор заданий для перевода - LearnEnglish</title>
+        <meta name="description" content="Выберите категорию или уровень сложности заданий для перевода предложений с английского. Десятки упражнений для отработки навыков перевода." key="desc" />
+        <meta name="keywords" content="выбор заданий, уровни сложности, категории перевода, упражнения по английскому, практика предложений" />
+    </Head>
     <div className="px-4">
       <div
         className={clsx(
@@ -46,5 +53,6 @@ export default function ServerSentencesMenu() {
         </div>
       </div>
     </div>
+	</>
   );
 }

@@ -15,6 +15,7 @@ import { getTheSound } from "../voiceAPI";
 import { ContentContext } from "../context";
 import TimerButtonBlock from "../components/ui/TimerButtonsBlock";
 import { sendTranslationLog } from "../utils/api";
+import Head from 'next/head';
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -402,6 +403,12 @@ export default function ServerSentences() {
     }
 
     return (
+		<>
+		<Head>
+			<title>Тренировка перевода предложений на английский - LearnEnglish</title>
+			<meta name="description" content="Практикуйте перевод английских предложений с LearnEnglish. Оттачивайте грамматику, синтаксис и словарный запас с помощью интерактивных заданий." key="desc" />
+			<meta name="keywords" content="перевод предложений, тренировка, английский, грамматика, синтаксис, словарный запас, онлайн упражнения" />
+        </Head>
         <div className="px-4">
             <div
                 className={clsx(
@@ -492,5 +499,6 @@ export default function ServerSentences() {
                 <AudioPlayer src={answerAudioSrc} audioRef={audioRefAnswer} />
             </div>
         </div>
+		</>
     );
 }
