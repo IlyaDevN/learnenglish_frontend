@@ -107,7 +107,7 @@ export default function Login() {
 					</UiButton>
 				</form>
 				<UiButton className={"w-full mb-5"} onClick={() => router.push("/register")}>
-                    регистрацияя
+                    регистрация
 				</UiButton>
 				<UiButton className={"w-full"} onClick={guestLogin}>
 					гостевой режим
