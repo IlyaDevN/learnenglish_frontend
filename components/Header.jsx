@@ -7,11 +7,18 @@ import { MoveBackButton } from "./ui/MoveBackButton";
 import { LogoutButton } from "./ui/logoutButton/LogoutButton";
 
 export default function Header() {
-  const { isModalActive, setIsModalActive, isAuth } = useContext(ContentContext);
+  const { isModalActive, setIsModalActive, isAuth, isModalSettingsActive, setIsModalSettingsActive } = useContext(ContentContext);
   const router = useRouter();
 
   function changeModalState() {
-    setIsModalActive(!isModalActive);
+	if(isModalSettingsActive) {
+		setIsModalSettingsActive(false);
+		setTimeout(() => {
+			setIsModalActive(true);
+		}, 500)
+	} else {
+		setIsModalActive(!isModalActive);
+	}
   }
 
   function moveBack() {

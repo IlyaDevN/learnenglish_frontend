@@ -6,17 +6,23 @@ import { useContext } from "react";
 import { ContentContext } from "../../../context";
 
 export function SettingsButton({ className }) {
-  const { isSettingsOn, setIsSettingsOn, isModalSettingsActive, setIsModalSettingsActive } = useContext(ContentContext);
+  const { isModalSettingsActive, setIsModalSettingsActive, isModalActive, setIsModalActive } = useContext(ContentContext);
 
   function buttonHandler() {
-	setIsSettingsOn(!isSettingsOn);
-	setIsModalSettingsActive(!isModalSettingsActive);
+	if(isModalActive) {
+		setIsModalActive(false);
+		setTimeout(() => {
+			setIsModalSettingsActive(true);
+		}, 500)
+	} else {
+		setIsModalSettingsActive(!isModalSettingsActive);
+	}
   }
 
   return (
     <button
       className={clsx(
-        isSettingsOn ? "bg-gradient-to-br from-light_blue to-dark_blue" : "bg-gradient-to-br from-light_green to-dark_green",
+        isModalSettingsActive ? "bg-gradient-to-br from-light_blue to-dark_blue" : "bg-gradient-to-br from-light_green to-dark_green",
         "p-1 border-4 border-yellow-400 rounded-full",
         className,
       )}
@@ -24,7 +30,7 @@ export function SettingsButton({ className }) {
     >
       <Image
         className={clsx("h-6 w-6")}
-        src={isSettingsOn ? settingsOnImgSrc : settingsOffImgSrc}
+        src={isModalSettingsActive ? settingsOnImgSrc : settingsOffImgSrc}
         alt="Кнопка включения и выключения настроек"
       />
     </button>

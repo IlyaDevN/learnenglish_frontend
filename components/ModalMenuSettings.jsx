@@ -4,7 +4,7 @@ import { CSSTransition } from "react-transition-group";
 import clsx from "clsx";
 
 export default function ModalMenuSettings() {
-  const { isModalSettingsActive, setIsModalSettingsActive } = useContext(ContentContext);
+  const { isModalSettingsActive } = useContext(ContentContext);
   const [modalHeight, setModalHeight] = useState('100vh');
 
   useEffect(() => {
