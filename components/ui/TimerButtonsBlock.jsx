@@ -11,6 +11,7 @@ export default function TimerButtonBlock({ nextSentence, showTranslation, isData
   const [isStarted, setIsStarted] = useState(false);
   const [sentenceChangeState, setSentenceChangeState] = useState(true);
   const [translationChangeState, setTranslationChangeState] = useState(true);
+  const [color, setColor] = useState("");
   const isInitialMountSentence = useRef(true);
   const isInitialTranslation = useRef(true);
 
@@ -97,10 +98,24 @@ export default function TimerButtonBlock({ nextSentence, showTranslation, isData
   };
 
   function increaseTime() {
+	if(timerTimeout == 60) {
+		setColor("bg-gradient-to-br from-light_blue to-dark_blue");
+		setTimeout(()=> {
+			setColor("");
+		}, 200)
+		return;
+	}
 	setTimerTimeout((oldValue) => oldValue + 1);
   }
 
   function decreaseTime() {
+	if(timerTimeout == 10) {
+		setColor("bg-gradient-to-br from-light_blue to-dark_blue");
+		setTimeout(()=> {
+			setColor("");
+		}, 200)
+		return;
+	}
 	setTimerTimeout((oldValue) => oldValue - 1);
   }
 
@@ -109,7 +124,7 @@ export default function TimerButtonBlock({ nextSentence, showTranslation, isData
 		<div className="flex justify-between">
 			<UiButton className="min-w-[100px]" onClick={startTimer}>Старт</UiButton>
 			{/* <UiButton onClick={pauseTimer}>Pause</UiButton> */}
-			<Counter value={timerCount} className={"w-14"}/>
+			<Counter value={timerCount} className={"w-14"}  bg={color}/>
 			<UiButton className="min-w-[100px]" onClick={resetTimer}>Стоп</UiButton>
     	</div>
 		<div className="flex justify-between"> 
