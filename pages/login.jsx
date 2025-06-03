@@ -110,7 +110,7 @@ export default function Login() {
                     регистрация
 				</UiButton>
 				<UiButton className={"w-full"} onClick={guestLogin}>
-					гостевой режим
+					гостевой режимm
 				</UiButton>
             </div>
         </div>
