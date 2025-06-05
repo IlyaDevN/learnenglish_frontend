@@ -8,6 +8,7 @@ import SelectLesson from "../components/ui/SelectLesson";
 import Counter from "../components/Counter";
 import Head from 'next/head';
 import LessonTranslation from '../components/lesson/LessonTranslation';
+import { UiButton } from "../components/ui/UiButton";
 
 const sourceSans3 = Source_Sans_3({
     subsets: ["latin", "cyrillic"],
@@ -78,13 +79,13 @@ export default function ServerSentences() {
 			<meta name="keywords" content="перевод предложений, тренировка, английский, грамматика, синтаксис, словарный запас, онлайн упражнения" />
         </Head>
         <div className="px-4">
-            <div
+			<div
                 className={clsx(
                     sourceSans3.className,
-                    "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
+                    "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex gap-4 bg-opacity-80 mb-6",
                 )}
             >
-                <div className="flex justify-between flex-wrap">
+				<div className="w-full flex justify-between flex-wrap">
                     {currentTask == "english_galaxy" && (
                         <SelectLesson
                             onChange={selectLevel}
@@ -107,6 +108,13 @@ export default function ServerSentences() {
                         selectName={"Урок"}
                     />
                 </div>
+			</div>
+            <div
+                className={clsx(
+                    sourceSans3.className,
+                    "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
+                )}
+            >
                 <LessonTranslation
                     initialData={initialData}
                     isDataAvailable={isDataAvailable}
