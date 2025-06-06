@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+		fontFamily: {
+        	sans: ['var(--font-source-sans-3)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      	},
 		lineHeight: {
 			"tight": "1.2",
 		},
