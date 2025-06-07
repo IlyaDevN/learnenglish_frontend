@@ -1,15 +1,8 @@
-import clsx from "clsx";
-import { Source_Sans_3 } from "next/font/google";
 import { useRouter } from "next/router";
 import { UiButton } from "../components/ui/UiButton";
 import { sendLoginRequest } from "../utils/api";
 import InputBlock from "../components/ui/InputBlock";
 import Head from 'next/head';
-
-const sourceSans3 = Source_Sans_3({
-    subsets: ["latin", "cyrillic"],
-    weight: ["700", "900"],
-});
 
 export default function Login() {
     const router = useRouter();
@@ -75,19 +68,12 @@ export default function Login() {
         </Head>
         <div className="px-4">
             <div
-                className={clsx(
-                    sourceSans3.className,
-                    "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80",
-                )}
-            >
+                className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80">
                 <p className="text-center mb-7 text-2xl font-black text-yellow-900 uppercase">
                     вход
                 </p>
                 <form
-					className={clsx(
-						sourceSans3.className,
-						"w-full flex flex-col gap-5 bg-opacity-80 mb-5",
-					)}
+					className="w-full flex flex-col gap-5 bg-opacity-80 mb-5"
 					name="authForm"
 				>
 					<InputBlock

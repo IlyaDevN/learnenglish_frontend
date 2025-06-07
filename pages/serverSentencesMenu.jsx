@@ -1,14 +1,8 @@
 import clsx from "clsx";
-import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { useRouter } from "next/router";
 import { TASKS } from "../staticData";
 import Head from "next/head";
-
-const sourceSans3 = Source_Sans_3({
-    subsets: ["latin", "cyrillic"],
-    weight: ["900"],
-});
 
 export default function ServerSentencesMenu() {
     const router = useRouter();

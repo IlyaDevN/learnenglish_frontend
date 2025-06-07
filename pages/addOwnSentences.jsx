@@ -1,14 +1,7 @@
-import clsx from "clsx";
-import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
 import { useState } from "react";
 import { Cookies } from "react-cookie";
-
-const sourceSans3 = Source_Sans_3({
-  subsets: ["latin", "cyrillic"],
-  weight: ["700", "900"],
-});
 
 export default function AddOwnSentences() {
 	
@@ -44,11 +37,7 @@ export default function AddOwnSentences() {
   return (
     <div className="px-4 py-7">
       <div
-        className={clsx(
-          sourceSans3.className,
-          "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80",
-        )}
-      >
+        className="w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80">
         <div className="flex flex-col items-center gap-5">
           <p className="text-center text-2xl font-black text-yellow-900 uppercase">
             Добавьте предложение

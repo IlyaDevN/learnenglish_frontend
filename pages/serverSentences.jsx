@@ -2,18 +2,12 @@
 import clsx from "clsx";
 import { TASKS } from "../staticData";
 import { levels } from "../staticData/english_galaxy";
-import { Source_Sans_3 } from "next/font/google";
 import { useState, useRef, useEffect, useContext } from "react";
 import SelectLesson from "../components/ui/SelectLesson";
 import Counter from "../components/Counter";
 import Head from 'next/head';
 import LessonTranslation from '../components/lesson/LessonTranslation';
 import { UiButton } from "../components/ui/UiButton";
-
-const sourceSans3 = Source_Sans_3({
-    subsets: ["latin", "cyrillic"],
-    weight: ["700", "900"],
-});
 
 export default function ServerSentences() {
     const [initialData, setInitialData] = useState();
@@ -80,10 +74,7 @@ export default function ServerSentences() {
         </Head>
         <div className="px-4">
 			<div
-                className={clsx(
-                    sourceSans3.className,
-                    "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex gap-4 bg-opacity-80 mb-6",
-                )}
+                className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex gap-4 bg-opacity-80 mb-6"
             >
 				<div className="w-full flex justify-between flex-wrap">
                     {currentTask == "english_galaxy" && (
@@ -110,11 +101,7 @@ export default function ServerSentences() {
                 </div>
 			</div>
             <div
-                className={clsx(
-                    sourceSans3.className,
-                    "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
-                )}
-            >
+                className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80">
                 <LessonTranslation
                     initialData={initialData}
                     isDataAvailable={isDataAvailable}

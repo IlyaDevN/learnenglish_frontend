@@ -4,6 +4,45 @@ import { ContentContext } from "../context";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { checkAuth } from "../utils/api";
+import localFont from 'next/font/local';
+
+const sourceSans3Local = localFont({
+  src: [
+    {
+      path: '../public/fonts/SourceSans3-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/SourceSans3-Italic.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: '../public/fonts/SourceSans3-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/SourceSans3-BoldItalic.woff2',
+      weight: '700',
+      style: 'italic',
+    },
+    {
+      path: '../public/fonts/SourceSans3-Black.woff2',
+      weight: '900',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/SourceSans3-BlackItalic.woff2',
+      weight: '900',
+      style: 'italic',
+    },
+    // Добавьте все необходимые веса и стили вашего шрифта Source Sans 3
+  ],
+  variable: '--font-source-sans-3', // Определяем ту же CSS-переменную
+  display: 'swap', // Рекомендуется для предотвращения CLS
+});
 
 export default function App({ Component, pageProps }) {
     const [isAuth, setIsAuth] = useState(false);
@@ -45,6 +84,7 @@ export default function App({ Component, pageProps }) {
     }, [router]);
 
     return (
+		<div className={`${sourceSans3Local.variable} font-sans`}>
         <ContentContext.Provider
             value={{
                 isAuth,
@@ -71,5 +111,6 @@ export default function App({ Component, pageProps }) {
                 <Component {...pageProps} />
             </Layout>
         </ContentContext.Provider>
+		</div>
     );
 }

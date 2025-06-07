@@ -1,16 +1,10 @@
 import clsx from "clsx";
-import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { ContentField } from "../components/ui/ContentField";
 import { InputSentenceField } from "../components/ui/InputSentenceField";
 import { useState, useRef, useEffect } from "react";
 import { Cookies } from "react-cookie";
 import Counter from "../components/Counter";
-
-const sourceSans3 = Source_Sans_3({
-  subsets: ["latin", "cyrillic"],
-  weight: ["700", "900"],
-});
 
 export default function OwnSentences() {
   const [initialData, setInitialData] = useState();
@@ -94,11 +88,7 @@ export default function OwnSentences() {
   return (
     <div className="px-4 py-7">
       <div
-        className={clsx(
-          sourceSans3.className,
-          "w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80",
-        )}
-      >
+        className="w-full bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80">
         <Counter value={translationsCounter} />
         <ContentField>
           {isDataAvailable &&

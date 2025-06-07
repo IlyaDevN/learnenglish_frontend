@@ -1,16 +1,9 @@
-import { Source_Sans_3 } from "next/font/google";
 import { UiButton } from "../components/ui/UiButton";
 import { useRouter } from "next/router";
 import { sendRegistrationRequest } from "../utils/api";
 import InputBlock from "../components/ui/InputBlock";
 import Link from "next/link";
-import clsx from "clsx";
 import Head from 'next/head';
-
-const sourceSans3 = Source_Sans_3({
-    subsets: ["latin", "cyrillic"],
-    weight: ["400", "700", "900"],
-});
 
 export default function Register() {
     const router = useRouter();
@@ -70,19 +63,12 @@ export default function Register() {
         </Head>
         <div className="px-4">
             <div
-                className={clsx(
-                    sourceSans3.className,
-                    "w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80",
-                )}
-            >
+                className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80">
                 <p className="text-center mb-7 text-2xl font-black text-yellow-900 uppercase">
                     регистрация
                 </p>
                 <form
-                    className={clsx(
-                        sourceSans3.className,
-                        "w-full flex flex-col gap-5 bg-opacity-80",
-                    )}
+                    className="w-full flex flex-col gap-5 bg-opacity-80"
                     name="registerForm"
                 >
                     <InputBlock
