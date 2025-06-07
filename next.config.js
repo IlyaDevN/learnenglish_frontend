@@ -1,7 +1,7 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: false,
   compiler: {
-    // Enables the styled-components SWC transform
     styledComponents: true
   },
   webpack(config, options) {
@@ -19,3 +19,5 @@ module.exports = {
     return config;
   },
 };
+
+module.exports = nextConfig;
