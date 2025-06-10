@@ -1,30 +1,3 @@
-export const levels = [
-	{
-		id: 1,
-		name: "A0"
-	},
-	{
-		id: 2,
-		name: "A1"
-	},
-	{
-		id: 3,
-		name: "A2"
-	},
-	{
-		id: 4,
-		name: "B1"
-	},
-	{
-		id: 5,
-		name: "B2"
-	},
-	{
-		id: 6,
-		name: "C1"
-	}
-];
-
 export const english_galaxy = [
 	{	
 		id: 1000,

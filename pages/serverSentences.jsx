@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import clsx from "clsx";
 import { TASKS } from "../staticData";
 import { levels } from "../staticData/english_galaxy";
 import { useState, useRef, useEffect, useContext } from "react";
@@ -7,21 +6,23 @@ import SelectLesson from "../components/ui/SelectLesson";
 import Counter from "../components/Counter";
 import Head from 'next/head';
 import LessonTranslation from '../components/lesson/LessonTranslation';
-import { UiButton } from "../components/ui/UiButton";
+import { ContentContext } from "../context";
 
 export default function ServerSentences() {
     const [initialData, setInitialData] = useState();
     const [isDataAvailable, setIsDataAvailable] = useState(false);
     const [translationsCounter, setTranslationsCounter] = useState(0);
-    const [currentTask, setCurrentTask] = useState();
+    // const [currentTask, setCurrentTask] = useState();
     const [currentLessonsList, setCurrentLessonsList] = useState();
 	const [currentLevel, setCurrentLevel] = useState(null);
     const [loading, setLoading] = useState(false);
     const count = useRef();
-
-    useEffect(() => {
-        setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
-    }, []);
+	const { currentTask, setCurrentTask } = useContext(ContentContext);
+	// console.log(currentTask);
+	
+    // useEffect(() => {
+    //     setCurrentTask(JSON.parse(localStorage.getItem("currentTask")));
+    // }, []);
 
     function selectLevel(value) {
         setIsDataAvailable(false);
@@ -91,11 +92,11 @@ export default function ServerSentences() {
                     />
                     <SelectLesson
                         onChange={selectLesson}
-                        options={
-                            currentTask == "english_galaxy"
-                                ? currentLessonsList
-                                : TASKS[currentTask]
-                        }
+                        // options={
+                        //     currentTask == "english_galaxy"
+                        //         ? currentLessonsList
+                        //         : TASKS[currentTask]
+                        // }
                         selectName={"Урок"}
                     />
                 </div>

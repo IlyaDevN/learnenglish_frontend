@@ -4,7 +4,11 @@ import { ContentContext } from "../context";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { checkAuth } from "../utils/api";
+import { INITIAL_DIRECTION } from "../staticData/translation_directions";
+import { INITIAL_TASK } from "../staticData/tasks";
+import { INITIAL_LEVEL } from "../staticData/levels";
 import localFont from "next/font/local";
+import { english_galaxy } from "../staticData/english_galaxy";
 
 const sourceSans3Local = localFont({
     src: [
@@ -47,12 +51,19 @@ export default function App({ Component, pageProps }) {
     const [isAuth, setIsAuth] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [currentPage, setCurrentPage] = useState("/");
+	const [currentTask, setCurrentTask] = useState(INITIAL_TASK);
+	const [currentLevel, setCurrentLevel] = useState(INITIAL_LEVEL);
+	const [currentLesson, setCurrentLesson] = useState(
+        english_galaxy.find(lesson => 
+            lesson.level === INITIAL_LEVEL.value && lesson.id === 1
+        ) || null
+    );
     const [isModalActive, setIsModalActive] = useState(false);
     const [isModalSettingsActive, setIsModalSettingsActive] = useState(false);
     const [isSoundOn, setIsSoundOn] = useState(true);
     const [isTimerOn, setIsTimerOn] = useState(false);
     const [isSettingsOn, setIsSettingsOn] = useState(false);
-    const [isRusEng, setIsRusEng] = useState(true);
+    const [isRusEng, setIsRusEng] = useState(INITIAL_DIRECTION.value);
     const router = useRouter();
 
     useEffect(() => {
@@ -102,6 +113,12 @@ export default function App({ Component, pageProps }) {
                     setIsModalSettingsActive,
                     currentPage,
                     setCurrentPage,
+					currentTask,
+					setCurrentTask,
+					currentLevel, 
+					setCurrentLevel,
+					currentLesson, 
+					setCurrentLesson,
                     isRusEng,
                     setIsRusEng,
                     isSoundOn,

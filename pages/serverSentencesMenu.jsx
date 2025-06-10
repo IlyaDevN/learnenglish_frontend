@@ -1,20 +1,48 @@
 import { UiButton } from "../components/ui/UiButton";
 import { useRouter } from "next/router";
-import { TASKS } from "../staticData";
+import { useState, useRef, useEffect, useContext } from "react";
 import Head from "next/head";
+import DirectionModeBlock from "../components/ui/menuBlocks/DirectionModeBlock";
+import TaskModeBlock from "../components/ui/menuBlocks/TaskModeBlock";
+import { ContentContext } from "../context";
+import LevelModeBlock from "../components/ui/menuBlocks/LevelModeBlock";
+import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
 
 export default function ServerSentencesMenu() {
     const router = useRouter();
-    const TASKS_LIST = Object.keys(TASKS);
+	const [currentLessonList, setCurrentLessonList] = useState([]);
+    const { currentTask, currentLevel, currentLesson, setCurrentLesson  } = useContext(ContentContext);
 
-    function chooseTaskButtonHandler(value) {
-        localStorage.setItem("currentTask", JSON.stringify(value));
-        router.push("/serverSentences");
-    }
+	function menuButtonHandler() {
+		router.push("/serverSentences");
+	}
 
-    // function addSentencesButtonHandler() {
-    // 	router.push("/addSentences");
-    // }
+	useEffect(() => {
+		const lessonsList = currentTask.value;
+		let filteredLessonsList = [];
+
+		if(currentTask.levels) {
+			filteredLessonsList = lessonsList.filter(
+				(item) => item.level === currentLevel?.value,
+			);
+		} else {
+			filteredLessonsList = lessonsList;
+		}
+
+        setCurrentLessonList(filteredLessonsList);
+
+		if (filteredLessonsList.length > 0) {
+            // Проверяем, если текущий урок не совпадает с первым в новом списке,
+            // чтобы избежать лишних обновлений.
+            if (!currentLesson || currentLesson.id !== filteredLessonsList[0].id) {
+                 setCurrentLesson(filteredLessonsList[0]);
+            }
+        } else {
+            // Если список уроков пуст, сбросьте currentLesson
+            setCurrentLesson(null);
+        }
+
+    }, [currentTask, currentLevel]);
 
     return (
         <>
@@ -36,15 +64,11 @@ export default function ServerSentencesMenu() {
                         <p className="text-2xl font-black text-yellow-900 uppercase">
                             выберите задание
                         </p>
-                        {TASKS_LIST.map((task, index) => (
-                            <UiButton
-                                key={index}
-                                className="w-full"
-                                onClick={() => chooseTaskButtonHandler(task)}
-                            >
-                                {task}
-                            </UiButton>
-                        ))}
+                        <DirectionModeBlock/>
+                        <TaskModeBlock/>
+						{currentTask.levels && <LevelModeBlock/>}
+						<LessonModeBlock currentLessonList={currentLessonList}/>
+						<UiButton onClick={menuButtonHandler}>Начать</UiButton>
                     </div>
                 </div>
             </div>
