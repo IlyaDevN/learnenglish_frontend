@@ -67,7 +67,7 @@ export default function ServerSentencesMenu() {
             // Если список уроков пуст, устанавливаем специальный "урок-заглушку"
             lessonToSet = {
                 id: 1000000,
-                name: "Уроки в разработке",
+                name: "скоро",
                 address: "https://", // Уникальный адрес для заглушки
             };
             console.log("No lessons available, setting 'Уроки в разработке'.");

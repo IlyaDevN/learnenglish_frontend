@@ -1,7 +1,11 @@
 // components/CustomDropdown.jsx
 import { useState, useRef, useEffect } from "react";
+import clsx from "clsx";
+import { useRouter } from "next/router";
 
 export default function CustomDropdown({ options, initialValue, onChange }) {
+	const router = useRouter();
+	const currentPath = router.asPath;
     const [selectedValue, setSelectedValue] = useState(
         initialValue || options[0]?.name
     );
@@ -47,7 +51,11 @@ export default function CustomDropdown({ options, initialValue, onChange }) {
 
     return (
         <details ref={detailsRef} className="relative w-full font-sans">
-            <summary className="flex justify-between items-center p-3.5 bg-stone-100 border-2 border-amber-800 rounded-lg cursor-pointer text-xl uppercase text-amber-800 font-bold outline-none list-none">
+            <summary className={clsx("flex justify-between items-center bg-stone-100 border-2 border-amber-800 rounded-lg cursor-pointer text-xl uppercase text-amber-800 font-bold outline-none list-none",
+				currentPath === "/serverSentences"
+				? "p-1.5"
+				: "p-3.5"
+			)}>
                 <span className="flex-grow">{selectedValue}</span>
                 <svg
                     width="12"
