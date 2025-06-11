@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect } from "react";
-import { INITIAL_LEVEL, LEVELS } from "../../../staticData/levels";
+import { useContext } from "react";
+import { LEVELS } from "../../../staticData/levels";
 import { ContentContext } from "../../../context";
 import CustomDropdown from "../customDropdown";
 
@@ -8,6 +8,7 @@ export default function LevelModeBlock() {
 
     function handleChange(option) {
         setCurrentLevel(option);
+		// console.log("LevelModeBlock", option);
     }
 
     return (

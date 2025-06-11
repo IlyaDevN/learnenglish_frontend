@@ -16,6 +16,8 @@ export default function LessonTranslation({
     currentLevel,
     translationsCounter,
     setTranslationsCounter,
+	isStarted,
+	setIsStarted,
     count,
 }) {
     const [sentences, setSentences] = useState([]);
@@ -332,6 +334,10 @@ export default function LessonTranslation({
         }
     }
 
+    function handleStart() {
+
+	}
+
     return (
         <>
             <ContentField>
@@ -386,7 +392,9 @@ export default function LessonTranslation({
                     Следующее предложение
                 </UiButton>
             )}
-            <UiButton onClick={handleReset}>Начать сначала</UiButton>
+            <UiButton onClick={isStarted ? handleReset : handleStart}>
+                {isStarted ? "Начать сначала" : "Начать"}
+            </UiButton>
             <AudioPlayer src={questionAudioSrc} audioRef={audioRefQuestion} />
             <AudioPlayer src={answerAudioSrc} audioRef={audioRefAnswer} />
         </>

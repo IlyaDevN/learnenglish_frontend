@@ -55,9 +55,10 @@ export default function App({ Component, pageProps }) {
 	const [currentLevel, setCurrentLevel] = useState(INITIAL_LEVEL);
 	const [currentLesson, setCurrentLesson] = useState(
         english_galaxy.find(lesson => 
-            lesson.level === INITIAL_LEVEL.value && lesson.id === 1
+            lesson.level === INITIAL_LEVEL.value && lesson.id === 0
         ) || null
     );
+	const [currentLessonList, setCurrentLessonList] = useState([]);
     const [isModalActive, setIsModalActive] = useState(false);
     const [isModalSettingsActive, setIsModalSettingsActive] = useState(false);
     const [isSoundOn, setIsSoundOn] = useState(true);
@@ -117,6 +118,8 @@ export default function App({ Component, pageProps }) {
 					setCurrentTask,
 					currentLevel, 
 					setCurrentLevel,
+					currentLessonList, 
+					setCurrentLessonList,
 					currentLesson, 
 					setCurrentLesson,
                     isRusEng,

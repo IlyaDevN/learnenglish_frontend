@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect } from "react";
-import { INITIAL_TASK, TASKS } from "../../../staticData/tasks";
+import { useContext } from "react";
+import { TASKS } from "../../../staticData/tasks";
 import { ContentContext } from "../../../context";
 import CustomDropdown from "../customDropdown";
 
@@ -8,6 +8,7 @@ export default function TaskModeBlock() {
 
     function handleChange(option) {
         setCurrentTask(option);
+		// console.log("TaskModeBlock", option);
     }
 
     return (

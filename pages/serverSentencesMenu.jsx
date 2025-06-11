@@ -1,6 +1,7 @@
+// serverSentencesMenu.jsx
 import { UiButton } from "../components/ui/UiButton";
 import { useRouter } from "next/router";
-import { useState, useRef, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import Head from "next/head";
 import DirectionModeBlock from "../components/ui/menuBlocks/DirectionModeBlock";
 import TaskModeBlock from "../components/ui/menuBlocks/TaskModeBlock";
@@ -10,39 +11,78 @@ import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
 
 export default function ServerSentencesMenu() {
     const router = useRouter();
-	const [currentLessonList, setCurrentLessonList] = useState([]);
-    const { currentTask, currentLevel, currentLesson, setCurrentLesson  } = useContext(ContentContext);
+    const {
+        currentTask,
+        currentLevel,
+        currentLesson,
+        setCurrentLesson,
+        currentLessonList,
+        setCurrentLessonList,
+    } = useContext(ContentContext);
 
-	function menuButtonHandler() {
-		router.push("/serverSentences");
-	}
+    function menuButtonHandler() {
+        router.push("/serverSentences");
+    }
 
-	useEffect(() => {
-		const lessonsList = currentTask.value;
-		let filteredLessonsList = [];
+    useEffect(() => {
+        console.log("--- useEffect ServerSentencesMenu triggered ---");
+        console.log("Current Task:", currentTask.name, "Current Level:", currentLevel?.name);
 
-		if(currentTask.levels) {
-			filteredLessonsList = lessonsList.filter(
-				(item) => item.level === currentLevel?.value,
-			);
-		} else {
-			filteredLessonsList = lessonsList;
-		}
+        const lessonsList = currentTask.value;
+        let filteredLessonsList = [];
 
-        setCurrentLessonList(filteredLessonsList);
-
-		if (filteredLessonsList.length > 0) {
-            // Проверяем, если текущий урок не совпадает с первым в новом списке,
-            // чтобы избежать лишних обновлений.
-            if (!currentLesson || currentLesson.id !== filteredLessonsList[0].id) {
-                 setCurrentLesson(filteredLessonsList[0]);
-            }
+        if (currentTask.levels) {
+            filteredLessonsList = lessonsList.filter(
+                (item) => item.level === currentLevel?.value,
+            );
         } else {
-            // Если список уроков пуст, сбросьте currentLesson
-            setCurrentLesson(null);
+            filteredLessonsList = lessonsList;
         }
 
-    }, [currentTask, currentLevel]);
+        // Обновляем currentLessonList в контексте
+        console.log("Updating currentLessonList to:", filteredLessonsList);
+        setCurrentLessonList(filteredLessonsList);
+
+        let lessonToSet = null;
+
+        if (filteredLessonsList.length > 0) {
+            //Сравниваем по АДРЕСУ, так как он уникален
+            const isCurrentLessonValidInNewList = currentLesson
+                ? filteredLessonsList.some(
+                      (lesson) => lesson.address === currentLesson.address,
+                  )
+                : false;
+
+            if (isCurrentLessonValidInNewList) {
+                // Если текущий урок действителен в новом списке (по адресу), оставляем его.
+                lessonToSet = currentLesson;
+                console.log("Keeping current lesson:", currentLesson.name);
+            } else {
+                // Если текущий урок недействителен (или его не было),
+                // устанавливаем первый урок из нового списка.
+                lessonToSet = filteredLessonsList[0];
+                console.log("Setting lesson to first available:", lessonToSet.name);
+            }
+        } else {
+            // Если список уроков пуст, устанавливаем специальный "урок-заглушку"
+            lessonToSet = {
+                id: 1000000,
+                name: "Уроки в разработке",
+                address: "https://", // Уникальный адрес для заглушки
+            };
+            console.log("No lessons available, setting 'Уроки в разработке'.");
+        }
+
+        // Обновляем currentLesson в контексте, только если он действительно изменился.
+        // Сравниваем по АДРЕСУ, чтобы избежать лишних обновлений.
+        if (lessonToSet.address !== currentLesson?.address) {
+            console.log("Setting currentLesson in context to:", lessonToSet.name);
+            setCurrentLesson(lessonToSet);
+        } else {
+            console.log("currentLesson is already correct, no update needed.");
+        }
+
+    }, [currentTask, currentLevel, currentLesson, setCurrentLesson, setCurrentLessonList]);
 
     return (
         <>
@@ -64,11 +104,11 @@ export default function ServerSentencesMenu() {
                         <p className="text-2xl font-black text-yellow-900 uppercase">
                             выберите задание
                         </p>
-                        <DirectionModeBlock/>
-                        <TaskModeBlock/>
-						{currentTask.levels && <LevelModeBlock/>}
-						<LessonModeBlock currentLessonList={currentLessonList}/>
-						<UiButton onClick={menuButtonHandler}>Начать</UiButton>
+                        <DirectionModeBlock />
+                        <TaskModeBlock />
+                        {currentTask.levels && <LevelModeBlock />}
+                        <LessonModeBlock />
+                        <UiButton onClick={menuButtonHandler}>Начать</UiButton>
                     </div>
                 </div>
             </div>

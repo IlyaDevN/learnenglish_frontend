@@ -1,13 +1,15 @@
-import { useState, useContext, useEffect } from "react";
-import { INITIAL_LEVEL, LEVELS } from "../../../staticData/levels";
+import { useContext } from "react";
 import { ContentContext } from "../../../context";
 import CustomDropdown from "../customDropdown";
 
-export default function LessonModeBlock({ currentLessonList }) {
-    const { currentLesson, setCurrentLesson } = useContext(ContentContext);
+export default function LessonModeBlock() {
+    const { currentLesson, setCurrentLesson, currentLessonList } = useContext(ContentContext);
+	//console.log("LessonModeBlock currentLessonList", currentLessonList);
+	//console.log("LessonModeBlock currentLesson", currentLesson);
 
     function handleChange(option) {
         setCurrentLesson(option);
+		//console.log("LessonModeBlock handleChange setCurrentLesson option", option);
     }
 
     return (
