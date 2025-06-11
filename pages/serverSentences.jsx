@@ -168,7 +168,7 @@ export default function ServerSentences() {
 			<div
                 className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 pb-3.5 pt-1 flex gap-4 bg-opacity-80 mb-6"
             >
-				<div className="w-full flex justify-between items-end gap-10">
+				<div className="w-full flex justify-between items-end">
                     {currentTask.levels && <LevelModeBlock />}
                     <Counter
                         value={translationsCounter}
