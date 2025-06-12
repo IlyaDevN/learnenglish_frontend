@@ -12,13 +12,16 @@ import { sendTranslationLog } from "../../utils/api";
 
 export default function LessonTranslation({
     initialData,
+	setInitialData,
     isDataAvailable,
-    currentLevel,
+	setIsDataAvailable,
     translationsCounter,
     setTranslationsCounter,
-	isStarted,
-	setIsStarted,
+    isStarted,
+    setIsStarted,
     count,
+	setLoading,
+	resetTrigger
 }) {
     const [sentences, setSentences] = useState([]);
     const [randomNumber, setRandomNumber] = useState(null);
@@ -27,7 +30,7 @@ export default function LessonTranslation({
     const [isAnswerShown, setIsAnswerShown] = useState(false);
     const [questionAudioSrc, setQuestionAudioSrc] = useState();
     const [answerAudioSrc, setAnswerAudioSrc] = useState();
-    const { isRusEng, isSoundOn, isTimerOn, currentUser } =
+    const { isRusEng, isSoundOn, isTimerOn, currentUser, currentLevel, currentLessonList, currentLesson } =
         useContext(ContentContext);
     const audioRefQuestion = useRef(null);
     const audioRefAnswer = useRef(null);
@@ -57,6 +60,18 @@ export default function LessonTranslation({
         }
     }, [initialData, isDataAvailable]);
 
+	useEffect(() => {
+		setIsDataAvailable(false);
+		setSentences([]);
+		setRandomNumber(null);
+		setCurrentAnswer(null);
+		setInputContent("");
+		setTranslationsCounter(0);
+		tempCountQuestion.current = null;
+		tempCountAnswer.current = null;
+		setIsStarted(false);
+	}, [resetTrigger])	
+
     // Получение первого аудио вопроса при первой загрузке
     // Если оставить только randomNumber, то он иногда повторяется и useEffect не срабатывает,
     // добавление translationsCounter еще одной зависимостью устранит эту проблему.
@@ -77,8 +92,8 @@ export default function LessonTranslation({
         if (currentAnswer) {
             handleShowTranslation();
         }
-		setQuestionAudioSrc(answerAudioSrc);
-		setAnswerAudioSrc(questionAudioSrc);
+        setQuestionAudioSrc(answerAudioSrc);
+        setAnswerAudioSrc(questionAudioSrc);
     }, [isRusEng]);
 
     useEffect(() => {
@@ -117,7 +132,7 @@ export default function LessonTranslation({
             isTranslationOpen: isAnswerShown,
             userEmail: currentUser.email,
             lesson: sentences[randomNumber].lesson,
-            level: currentLevel,
+            level: currentLevel.value,
             sentenceId:
                 sentences[randomNumber].lesson + sentences[randomNumber].id,
         };
@@ -332,11 +347,41 @@ export default function LessonTranslation({
             tempCountQuestion.current = null;
             tempCountAnswer.current = null;
         }
+		setIsStarted(true);
     }
 
-    function handleStart() {
-
-	}
+    async function handleStart() {
+        if (!currentLesson) {
+            return;
+        }
+        if (currentLesson.name == "Mix") {
+            setLoading(true);
+			
+            const lessonsAmount = currentLessonList.length - 1;
+            let allTheSentences = [];
+            for (let i = 1; i <= lessonsAmount; i++) {
+                let newLesson = currentLessonList[i];
+				
+                const response = await fetch(newLesson.address);
+                const data = await response.json();
+                allTheSentences.push(...data);
+            }
+            setInitialData(allTheSentences);
+            count.current = allTheSentences.length;
+            setIsDataAvailable(true);
+            setLoading(false);
+        } else {
+			setLoading(true);
+			const response = await fetch(currentLesson.address);
+			const data = await response.json();
+			setInitialData(data);
+			count.current = data.length;
+			setIsDataAvailable(true);
+			setLoading(false);
+        	// textarea_ref.current.focus(); //input autofocus
+		}
+		setIsStarted(true);
+    }
 
     return (
         <>

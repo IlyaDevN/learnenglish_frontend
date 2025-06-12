@@ -1,13 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { TASKS } from "../staticData";
-import { levels } from "../staticData/english_galaxy";
 import { useState, useRef, useEffect, useContext } from "react";
-import SelectLesson from "../components/ui/SelectLesson";
 import Counter from "../components/Counter";
 import Head from 'next/head';
 import LessonTranslation from '../components/lesson/LessonTranslation';
 import { ContentContext } from "../context";
-import { LEVELS } from "../staticData/levels";
 import LevelModeBlock from "../components/ui/menuBlocks/LevelModeBlock";
 import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
 
@@ -17,8 +13,9 @@ export default function ServerSentences() {
 	const [isStarted, setIsStarted] = useState(false);
     const [translationsCounter, setTranslationsCounter] = useState(0);
     const [loading, setLoading] = useState(false);
+	const [resetTrigger, setResetTrigger] = useState(false);
     const count = useRef();
-	const { currentTask, setCurrentTask, currentLevel, setCurrentLevel, currentLesson, setCurrentLesson, currentLessonList, setCurrentLessonList } = useContext(ContentContext);
+	const { currentTask, currentLevel, currentLesson, setCurrentLesson, currentLessonList, setCurrentLessonList } = useContext(ContentContext);
 
 	    useEffect(() => {
         console.log("--- useEffect ServerSentencesMenu triggered ---");
@@ -79,83 +76,6 @@ export default function ServerSentences() {
         }
 
     }, [currentTask, currentLevel, currentLesson, setCurrentLesson, setCurrentLessonList]);
-	
-	//  useEffect(() => {
-	// 	async function name(params) {
-	// 		setLoading(true);
-	// 		const response = await fetch(currentLesson.address);
-	// 		const data = await response.json();
-	// 		setInitialData(data);
-	// 		count.current = data.length;
-	// 		setIsDataAvailable(true);
-	// 		setLoading(false);
-	// 	}
-
-	// 	name();
-        
-    // }, []);
-
-    // function selectLevel(value) {
-    //     // setIsDataAvailable(false);
-    //     // const lessonsList = TASKS[currentTask];
-    //     // const sortedLessonsList = lessonsList.filter(
-    //     //     (item) => item.level == value,
-    //     // );
-    //     // setCurrentLessonList(sortedLessonsList);
-	// 	// setCurrentLevel(value);
-	// 	const lessonsList = currentTask.value;
-	// 	let filteredLessonsList = [];
-
-	// 	if(currentTask.levels) {
-	// 		filteredLessonsList = lessonsList.filter(
-	// 			(item) => item.level === currentLevel?.value,
-	// 		);
-	// 	} else {
-	// 		filteredLessonsList = lessonsList;
-	// 	}
-
-    //     setCurrentLessonList(filteredLessonsList);
-
-	// 	if (filteredLessonsList.length > 0) {
-    //         if (!currentLesson || currentLesson.id !== filteredLessonsList[0].id) {
-    //              setCurrentLesson(filteredLessonsList[0]);
-    //         }
-    //     } else {
-    //         setCurrentLesson(null);
-    //     }
-    // }
-
-    async function selectLesson(value) {
-        if (!value) {
-            return;
-        }
-
-        if (value == "mix") {
-            setLoading(true);
-            const lessonsAmount = currentLessonList.length - 1;
-            let allTheSentences = [];
-            for (let i = 1; i <= lessonsAmount; i++) {
-                let currentLesson = currentLessonList[i];
-                const response = await fetch(currentLesson.address);
-                const data = await response.json();
-                allTheSentences.push(...data);
-            }
-            setInitialData(allTheSentences);
-            count.current = allTheSentences.length;
-            setIsDataAvailable(true);
-            setLoading(false);
-            return;
-        }
-
-        setLoading(true);
-        const response = await fetch(value);
-        const data = await response.json();
-        setInitialData(data);
-        count.current = data.length;
-        setIsDataAvailable(true);
-        setLoading(false);
-        // textarea_ref.current.focus(); //input autofocus
-    }
 
     return (
 		<>
@@ -169,13 +89,13 @@ export default function ServerSentences() {
                 className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 pb-3.5 pt-1 flex gap-4 bg-opacity-80 mb-6"
             >
 				<div className="w-full flex justify-between items-end">
-                    {currentTask.levels && <LevelModeBlock />}
+                    {currentTask.levels && <LevelModeBlock setIsStarted={setIsStarted} setResetTrigger={setResetTrigger}/>}
                     <Counter
                         value={translationsCounter}
                         className={"w-[44px] h-[44px]"}
                         loading={loading}
                     />
-                    <LessonModeBlock/>
+                    <LessonModeBlock setIsStarted={setIsStarted} setResetTrigger={setResetTrigger}/>
                 </div>
 			</div>
             <div
@@ -183,12 +103,15 @@ export default function ServerSentences() {
                 <LessonTranslation
                     initialData={initialData}
                     isDataAvailable={isDataAvailable}
-					currentLevel={currentLevel}
+					setIsDataAvailable={setIsDataAvailable}
 					translationsCounter={translationsCounter}
 					setTranslationsCounter={setTranslationsCounter}
 					isStarted={isStarted}
 					setIsStarted={setIsStarted}
 					count={count}
+					setLoading={setLoading}
+					setInitialData={setInitialData}
+					resetTrigger={resetTrigger}
                 />
             </div>
         </div>

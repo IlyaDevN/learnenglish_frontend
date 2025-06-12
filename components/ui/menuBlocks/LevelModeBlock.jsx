@@ -5,14 +5,17 @@ import CustomDropdown from "../customDropdown";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 
-export default function LevelModeBlock() {
+export default function LevelModeBlock({ setIsStarted, setResetTrigger}) {
     const { currentLevel, setCurrentLevel } = useContext(ContentContext);
 	const router = useRouter();
 	const currentPath = router.asPath;
 
     function handleChange(option) {
         setCurrentLevel(option);
-		// console.log("LevelModeBlock", option);
+		if(currentPath === "/serverSentences") {
+			setIsStarted(false);
+			setResetTrigger((oldValue)=> !oldValue)
+		}
     }
 
     return (

@@ -4,13 +4,17 @@ import CustomDropdown from "../customDropdown";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 
-export default function LessonModeBlock({ classNameOuter }) {
+export default function LessonModeBlock({ setIsStarted, setResetTrigger }) {
     const { currentLesson, setCurrentLesson, currentLessonList } = useContext(ContentContext);
 	const router = useRouter();
 	const currentPath = router.asPath;
 
     function handleChange(option) {
         setCurrentLesson(option);
+		if(currentPath === "/serverSentences") {
+			setIsStarted(false);
+			setResetTrigger((oldValue)=> !oldValue)
+		}
     }
 
     return (
