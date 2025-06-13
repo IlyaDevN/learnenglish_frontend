@@ -12,16 +12,16 @@ import { sendTranslationLog } from "../../utils/api";
 
 export default function LessonTranslation({
     initialData,
-	setInitialData,
+    setInitialData,
     isDataAvailable,
-	setIsDataAvailable,
+    setIsDataAvailable,
     translationsCounter,
     setTranslationsCounter,
     isStarted,
     setIsStarted,
     count,
-	setLoading,
-	resetTrigger
+    setLoading,
+    resetTrigger,
 }) {
     const [sentences, setSentences] = useState([]);
     const [randomNumber, setRandomNumber] = useState(null);
@@ -30,8 +30,15 @@ export default function LessonTranslation({
     const [isAnswerShown, setIsAnswerShown] = useState(false);
     const [questionAudioSrc, setQuestionAudioSrc] = useState();
     const [answerAudioSrc, setAnswerAudioSrc] = useState();
-    const { isRusEng, isSoundOn, isTimerOn, currentUser, currentLevel, currentLessonList, currentLesson } =
-        useContext(ContentContext);
+    const {
+        translationDirection,
+        isSoundOn,
+        isTimerOn,
+        currentUser,
+        currentLevel,
+        currentLessonList,
+        currentLesson,
+    } = useContext(ContentContext);
     const audioRefQuestion = useRef(null);
     const audioRefAnswer = useRef(null);
     const tempCountQuestion = useRef(null);
@@ -60,17 +67,17 @@ export default function LessonTranslation({
         }
     }, [initialData, isDataAvailable]);
 
-	useEffect(() => {
-		setIsDataAvailable(false);
-		setSentences([]);
-		setRandomNumber(null);
-		setCurrentAnswer(null);
-		setInputContent("");
-		setTranslationsCounter(0);
-		tempCountQuestion.current = null;
-		tempCountAnswer.current = null;
-		setIsStarted(false);
-	}, [resetTrigger])	
+    useEffect(() => {
+        setIsDataAvailable(false);
+        setSentences([]);
+        setRandomNumber(null);
+        setCurrentAnswer(null);
+        setInputContent("");
+        setTranslationsCounter(0);
+        tempCountQuestion.current = null;
+        tempCountAnswer.current = null;
+        setIsStarted(false);
+    }, [resetTrigger]);
 
     // Получение первого аудио вопроса при первой загрузке
     // Если оставить только randomNumber, то он иногда повторяется и useEffect не срабатывает,
@@ -80,7 +87,7 @@ export default function LessonTranslation({
             return;
         }
         getSoundQuestion();
-    }, [randomNumber, isRusEng, translationsCounter]);
+    }, [randomNumber, translationDirection, translationsCounter]);
 
     // useEffect(() => {
     //     if (sentences[randomNumber]) {
@@ -94,9 +101,10 @@ export default function LessonTranslation({
         }
         setQuestionAudioSrc(answerAudioSrc);
         setAnswerAudioSrc(questionAudioSrc);
-    }, [isRusEng]);
+    }, [translationDirection]);
 
-    useEffect(() => { // обработка кнопки enter
+    useEffect(() => {
+        // обработка кнопки enter
         function keydownHandler(e) {
             if (e.code === "Enter") {
                 e.preventDefault();
@@ -122,12 +130,14 @@ export default function LessonTranslation({
         }
 
         const data = {
-            originalText: isRusEng === "ru-en"
-                ? sentences[randomNumber].rus_sentence
-                : sentences[randomNumber].eng_sentence,
-            originalTranslation: isRusEng === "ru-en"
-                ? sentences[randomNumber].eng_sentence
-                : sentences[randomNumber].rus_sentence,
+            originalText:
+                translationDirection === "ru-en"
+                    ? sentences[randomNumber].rus_sentence
+                    : sentences[randomNumber].eng_sentence,
+            originalTranslation:
+                translationDirection === "ru-en"
+                    ? sentences[randomNumber].eng_sentence
+                    : sentences[randomNumber].rus_sentence,
             userTranslation: inputContent,
             isTranslationOpen: isAnswerShown,
             userEmail: currentUser.email,
@@ -155,18 +165,20 @@ export default function LessonTranslation({
     }
 
     function handleShowTranslation() {
-		if(!isStarted) {
-			return;
-		}
+        if (!isStarted) {
+            return;
+        }
         if (sentences[randomNumber] && sentences.length) {
             setCurrentAnswer(
-                isRusEng === "ru-en"
+                translationDirection === "ru-en"
                     ? sentences[randomNumber].eng_sentence
                     : sentences[randomNumber].rus_sentence,
             );
         } else {
             setCurrentAnswer(
-                isRusEng === "ru-en" ? "The lesson is over." : "Урок окончен.",
+                translationDirection === "ru-en"
+                    ? "The lesson is over."
+                    : "Урок окончен.",
             );
         }
         if (isSoundOn) {
@@ -194,13 +206,13 @@ export default function LessonTranslation({
 
         function getPhrase() {
             if (sentences.length) {
-                if (isRusEng === "ru-en") {
+                if (translationDirection === "ru-en") {
                     return sentences[randomNumber].rus_sentence;
                 } else {
                     return sentences[randomNumber].eng_sentence;
                 }
             } else {
-                if (isRusEng === "ru-en") {
+                if (translationDirection === "ru-en") {
                     return "Урок окончен.";
                 } else {
                     return "The lessons is over.";
@@ -209,10 +221,14 @@ export default function LessonTranslation({
         }
 
         const phrase = getPhrase();
-        const voiceName = isRusEng === "ru-en" ? VOICE_NAME_RUSSIAN : VOICE_NAME_ENGLISH;
-        const language = isRusEng === "ru-en"
-            ? LANGUAGE_CODE_RUSSIAN
-            : LANGUAGE_CODE_ENGLISH;
+        const voiceName =
+            translationDirection === "ru-en"
+                ? VOICE_NAME_RUSSIAN
+                : VOICE_NAME_ENGLISH;
+        const language =
+            translationDirection === "ru-en"
+                ? LANGUAGE_CODE_RUSSIAN
+                : LANGUAGE_CODE_ENGLISH;
 
         getTheSound(phrase, voiceName, language, setQuestionAudioSrc);
         tempCountQuestion.current = translationsCounter;
@@ -271,13 +287,13 @@ export default function LessonTranslation({
 
         function getPhrase() {
             if (sentences.length) {
-                if (isRusEng === "ru-en") {
+                if (translationDirection === "ru-en") {
                     return sentences[randomNumber].eng_sentence;
                 } else {
                     return sentences[randomNumber].rus_sentence;
                 }
             } else {
-                if (isRusEng === "ru-en") {
+                if (translationDirection === "ru-en") {
                     return "The lesson is over";
                 } else {
                     return "Конец";
@@ -286,10 +302,14 @@ export default function LessonTranslation({
         }
 
         const phrase = getPhrase();
-        const voiceName = isRusEng === "ru-en" ? VOICE_NAME_ENGLISH : VOICE_NAME_RUSSIAN;
-        const language = isRusEng === "ru-en"
-            ? LANGUAGE_CODE_ENGLISH
-            : LANGUAGE_CODE_RUSSIAN;
+        const voiceName =
+            translationDirection === "ru-en"
+                ? VOICE_NAME_ENGLISH
+                : VOICE_NAME_RUSSIAN;
+        const language =
+            translationDirection === "ru-en"
+                ? LANGUAGE_CODE_ENGLISH
+                : LANGUAGE_CODE_RUSSIAN;
 
         getTheSound(phrase, voiceName, language, setAnswerAudioSrc);
         tempCountAnswer.current = translationsCounter;
@@ -350,7 +370,7 @@ export default function LessonTranslation({
             tempCountQuestion.current = null;
             tempCountAnswer.current = null;
         }
-		setIsStarted(true);
+        setIsStarted(true);
     }
 
     async function handleStart() {
@@ -359,12 +379,12 @@ export default function LessonTranslation({
         }
         if (currentLesson.name == "Mix") {
             setLoading(true);
-			
+
             const lessonsAmount = currentLessonList.length - 1;
             let allTheSentences = [];
             for (let i = 1; i <= lessonsAmount; i++) {
                 let newLesson = currentLessonList[i];
-				
+
                 const response = await fetch(newLesson.address);
                 const data = await response.json();
                 allTheSentences.push(...data);
@@ -374,16 +394,16 @@ export default function LessonTranslation({
             setIsDataAvailable(true);
             setLoading(false);
         } else {
-			setLoading(true);
-			const response = await fetch(currentLesson.address);
-			const data = await response.json();
-			setInitialData(data);
-			count.current = data.length;
-			setIsDataAvailable(true);
-			setLoading(false);
-        	// textarea_ref.current.focus(); //input autofocus
-		}
-		setIsStarted(true);
+            setLoading(true);
+            const response = await fetch(currentLesson.address);
+            const data = await response.json();
+            setInitialData(data);
+            count.current = data.length;
+            setIsDataAvailable(true);
+            setLoading(false);
+            // textarea_ref.current.focus(); //input autofocus
+        }
+        setIsStarted(true);
     }
 
     return (
@@ -391,12 +411,12 @@ export default function LessonTranslation({
             <ContentField>
                 {isDataAvailable &&
                     (sentences.length
-                        ? isRusEng === "ru-en"
+                        ? translationDirection === "ru-en"
                             ? sentences[randomNumber].rus_sentence
                             : sentences[randomNumber].eng_sentence
-                        : isRusEng === "ru-en"
-							? "Урок окончен."
-							: "The lesson is over.")}
+                        : translationDirection === "ru-en"
+                        ? "Урок окончен."
+                        : "The lesson is over.")}
                 <PlayButton
                     getSoundQuestion={getSoundQuestion}
                     isQuestion={true}

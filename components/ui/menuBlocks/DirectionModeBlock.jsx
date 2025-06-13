@@ -4,17 +4,20 @@ import { ContentContext } from "../../../context";
 import CustomDropdown from "../customDropdown";
 
 export default function DirectionModeBlock() {
-	const { isRusEng, setIsRusEng } = useContext(ContentContext);
+    const { translationDirection, setTranslationDirection } =
+        useContext(ContentContext);
 
     function handleChange(option) {
-        setIsRusEng(option.value);
+        setTranslationDirection(option.value);
     }
 
     return (
         <div className="w-full">
-            <p className="font-sans text-base text-amber-800">Направление перевода</p>
+            <p className="font-sans text-base text-amber-800">
+                Направление перевода
+            </p>
             <CustomDropdown
-                initialValue={isRusEng.name}
+                initialValue={translationDirection.name}
                 options={TRANSLATION_DIRECTIONS}
                 onChange={handleChange}
             />

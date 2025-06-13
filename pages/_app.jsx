@@ -51,20 +51,22 @@ export default function App({ Component, pageProps }) {
     const [isAuth, setIsAuth] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [currentPage, setCurrentPage] = useState("/");
-	const [currentTask, setCurrentTask] = useState(INITIAL_TASK);
-	const [currentLevel, setCurrentLevel] = useState(INITIAL_LEVEL);
-	const [currentLesson, setCurrentLesson] = useState(
-        english_galaxy.find(lesson => 
-            lesson.level === INITIAL_LEVEL.value && lesson.id === 0
-        ) || null
+    const [currentTask, setCurrentTask] = useState(INITIAL_TASK);
+    const [currentLevel, setCurrentLevel] = useState(INITIAL_LEVEL);
+    const [currentLesson, setCurrentLesson] = useState(
+        english_galaxy.find(
+            (lesson) => lesson.level === INITIAL_LEVEL.value && lesson.id === 0,
+        ) || null,
     );
-	const [currentLessonList, setCurrentLessonList] = useState([]);
+    const [currentLessonList, setCurrentLessonList] = useState([]);
     const [isModalActive, setIsModalActive] = useState(false);
     const [isModalSettingsActive, setIsModalSettingsActive] = useState(false);
     const [isSoundOn, setIsSoundOn] = useState(true);
     const [isTimerOn, setIsTimerOn] = useState(false);
     const [isSettingsOn, setIsSettingsOn] = useState(false);
-    const [isRusEng, setIsRusEng] = useState(INITIAL_DIRECTION.value);
+    const [translationDirection, setTranslationDirection] = useState(
+        INITIAL_DIRECTION.value,
+    );
     const router = useRouter();
 
     useEffect(() => {
@@ -114,16 +116,16 @@ export default function App({ Component, pageProps }) {
                     setIsModalSettingsActive,
                     currentPage,
                     setCurrentPage,
-					currentTask,
-					setCurrentTask,
-					currentLevel, 
-					setCurrentLevel,
-					currentLessonList, 
-					setCurrentLessonList,
-					currentLesson, 
-					setCurrentLesson,
-                    isRusEng,
-                    setIsRusEng,
+                    currentTask,
+                    setCurrentTask,
+                    currentLevel,
+                    setCurrentLevel,
+                    currentLessonList,
+                    setCurrentLessonList,
+                    currentLesson,
+                    setCurrentLesson,
+                    translationDirection,
+                    setTranslationDirection,
                     isSoundOn,
                     setIsSoundOn,
                     isTimerOn,
