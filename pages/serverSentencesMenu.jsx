@@ -16,7 +16,6 @@ export default function ServerSentencesMenu() {
         currentLevel,
         currentLesson,
         setCurrentLesson,
-        currentLessonList,
         setCurrentLessonList,
     } = useContext(ContentContext);
 
@@ -28,10 +27,10 @@ export default function ServerSentencesMenu() {
         //console.log("--- useEffect ServerSentencesMenu triggered ---");
         //console.log("Current Task:", currentTask.name, "Current Level:", currentLevel?.name);
 
-        const lessonsList = currentTask.value;
+        const lessonsList = currentTask?.value || [];
         let filteredLessonsList = [];
 
-        if (currentTask.levels) {
+        if (currentTask && currentTask.levels) {
             filteredLessonsList = lessonsList.filter(
                 (item) => item.level === currentLevel?.value,
             );
