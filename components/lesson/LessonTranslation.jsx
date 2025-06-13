@@ -82,11 +82,11 @@ export default function LessonTranslation({
         getSoundQuestion();
     }, [randomNumber, isRusEng, translationsCounter]);
 
-    useEffect(() => {
-        if (sentences[randomNumber]) {
-            handleNextSentence();
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (sentences[randomNumber]) {
+    //         handleNextSentence();
+    //     }
+    // }, []);
 
     useEffect(() => {
         if (currentAnswer) {
@@ -96,7 +96,7 @@ export default function LessonTranslation({
         setAnswerAudioSrc(questionAudioSrc);
     }, [isRusEng]);
 
-    useEffect(() => {
+    useEffect(() => { // обработка кнопки enter
         function keydownHandler(e) {
             if (e.code === "Enter") {
                 e.preventDefault();
@@ -122,10 +122,10 @@ export default function LessonTranslation({
         }
 
         const data = {
-            originalText: isRusEng
+            originalText: isRusEng === "ru-en"
                 ? sentences[randomNumber].rus_sentence
                 : sentences[randomNumber].eng_sentence,
-            originalTranslation: isRusEng
+            originalTranslation: isRusEng === "ru-en"
                 ? sentences[randomNumber].eng_sentence
                 : sentences[randomNumber].rus_sentence,
             userTranslation: inputContent,
@@ -160,13 +160,13 @@ export default function LessonTranslation({
 		}
         if (sentences[randomNumber] && sentences.length) {
             setCurrentAnswer(
-                isRusEng
+                isRusEng === "ru-en"
                     ? sentences[randomNumber].eng_sentence
                     : sentences[randomNumber].rus_sentence,
             );
         } else {
             setCurrentAnswer(
-                isRusEng ? "The lesson is over." : "Урок окончен.",
+                isRusEng === "ru-en" ? "The lesson is over." : "Урок окончен.",
             );
         }
         if (isSoundOn) {
@@ -194,13 +194,13 @@ export default function LessonTranslation({
 
         function getPhrase() {
             if (sentences.length) {
-                if (isRusEng) {
+                if (isRusEng === "ru-en") {
                     return sentences[randomNumber].rus_sentence;
                 } else {
                     return sentences[randomNumber].eng_sentence;
                 }
             } else {
-                if (isRusEng) {
+                if (isRusEng === "ru-en") {
                     return "Урок окончен.";
                 } else {
                     return "The lessons is over.";
@@ -209,8 +209,8 @@ export default function LessonTranslation({
         }
 
         const phrase = getPhrase();
-        const voiceName = isRusEng ? VOICE_NAME_RUSSIAN : VOICE_NAME_ENGLISH;
-        const language = isRusEng
+        const voiceName = isRusEng === "ru-en" ? VOICE_NAME_RUSSIAN : VOICE_NAME_ENGLISH;
+        const language = isRusEng === "ru-en"
             ? LANGUAGE_CODE_RUSSIAN
             : LANGUAGE_CODE_ENGLISH;
 
@@ -271,13 +271,13 @@ export default function LessonTranslation({
 
         function getPhrase() {
             if (sentences.length) {
-                if (isRusEng) {
+                if (isRusEng === "ru-en") {
                     return sentences[randomNumber].eng_sentence;
                 } else {
                     return sentences[randomNumber].rus_sentence;
                 }
             } else {
-                if (isRusEng) {
+                if (isRusEng === "ru-en") {
                     return "The lesson is over";
                 } else {
                     return "Конец";
@@ -286,8 +286,8 @@ export default function LessonTranslation({
         }
 
         const phrase = getPhrase();
-        const voiceName = isRusEng ? VOICE_NAME_ENGLISH : VOICE_NAME_RUSSIAN;
-        const language = isRusEng
+        const voiceName = isRusEng === "ru-en" ? VOICE_NAME_ENGLISH : VOICE_NAME_RUSSIAN;
+        const language = isRusEng === "ru-en"
             ? LANGUAGE_CODE_ENGLISH
             : LANGUAGE_CODE_RUSSIAN;
 
@@ -391,12 +391,12 @@ export default function LessonTranslation({
             <ContentField>
                 {isDataAvailable &&
                     (sentences.length
-                        ? isRusEng
+                        ? isRusEng === "ru-en"
                             ? sentences[randomNumber].rus_sentence
                             : sentences[randomNumber].eng_sentence
-                        : isRusEng
-                        ? "Урок окончен."
-                        : "The lesson is over.")}
+                        : isRusEng === "ru-en"
+							? "Урок окончен."
+							: "The lesson is over.")}
                 <PlayButton
                     getSoundQuestion={getSoundQuestion}
                     isQuestion={true}

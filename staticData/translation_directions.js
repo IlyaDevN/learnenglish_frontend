@@ -1,11 +1,6 @@
-// export const TRANSLATION_DIRECTION = [
-// 	{ name: "русский --> английский", value: "ru_en" },
-// 	{ name: "английский --> русский", value: "en_ru" }
-// ]
-
 export const TRANSLATION_DIRECTIONS = [
-	{ name: "русский --> английский", value: "true" },
-	{ name: "английский --> русский", value: "false" }
+	{ id: 1, name: "русский --> английский", value: "ru-en" },
+	{ id: 2, name: "английский --> русский", value: "en-ru" }
 ]
 
-export const INITIAL_DIRECTION = {name: "русский --> английский", value: "true"}
+export const INITIAL_DIRECTION = {id: 1, name: "русский --> английский", value: "ru-en"}

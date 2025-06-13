@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from "react";
-import { INITIAL_DIRECTION, TRANSLATION_DIRECTIONS } from "../../../staticData/translation_directions";
+import { useContext } from "react";
+import { TRANSLATION_DIRECTIONS } from "../../../staticData/translation_directions";
 import { ContentContext } from "../../../context";
 import CustomDropdown from "../customDropdown";
 
@@ -7,7 +7,7 @@ export default function DirectionModeBlock() {
 	const { isRusEng, setIsRusEng } = useContext(ContentContext);
 
     function handleChange(option) {
-        setIsRusEng(option);
+        setIsRusEng(option.value);
     }
 
     return (
