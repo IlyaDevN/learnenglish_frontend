@@ -252,7 +252,7 @@ export default function LessonTranslation({
                         );
                         if (attempt < 3) {
                             // Максимальное количество попыток
-                            console.log("Trying to play the question again...");
+                            //console.log("Trying to play the question again...");
                             setTimeout(
                                 () => playSoundQuestion(attempt + 1),
                                 250,
@@ -333,7 +333,7 @@ export default function LessonTranslation({
                         );
                         if (attempt < 3) {
                             // Максимальное количество попыток
-                            console.log("Trying to play the answer again...");
+                            //console.log("Trying to play the answer again...");
                             setTimeout(() => playSoundAnswer(attempt + 1), 250); // Задержка перед повтором
                         } else {
                             console.error(

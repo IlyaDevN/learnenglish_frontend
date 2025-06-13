@@ -25,8 +25,8 @@ export default function ServerSentencesMenu() {
     }
 
     useEffect(() => {
-        console.log("--- useEffect ServerSentencesMenu triggered ---");
-        console.log("Current Task:", currentTask.name, "Current Level:", currentLevel?.name);
+        //console.log("--- useEffect ServerSentencesMenu triggered ---");
+        //console.log("Current Task:", currentTask.name, "Current Level:", currentLevel?.name);
 
         const lessonsList = currentTask.value;
         let filteredLessonsList = [];
@@ -40,7 +40,7 @@ export default function ServerSentencesMenu() {
         }
 
         // Обновляем currentLessonList в контексте
-        console.log("Updating currentLessonList to:", filteredLessonsList);
+        //console.log("Updating currentLessonList to:", filteredLessonsList);
         setCurrentLessonList(filteredLessonsList);
 
         let lessonToSet = null;
@@ -56,12 +56,12 @@ export default function ServerSentencesMenu() {
             if (isCurrentLessonValidInNewList) {
                 // Если текущий урок действителен в новом списке (по адресу), оставляем его.
                 lessonToSet = currentLesson;
-                console.log("Keeping current lesson:", currentLesson.name);
+                //console.log("Keeping current lesson:", currentLesson.name);
             } else {
                 // Если текущий урок недействителен (или его не было),
                 // устанавливаем первый урок из нового списка.
                 lessonToSet = filteredLessonsList[0];
-                console.log("Setting lesson to first available:", lessonToSet.name);
+                //console.log("Setting lesson to first available:", lessonToSet.name);
             }
         } else {
             // Если список уроков пуст, устанавливаем специальный "урок-заглушку"
@@ -70,16 +70,16 @@ export default function ServerSentencesMenu() {
                 name: "скоро",
                 address: "https://", // Уникальный адрес для заглушки
             };
-            console.log("No lessons available, setting 'Уроки в разработке'.");
+            //console.log("No lessons available, setting 'Уроки в разработке'.");
         }
 
         // Обновляем currentLesson в контексте, только если он действительно изменился.
         // Сравниваем по АДРЕСУ, чтобы избежать лишних обновлений.
         if (lessonToSet.address !== currentLesson?.address) {
-            console.log("Setting currentLesson in context to:", lessonToSet.name);
+            //console.log("Setting currentLesson in context to:", lessonToSet.name);
             setCurrentLesson(lessonToSet);
         } else {
-            console.log("currentLesson is already correct, no update needed.");
+            //console.log("currentLesson is already correct, no update needed.");
         }
 
     }, [currentTask, currentLevel, currentLesson, setCurrentLesson, setCurrentLessonList]);
