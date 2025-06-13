@@ -155,6 +155,9 @@ export default function LessonTranslation({
     }
 
     function handleShowTranslation() {
+		if(!isStarted) {
+			return;
+		}
         if (sentences[randomNumber] && sentences.length) {
             setCurrentAnswer(
                 isRusEng
