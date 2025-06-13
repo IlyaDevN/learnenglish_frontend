@@ -6,6 +6,7 @@ import LessonTranslation from "../components/lesson/LessonTranslation";
 import { ContentContext } from "../context";
 import LevelModeBlock from "../components/ui/menuBlocks/LevelModeBlock";
 import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
+import { getFilteredLessons } from "../utils";
 
 export default function ServerSentences() {
     const [initialData, setInitialData] = useState();
@@ -23,70 +24,27 @@ export default function ServerSentences() {
         setCurrentLessonList,
     } = useContext(ContentContext);
 
-    useEffect(() => {
-        //console.log("--- useEffect ServerSentencesMenu triggered ---");
-        //console.log("Current Task:", currentTask.name, "Current Level:", currentLevel?.name);
+	useEffect(() => {
+		const lessonsList = currentTask?.value || [];
+		const { filteredLessonsList, lessonToSet } =
+			getFilteredLessons({
+				lessonsList,
+				currentLevel,
+				currentLesson,
+				hasLevels: !! currentTask.levels,
+			});
 
-        const lessonsList = currentTask?.value || [];
-        let filteredLessonsList = [];
-
-        if (currentTask.levels) {
-            filteredLessonsList = lessonsList.filter(
-                (item) => item.level === currentLevel?.value,
-            );
-        } else {
-            filteredLessonsList = lessonsList;
-        }
-
-        // Обновляем currentLessonList в контексте
-        //console.log("Updating currentLessonList to:", filteredLessonsList);
-        setCurrentLessonList(filteredLessonsList);
-
-        let lessonToSet = null;
-
-        if (filteredLessonsList.length > 0) {
-            //Сравниваем по АДРЕСУ, так как он уникален
-            const isCurrentLessonValidInNewList = currentLesson
-                ? filteredLessonsList.some(
-                      (lesson) => lesson.address === currentLesson.address,
-                  )
-                : false;
-
-            if (isCurrentLessonValidInNewList) {
-                // Если текущий урок действителен в новом списке (по адресу), оставляем его.
-                lessonToSet = currentLesson;
-                //console.log("Keeping current lesson:", currentLesson.name);
-            } else {
-                // Если текущий урок недействителен (или его не было),
-                // устанавливаем первый урок из нового списка.
-                lessonToSet = filteredLessonsList[0];
-                //console.log("Setting lesson to first available:", lessonToSet.name);
-            }
-        } else {
-            // Если список уроков пуст, устанавливаем специальный "урок-заглушку"
-            lessonToSet = {
-                id: 1000000,
-                name: "скоро",
-                address: "https://", // Уникальный адрес для заглушки
-            };
-            //console.log("No lessons available, setting 'Уроки в разработке'.");
-        }
-
-        // Обновляем currentLesson в контексте, только если он действительно изменился.
-        // Сравниваем по АДРЕСУ, чтобы избежать лишних обновлений.
-        if (lessonToSet.address !== currentLesson?.address) {
-            //console.log("Setting currentLesson in context to:", lessonToSet.name);
-            setCurrentLesson(lessonToSet);
-        } else {
-            //console.log("currentLesson is already correct, no update needed.");
-        }
-    }, [
-        currentTask,
-        currentLevel,
-        currentLesson,
-        setCurrentLesson,
-        setCurrentLessonList,
-    ]);
+		setCurrentLessonList(filteredLessonsList);
+		if (lessonToSet.address !== currentLesson?.address) {
+			setCurrentLesson(lessonToSet);
+		}
+	}, [
+		currentTask,
+		currentLevel,
+		currentLesson,
+		setCurrentLesson,
+		setCurrentLessonList,
+	]);
 
     return (
         <>
