@@ -9,6 +9,7 @@ import { ContentContext } from "../context";
 import LevelModeBlock from "../components/ui/menuBlocks/LevelModeBlock";
 import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
 import { getFilteredLessons } from "../utils";
+import SourceModeBlock from "../components/ui/menuBlocks/SourceModeBlock";
 
 export default function ServerSentencesMenu() {
     const router = useRouter();
@@ -70,6 +71,7 @@ export default function ServerSentencesMenu() {
                         <TaskModeBlock />
                         {currentTask.levels && <LevelModeBlock />}
                         <LessonModeBlock />
+						<SourceModeBlock />
                         <UiButton onClick={menuButtonHandler}>Начать</UiButton>
                     </div>
                 </div>

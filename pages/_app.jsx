@@ -9,6 +9,7 @@ import { INITIAL_TASK } from "../staticData/tasks";
 import { INITIAL_LEVEL } from "../staticData/levels";
 import localFont from "next/font/local";
 import { english_galaxy } from "../staticData/english_galaxy";
+import { INITIAL_SOURCE } from "../staticData/source_of_sentences";
 
 const sourceSans3Local = localFont({
     src: [
@@ -53,6 +54,7 @@ export default function App({ Component, pageProps }) {
     const [currentPage, setCurrentPage] = useState("/");
     const [currentTask, setCurrentTask] = useState(INITIAL_TASK);
     const [currentLevel, setCurrentLevel] = useState(INITIAL_LEVEL);
+	const [currentSource, setCurrentSource] = useState(INITIAL_SOURCE);
     const [currentLesson, setCurrentLesson] = useState(
         english_galaxy.find(
             (lesson) => lesson.level === INITIAL_LEVEL.value && lesson.id === 0,
@@ -124,6 +126,8 @@ export default function App({ Component, pageProps }) {
                     setCurrentLessonList,
                     currentLesson,
                     setCurrentLesson,
+					currentSource,
+					setCurrentSource,
                     translationDirection,
                     setTranslationDirection,
                     isSoundOn,
