@@ -22,8 +22,7 @@ export default function LessonTranslation({
     count,
     setLoading,
     resetTrigger,
-    currentSource,
-	amountOfGeneratedSentences
+    currentSource
 }) {
     const [sentences, setSentences] = useState([]);
     const [randomNumber, setRandomNumber] = useState(null);
@@ -40,6 +39,7 @@ export default function LessonTranslation({
         currentLevel,
         currentLessonList,
         currentLesson,
+		amountOfGeneratedSentences
     } = useContext(ContentContext);
     const audioRefQuestion = useRef(null);
     const audioRefAnswer = useRef(null);
@@ -456,7 +456,7 @@ export default function LessonTranslation({
 				}
 
 				console.log("Отправляемый промпт:", prompt);
-				
+
 				const genRes = await fetch("/api/ai/generate", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
