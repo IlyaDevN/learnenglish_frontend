@@ -24,6 +24,10 @@ export default function ServerSentencesMenu() {
     } = useContext(ContentContext);
 
     function menuButtonHandler() {
+		if(currentTask.name === "orange playlist" || currentLesson.name === "Mix") {
+			alert("AI недоступен для плейлиста 'ORANGE PLAYLIST' и уроков 'MIX'.");
+			return;
+		}
         router.push("/serverSentences");
     }
 
