@@ -455,6 +455,8 @@ export default function LessonTranslation({
 					Ответь мне ТОЛЬКО в формате JSON-массива, где каждый элемент - это объект с двумя полями: "russian" для русского предложения и "english" для английского перевода. Например: [{"russian": "Привет, мир!", "english": "Hello, world!"}, {"russian": "Как дела?", "english": "How are you?"}]`;
 				}
 
+				console.log("Отправляемый промпт:", prompt);
+				
 				const genRes = await fetch("/api/ai/generate", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
