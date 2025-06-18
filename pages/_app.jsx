@@ -7,6 +7,7 @@ import { checkAuth } from "../utils/api";
 import { INITIAL_DIRECTION } from "../staticData/translation_directions";
 import { INITIAL_TASK } from "../staticData/tasks";
 import { INITIAL_LEVEL } from "../staticData/levels";
+import { INITIAL_AMOUNT_OF_SENTENCES_TO_GENERATE } from "../staticData/amountOfSentencesToGenerate";
 import localFont from "next/font/local";
 import { english_galaxy } from "../staticData/english_galaxy";
 import { INITIAL_SOURCE } from "../staticData/source_of_sentences";
@@ -61,14 +62,13 @@ export default function App({ Component, pageProps }) {
         ) || null,
     );
     const [currentLessonList, setCurrentLessonList] = useState([]);
+	const [amountOfGeneratedSentences, setAmountOfGeneratedSentences] = useState(INITIAL_AMOUNT_OF_SENTENCES_TO_GENERATE);
     const [isModalActive, setIsModalActive] = useState(false);
     const [isModalSettingsActive, setIsModalSettingsActive] = useState(false);
     const [isSoundOn, setIsSoundOn] = useState(true);
     const [isTimerOn, setIsTimerOn] = useState(false);
     const [isSettingsOn, setIsSettingsOn] = useState(false);
-    const [translationDirection, setTranslationDirection] = useState(
-        INITIAL_DIRECTION.value,
-    );
+    const [translationDirection, setTranslationDirection] = useState(INITIAL_DIRECTION.value);
     const router = useRouter();
 
     useEffect(() => {
@@ -128,6 +128,8 @@ export default function App({ Component, pageProps }) {
                     setCurrentLesson,
 					currentSource,
 					setCurrentSource,
+					amountOfGeneratedSentences, 
+					setAmountOfGeneratedSentences,
                     translationDirection,
                     setTranslationDirection,
                     isSoundOn,

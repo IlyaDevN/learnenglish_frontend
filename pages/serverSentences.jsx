@@ -22,29 +22,29 @@ export default function ServerSentences() {
         currentLesson,
         setCurrentLesson,
         setCurrentLessonList,
+        currentSource,
     } = useContext(ContentContext);
 
-	useEffect(() => {
-		const lessonsList = currentTask?.value || [];
-		const { filteredLessonsList, lessonToSet } =
-			getFilteredLessons({
-				lessonsList,
-				currentLevel,
-				currentLesson,
-				hasLevels: !! currentTask.levels,
-			});
+    useEffect(() => {
+        const lessonsList = currentTask?.value || [];
+        const { filteredLessonsList, lessonToSet } = getFilteredLessons({
+            lessonsList,
+            currentLevel,
+            currentLesson,
+            hasLevels: !!currentTask.levels,
+        });
 
-		setCurrentLessonList(filteredLessonsList);
-		if (lessonToSet.address !== currentLesson?.address) {
-			setCurrentLesson(lessonToSet);
-		}
-	}, [
-		currentTask,
-		currentLevel,
-		currentLesson,
-		setCurrentLesson,
-		setCurrentLessonList,
-	]);
+        setCurrentLessonList(filteredLessonsList);
+        if (lessonToSet.address !== currentLesson?.address) {
+            setCurrentLesson(lessonToSet);
+        }
+    }, [
+        currentTask,
+        currentLevel,
+        currentLesson,
+        setCurrentLesson,
+        setCurrentLessonList,
+    ]);
 
     return (
         <>
@@ -95,6 +95,7 @@ export default function ServerSentences() {
                         setLoading={setLoading}
                         setInitialData={setInitialData}
                         resetTrigger={resetTrigger}
+                        currentSource={currentSource}
                     />
                 </div>
             </div>

@@ -10,6 +10,7 @@ import LevelModeBlock from "../components/ui/menuBlocks/LevelModeBlock";
 import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
 import { getFilteredLessons } from "../utils";
 import SourceModeBlock from "../components/ui/menuBlocks/SourceModeBlock";
+import SentencesAiAmountModeBlock from "../components/ui/menuBlocks/SentencesAiAmountModeBlock";
 
 export default function ServerSentencesMenu() {
     const router = useRouter();
@@ -17,6 +18,7 @@ export default function ServerSentencesMenu() {
         currentTask,
         currentLevel,
         currentLesson,
+		currentSource,
         setCurrentLesson,
         setCurrentLessonList,
     } = useContext(ContentContext);
@@ -72,6 +74,7 @@ export default function ServerSentencesMenu() {
                         {currentTask.levels && <LevelModeBlock />}
                         <LessonModeBlock />
 						<SourceModeBlock />
+						{currentSource.value === "ai-generated" && <SentencesAiAmountModeBlock />}
                         <UiButton onClick={menuButtonHandler}>Начать</UiButton>
                     </div>
                 </div>

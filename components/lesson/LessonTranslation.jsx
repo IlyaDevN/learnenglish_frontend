@@ -1,13 +1,13 @@
 import clsx from "clsx";
-import { UiButton } from "../../components/ui/UiButton";
-import { PlayButton } from "../../components/ui/playButton/PlayButton";
-import { ContentField } from "../../components/ui/ContentField";
-import { InputSentenceField } from "../../components/ui/InputSentenceField";
+import { UiButton } from "../ui/UiButton";
+import { PlayButton } from "../ui/playButton/PlayButton";
+import { ContentField } from "../ui/ContentField";
+import { InputSentenceField } from "../ui/InputSentenceField";
 import { useState, useRef, useEffect, useContext } from "react";
-import AudioPlayer from "../../components/ui/AudioPlayer";
+import AudioPlayer from "../ui/AudioPlayer";
 import { getTheSound } from "../../voiceAPI";
 import { ContentContext } from "../../context";
-import TimerButtonBlock from "../../components/ui/TimerButtonsBlock";
+import TimerButtonBlock from "../ui/TimerButtonsBlock";
 import { sendTranslationLog } from "../../utils/api";
 
 export default function LessonTranslation({
@@ -22,6 +22,8 @@ export default function LessonTranslation({
     count,
     setLoading,
     resetTrigger,
+    currentSource,
+	amountOfGeneratedSentences
 }) {
     const [sentences, setSentences] = useState([]);
     const [randomNumber, setRandomNumber] = useState(null);
@@ -121,11 +123,55 @@ export default function LessonTranslation({
         return () => document.removeEventListener("keydown", keydownHandler);
     }, [currentAnswer, handleShowTranslation]);
 
-    function handleNextSentence() {
-        if (!isDataAvailable) {
+	async function handleStart() {
+        if (!currentLesson) {
             return;
         }
-        if (count.current === 0) {
+        if (currentLesson.name == "Mix") {
+            setLoading(true);
+
+            const lessonsAmount = currentLessonList.length - 1;
+            let allTheSentences = [];
+            for (let i = 1; i <= lessonsAmount; i++) {
+                let newLesson = currentLessonList[i];
+
+                const response = await fetch(newLesson.address);
+                const data = await response.json();
+                allTheSentences.push(...data);
+            }
+            setInitialData(allTheSentences);
+            count.current = allTheSentences.length;
+            setIsDataAvailable(true);
+            setLoading(false);
+        } else {
+            setLoading(true);
+            const response = await fetch(currentLesson.address);
+            const data = await response.json();
+			if( currentSource?.value === "ai-generated" && data.length > 0) {
+				const generatedSentences = await generateAiPair(translationDirection, amountOfGeneratedSentences, data);
+				setInitialData(generatedSentences);
+				count.current = generatedSentences.length;
+			}
+			if( currentSource?.value == "base" && data.length > 0) {
+				count.current = data.length;
+				setInitialData(data);
+			}
+            setIsDataAvailable(true);
+            setLoading(false);
+            // textarea_ref.current.focus(); //input autofocus
+        }
+        setIsStarted(true);
+    }
+
+    async function handleNextSentence() {
+        if (!isStarted || !isDataAvailable) {
+            return;
+        }
+		if(isStarted && sentences.length === 0) {
+			alert("Урок окончен. Пожалуйста, начните урок сначала или выберите другой урок.");
+			return;
+		}
+        if (count.current === 0 && currentSource?.value !== "ai-generated") {
             return;
         }
 
@@ -141,10 +187,11 @@ export default function LessonTranslation({
             userTranslation: inputContent,
             isTranslationOpen: isAnswerShown,
             userEmail: currentUser.email,
-            lesson: sentences[randomNumber].lesson,
+            lesson: currentLesson.id,
             level: currentLevel.value,
-            sentenceId:
-                sentences[randomNumber].lesson + sentences[randomNumber].id,
+            sentenceId: currentSource?.value === "ai-generated" 
+				? "AI"
+				: sentences[randomNumber].lesson + sentences[randomNumber].id,
         };
 
         sendTranslationLog(data);
@@ -373,47 +420,72 @@ export default function LessonTranslation({
         setIsStarted(true);
     }
 
-    async function handleStart() {
-        if (!currentLesson) {
-            return;
-        }
-        if (currentLesson.name == "Mix") {
-            setLoading(true);
+	async function generateAiPair(direction, amountOfGeneratedSentences, examplesData = initialData) {
 
-            const lessonsAmount = currentLessonList.length - 1;
-            let allTheSentences = [];
-            for (let i = 1; i <= lessonsAmount; i++) {
-                let newLesson = currentLessonList[i];
+			try {
+				setLoading(true);
 
-                const response = await fetch(newLesson.address);
-                const data = await response.json();
-                allTheSentences.push(...data);
-            }
-            setInitialData(allTheSentences);
-            count.current = allTheSentences.length;
-            setIsDataAvailable(true);
-            setLoading(false);
-        } else {
-            setLoading(true);
-            const response = await fetch(currentLesson.address);
-            const data = await response.json();
-            setInitialData(data);
-            count.current = data.length;
-            setIsDataAvailable(true);
-            setLoading(false);
-            // textarea_ref.current.focus(); //input autofocus
-        }
-        setIsStarted(true);
-    }
+				// Для анализа всегда используем initialData как базу для лексики и грамматики
+				// независимо от того, какой источник выбран для практики.
+				const examplesRu = examplesData // Используем initialData для контекста генерации
+					.map((s) => s.rus_sentence)
+					.join("; ");
+				const examplesEn = examplesData
+					.map((s) => s.eng_sentence)
+					.join("; ");
 
+				// Если initialData пуст, мы не можем генерировать на основе чего-либо
+				if (examplesData.length === 0) {
+					throw new Error("Нет базовых предложений для анализа. Пожалуйста, выберите урок с базовыми предложениями.");
+				}
+
+
+				let prompt;
+				if (direction === "ru-en") {
+					prompt = `Проанализируй следующие пары предложений (русский; английский): ${examplesRu}; ${examplesEn}. Выдели из них все слова, словосочетания, лексику и грамматические конструкции.
+					На основе сделанных выводов сгенерируй ${amountOfGeneratedSentences} НОВЫХ коротких русских предложений.
+					Затем переведи каждое русское предложение на английский язык, используя только те слова, грамматические времена и лексические конструкции, которые были в предоставленных примерах. Предложения не должны в точности совпадать с предложениями из примеров.
+					Весь свой анализ оставь при себе.
+					Ответь мне ТОЛЬКО в формате JSON-массива, где каждый элемент - это объект с двумя полями: "russian" для русского предложения и "english" для английского перевода. Например: [{"russian": "Привет, мир!", "english": "Hello, world!"}, {"russian": "Как дела?", "english": "How are you?"}]`;
+				} else { // direction === "en-ru"
+					prompt = `Проанализируй следующие пары предложений (русский; английский): ${examplesRu}; ${examplesEn}. Выдели из них все слова, словосочетания, лексику и грамматические конструкции.
+					На основе сделанных выводов сгенерируй ${amountOfGeneratedSentences} НОВЫХ коротких английских предложений.
+					Затем переведи каждое английское предложение на русский язык, используя только те слова, грамматические времена и лексические конструкции, которые были в предоставленных примерах. Предложения не должны в точности совпадать с предложениями из примеров.
+					Весь свой анализ оставь при себе.
+					Ответь мне ТОЛЬКО в формате JSON-массива, где каждый элемент - это объект с двумя полями: "russian" для русского предложения и "english" для английского перевода. Например: [{"russian": "Привет, мир!", "english": "Hello, world!"}, {"russian": "Как дела?", "english": "How are you?"}]`;
+				}
+
+				const genRes = await fetch("/api/ai/generate", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ prompt }),
+				});
+				const genData = await genRes.json();
+				console.log("AI generation response:", genData);
+
+				if (!genData.success || !Array.isArray(genData.pairs) || genData.pairs.length === 0) {
+					throw new Error("Ошибка генерации предложений или некорректный формат ответа от AI. Ожидается массив объектов.");
+				}
+
+				const newGeneratedSentences = genData.pairs.map(pair => ({
+					rus_sentence: pair.russian,
+					eng_sentence: pair.english
+				}));
+				console.log("Newly generated sentences:", newGeneratedSentences);
+				return newGeneratedSentences;
+			} catch (e) {
+				alert("Ошибка генерации: " + e.message);
+			}
+		}
+		
     return (
         <>
             <ContentField>
                 {isDataAvailable &&
                     (sentences.length
                         ? translationDirection === "ru-en"
-                            ? sentences[randomNumber].rus_sentence
-                            : sentences[randomNumber].eng_sentence
+                            ? sentences[randomNumber]?.rus_sentence
+                            : sentences[randomNumber]?.eng_sentence
                         : translationDirection === "ru-en"
                         ? "Урок окончен."
                         : "The lesson is over.")}
