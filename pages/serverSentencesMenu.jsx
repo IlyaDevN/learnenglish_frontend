@@ -1,7 +1,7 @@
 // serverSentencesMenu.jsx
 import { UiButton } from "../components/ui/UiButton";
 import { useRouter } from "next/router";
-import { useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import Head from "next/head";
 import DirectionModeBlock from "../components/ui/menuBlocks/DirectionModeBlock";
 import TaskModeBlock from "../components/ui/menuBlocks/TaskModeBlock";
@@ -14,6 +14,7 @@ import SentencesAiAmountModeBlock from "../components/ui/menuBlocks/SentencesAiA
 
 export default function ServerSentencesMenu() {
     const router = useRouter();
+	const [isMobile, setIsMobile] = useState(false);
     const {
         currentTask,
         currentLevel,
@@ -23,10 +24,20 @@ export default function ServerSentencesMenu() {
         setCurrentLessonList,
     } = useContext(ContentContext);
 
+	useEffect(() => {
+		function handleResize() {
+			setIsMobile(window.innerWidth < 768); 
+		};
+
+		handleResize();
+
+		window.addEventListener('resize', handleResize);
+
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
     function menuButtonHandler() {
 		if(currentSource.value === "ai-generated" && (currentTask.name === "orange playlist" || currentLesson.name === "Mix")) {
-			console.log(currentTask.name);
-			console.log(currentLesson.name);
 			alert("AI недоступен для плейлиста 'ORANGE PLAYLIST' и уроков 'MIX'.");
 			return;
 		}

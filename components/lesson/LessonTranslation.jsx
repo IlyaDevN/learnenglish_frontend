@@ -36,6 +36,7 @@ export default function LessonTranslation({
         isSoundOn,
         isTimerOn,
         currentUser,
+		currentTask,
         currentLevel,
         currentLessonList,
         currentLesson,
@@ -97,6 +98,8 @@ export default function LessonTranslation({
     //     }
     // }, []);
 
+	console.log(currentSource);
+
     useEffect(() => {
         if (currentAnswer) {
             handleShowTranslation();
@@ -127,6 +130,12 @@ export default function LessonTranslation({
         if (!currentLesson) {
             return;
         }
+
+		if(currentSource.value === "ai-generated" && (currentTask.name === "orange playlist" || currentLesson.name === "Mix")) {
+			alert("AI недоступен для плейлиста 'ORANGE PLAYLIST' и уроков 'MIX'.");
+			return;
+		}
+
         if (currentLesson.name == "Mix") {
             setLoading(true);
 
