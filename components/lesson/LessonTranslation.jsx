@@ -350,7 +350,7 @@ export default function LessonTranslation({
                 if (translationDirection === "ru-en") {
                     return "The lesson is over";
                 } else {
-                    return "Конец";
+                    return "Урок окончен";
                 }
             }
         }
