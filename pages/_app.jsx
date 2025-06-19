@@ -69,6 +69,7 @@ export default function App({ Component, pageProps }) {
     const [isTimerOn, setIsTimerOn] = useState(false);
     const [isSettingsOn, setIsSettingsOn] = useState(false);
     const [translationDirection, setTranslationDirection] = useState(INITIAL_DIRECTION.value);
+	const [isMobile, setIsMobile] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -104,6 +105,18 @@ export default function App({ Component, pageProps }) {
         setCurrentPage(router.pathname);
     }, [router]);
 
+	useEffect(() => {
+		function handleResize() {
+			setIsMobile(window.innerWidth < 768); 
+		};
+
+		handleResize();
+
+		window.addEventListener('resize', handleResize);
+
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
     return (
         <div className={`${sourceSans3Local.variable} font-sans`}>
             <ContentContext.Provider
@@ -138,6 +151,8 @@ export default function App({ Component, pageProps }) {
                     setIsTimerOn,
                     isSettingsOn,
                     setIsSettingsOn,
+					isMobile, 
+					setIsMobile
                 }}
             >
                 <Layout>

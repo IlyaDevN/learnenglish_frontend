@@ -1,11 +1,13 @@
 // components/CustomDropdown.jsx
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import { ContentContext } from "../../context";
 
 export default function CustomDropdown({ options, initialValue, onChange }) {
 	const router = useRouter();
 	const currentPath = router.asPath;
+	const { isMobile } = useContext(ContentContext);
     const [selectedValue, setSelectedValue] = useState(
         initialValue || options[0]?.name
     );
@@ -52,9 +54,9 @@ export default function CustomDropdown({ options, initialValue, onChange }) {
     return (
         <details ref={detailsRef} className="relative w-full font-sans">
             <summary className={clsx("flex justify-between items-center bg-stone-100 border-2 border-amber-800 rounded-lg cursor-pointer text-xl uppercase text-amber-800 font-bold outline-none list-none",
-				currentPath === "/serverSentences"
-				? "p-1.5"
-				: "p-3.5"
+				currentPath === "/serverSentencesMenu" && isMobile && "p-1.5",
+				currentPath === "/serverSentencesMenu" && !isMobile && "p-3.5",
+				currentPath === "/serverSentences" &&  "p-1.5",
 			)}>
                 <span className="flex-grow">{selectedValue}</span>
                 <svg

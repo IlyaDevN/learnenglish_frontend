@@ -11,10 +11,10 @@ import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
 import { getFilteredLessons } from "../utils";
 import SourceModeBlock from "../components/ui/menuBlocks/SourceModeBlock";
 import SentencesAiAmountModeBlock from "../components/ui/menuBlocks/SentencesAiAmountModeBlock";
+import clsx from "clsx";
 
 export default function ServerSentencesMenu() {
     const router = useRouter();
-	const [isMobile, setIsMobile] = useState(false);
     const {
         currentTask,
         currentLevel,
@@ -22,19 +22,10 @@ export default function ServerSentencesMenu() {
 		currentSource,
         setCurrentLesson,
         setCurrentLessonList,
+		isMobile
     } = useContext(ContentContext);
 
-	useEffect(() => {
-		function handleResize() {
-			setIsMobile(window.innerWidth < 768); 
-		};
-
-		handleResize();
-
-		window.addEventListener('resize', handleResize);
-
-		return () => window.removeEventListener('resize', handleResize);
-	}, []);
+	
 
     function menuButtonHandler() {
 		if(currentSource.value === "ai-generated" && (currentTask.name === "orange playlist" || currentLesson.name === "Mix")) {
@@ -81,8 +72,16 @@ export default function ServerSentencesMenu() {
                 />
             </Head>
             <div className="px-4">
-                <div className="w-full max-w-4xl mx-auto bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80">
-                    <div className="flex flex-col items-center gap-5">
+                <div className={clsx("w-full max-w-4xl mx-auto bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 bg-opacity-80",
+					isMobile
+					? "py-2"
+					: "py-6"
+				)}>
+                    <div className={clsx("flex flex-col items-center",
+						isMobile
+						? "gap-3"
+						: "gap-5"
+					)}>
                         <p className="text-2xl font-black text-yellow-900 uppercase">
                             выберите задание
                         </p>

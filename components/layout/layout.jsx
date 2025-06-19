@@ -1,14 +1,15 @@
 import Image from "next/image";
 import bgSrc from "./bg.jpg";
-// import { ContentContext } from "../../context";
-// import { useContext } from "react";
+import { ContentContext } from "../../context";
+import { useContext } from "react";
 import Header from "../Header";
 import ModalMenu from "../ModalMenu";
 import ModalMenuSettings from "../ModalMenuSettings";
 import Footer from "../Footer";
+import clsx from "clsx";
 
 export default function Layout({ children }) {
-//   const { isAuth } = useContext(ContentContext);
+  const { isMobile } = useContext(ContentContext);
 
   return (
     <div className="h-screen flex flex-col">
@@ -17,14 +18,16 @@ export default function Layout({ children }) {
         src={bgSrc}
         alt="background"
       />
-	  {/* {isAuth && <Header/>} */}
 	  <Header/>
-	  <main className="mt-20 w-full">
+	  <main className={clsx("w-full",
+		isMobile
+		? "mt-[72px]"
+		: "mt-20"
+	  )}>
 	  {children}
 	  </main>
 	  <ModalMenu />
 	  <ModalMenuSettings />
-	  {/* {isAuth && <Footer/>} */}
 	  <Footer/>
     </div>
   );

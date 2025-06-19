@@ -98,8 +98,6 @@ export default function LessonTranslation({
     //     }
     // }, []);
 
-	console.log(currentSource);
-
     useEffect(() => {
         if (currentAnswer) {
             handleShowTranslation();
