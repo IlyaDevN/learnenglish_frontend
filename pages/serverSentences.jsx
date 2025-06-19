@@ -7,6 +7,7 @@ import { ContentContext } from "../context";
 import LevelModeBlock from "../components/ui/menuBlocks/LevelModeBlock";
 import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
 import { getFilteredLessons } from "../utils";
+import clsx from "clsx";
 
 export default function ServerSentences() {
     const [initialData, setInitialData] = useState();
@@ -23,6 +24,7 @@ export default function ServerSentences() {
         setCurrentLesson,
         setCurrentLessonList,
         currentSource,
+		isMobile
     } = useContext(ContentContext);
 
     useEffect(() => {
@@ -63,7 +65,9 @@ export default function ServerSentences() {
                 />
             </Head>
             <div className="px-4">
-                <div className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 pb-3.5 pt-1 flex gap-4 bg-opacity-80 mb-6">
+                <div className={clsx("w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 pb-3.5 pt-1 flex gap-4 bg-opacity-80",
+					isMobile ? "mb-4" : "mb-6"
+				)}>
                     <div className="w-full flex justify-between items-end">
                         {currentTask.levels && (
                             <LevelModeBlock
