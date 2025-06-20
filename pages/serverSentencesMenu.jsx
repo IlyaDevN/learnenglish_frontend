@@ -28,8 +28,12 @@ export default function ServerSentencesMenu() {
 	
 
     function menuButtonHandler() {
-		if(currentSource.value === "ai-generated" && (currentTask.name === "orange playlist" || currentLesson.name === "Mix")) {
-			alert("AI недоступен для плейлиста 'ORANGE PLAYLIST' и уроков 'MIX'.");
+		if(currentSource.value === "ai-generated" && (
+			currentTask.name === "orange playlist" || 
+			currentLesson.name === "Mix" ||
+			currentLesson.name === "скоро"
+		)) {
+			alert("AI недоступен для плейлиста 'ORANGE PLAYLIST', уроков 'MIX' и уроков в разработке ('скоро').");
 			return;
 		}
         router.push("/serverSentences");
