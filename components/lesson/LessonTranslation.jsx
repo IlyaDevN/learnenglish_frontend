@@ -412,6 +412,9 @@ export default function LessonTranslation({
     }
 
     function handleReset() {
+		if(!isStarted){
+			return;
+		}
         if (!confirm("Вы действительно хотите начать сначала?")) {
             return;
         }
@@ -535,15 +538,20 @@ export default function LessonTranslation({
                     isDataAvailable={isDataAvailable}
                     playSoundQuestion={playSoundQuestion}
                     isSoundOn={isSoundOn}
+					loadSentencesAndStart={handleStart}
+					handleReset={handleReset}
+					resetTrigger={resetTrigger}
                 />
             ) : (
                 <UiButton onClick={handleNextSentence}>
                     Следующее предложение
                 </UiButton>
             )}
-            <UiButton onClick={isStarted ? handleReset : handleStart}>
-                {isStarted ? "Начать сначала" : "Начать"}
-            </UiButton>
+			{!isTimerOn && (
+                <UiButton onClick={isStarted ? handleReset : handleStart}>
+                    {isStarted ? "Начать сначала" : "Начать"}
+                </UiButton>
+            )}
             <AudioPlayer src={questionAudioSrc} audioRef={audioRefQuestion} />
             <AudioPlayer src={answerAudioSrc} audioRef={audioRefAnswer} />
         </>

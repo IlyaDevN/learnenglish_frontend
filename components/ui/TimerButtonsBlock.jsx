@@ -9,11 +9,15 @@ export default function TimerButtonBlock({
     isDataAvailable,
     playSoundQuestion,
     isSoundOn,
+	loadSentencesAndStart,
+	handleReset,
+	resetTrigger
 }) {
     const [timerTimeout, setTimerTimeout] = useState(18);
     const [timerCount, setTimerCount] = useState(timerTimeout);
     const [timeInterval, setTimeInterval] = useState(null);
-    const [isStarted, setIsStarted] = useState(false);
+    const [isTimerStarted, setIsTimerStarted] = useState(false);
+	const [isTimerPaused, setIsTimerPaused] = useState(false);
     const [sentenceChangeState, setSentenceChangeState] = useState(true);
     const [translationChangeState, setTranslationChangeState] = useState(true);
     const [color, setColor] = useState("");
@@ -39,7 +43,7 @@ export default function TimerButtonBlock({
     useEffect(() => {
         resetTimer();
         setTimerCount(timerTimeout);
-    }, [timerTimeout]);
+    }, [timerTimeout, resetTrigger]);
 
     useEffect(() => {
         let isEnableNoSleep = false;
@@ -60,17 +64,19 @@ export default function TimerButtonBlock({
         };
     }, []);
 
-    const startTimer = () => {
+    async function startTimer() {
         if (!isDataAvailable) {
-            alert("Выберите уровень, а затем урок");
-            return;
+        	await loadSentencesAndStart();
         }
 
-        if (isStarted) {
-            return;
-        }
+		if(timeInterval && !isTimerPaused){
+			pauseTimer();
+			setIsTimerPaused(true);
+			return;
+		}
 
-        setIsStarted(true);
+        setIsTimerStarted(true);
+		setIsTimerPaused(false);
 
         if (isSoundOn) {
             playSoundQuestion();
@@ -92,14 +98,14 @@ export default function TimerButtonBlock({
         );
     };
 
-    //   const pauseTimer = () => {
-    //     clearInterval(timeInterval);
-    //   };
+      const pauseTimer = () => {
+        clearInterval(timeInterval);
+      };
 
-    const resetTimer = () => {
+    function resetTimer() {
         setTimerCount(timerTimeout);
         clearInterval(timeInterval);
-        setIsStarted(false);
+        setIsTimerStarted(false);
     };
 
     function increaseTime() {
@@ -126,25 +132,30 @@ export default function TimerButtonBlock({
 
     return (
         <div className="flex gap-4 flex-col">
+            
             <div className="flex justify-between">
-                <UiButton className="min-w-[100px]" onClick={startTimer}>
-                    Старт
+				<UiButton className={"w-14"} onClick={increaseTime}>
+                    +
                 </UiButton>
-                {/* <UiButton onClick={pauseTimer}>Pause</UiButton> */}
                 <Counter value={timerCount} className={"w-14"} bg={color} />
-                <UiButton className="min-w-[100px]" onClick={resetTimer}>
-                    Стоп
-                </UiButton>
-            </div>
-            <div className="flex justify-between">
                 <UiButton className={"w-14"} onClick={decreaseTime}>
                     -
                 </UiButton>
-                <div className="flex justify-center items-center bg-white px-4 border-4 rounded-full border-yellow-400 text-xl text-yellow-900 uppercase">
-                    Таймер
-                </div>
-                <UiButton className={"w-14"} onClick={increaseTime}>
-                    +
+            </div>
+			<div className="flex justify-between">
+                <UiButton className="min-w-[100px]" onClick={startTimer}>
+                    {isTimerStarted 
+						? isTimerPaused
+							? "Старт"
+							: "Пауза"
+						: "Старт"
+					}
+                </UiButton>
+				<UiButton className="min-w-[100px]" onClick={handleReset}>
+                    Сначала
+                </UiButton>
+                <UiButton className="min-w-[100px]" onClick={resetTimer}>
+                    Стоп
                 </UiButton>
             </div>
         </div>
