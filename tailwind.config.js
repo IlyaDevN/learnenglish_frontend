@@ -10,6 +10,9 @@ module.exports = {
 		fontFamily: {
         	sans: ['var(--font-source-sans-3)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       	},
+		fontSize: {
+        'default-base': '16px',
+        },
 		lineHeight: {
 			"tight": "1.2",
 		},
