@@ -22,8 +22,11 @@ export function SettingsButton({ className }) {
   return (
     <button
       className={clsx(
-        isModalSettingsActive ? "bg-gradient-to-br from-light_blue to-dark_blue" : "bg-gradient-to-br from-light_green to-dark_green",
-        "p-1 border-4 border-yellow-400 rounded-full",
+		"p-1 border-4 border-yellow-400 rounded-full",
+		"transition-opacity duration-500 ease-in-out",
+        isModalSettingsActive 
+			? "bg-gradient-to-br from-light_blue to-dark_blue" 
+			: "bg-gradient-to-br from-light_green to-dark_green",
 		isModalActive
 			? "opacity-0 pointer-events-none"
 			: "opacity-100",
