@@ -80,5 +80,5 @@ jobs:
             cd /var/www/learnenglish_frontend
             git pull origin master
             npm install
-            NEXT_PUBLIC_DROP_CONSOLE=true npm run build
+            export NEXT_PUBLIC_DROP_CONSOLE=true && npm run build
             sudo systemctl restart nextjs.service
