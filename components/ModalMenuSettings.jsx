@@ -23,7 +23,7 @@ export default function ModalMenuSettings() {
       <div
         className={clsx(
 			isModalSettingsActive ? "translate-x-0" : "translate-x-full",
-          "w-full h-full bg-lime-500 opacity-80 fixed top-14 left-0 transition-transform duration-500"
+          "w-full h-full bg-green_80_mate fixed top-14 left-0 transition-transform duration-500"
         )}
 		style={{ height: modalHeight }}
       >

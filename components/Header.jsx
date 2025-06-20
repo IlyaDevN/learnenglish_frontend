@@ -33,7 +33,7 @@ export default function Header() {
   return (
     <header
       className={clsx(
-        "fixed flex justify-center items-center top-0 w-full h-14 px-4 bg-lime-500 bg-opacity-80",
+        "fixed flex justify-center items-center top-0 w-full h-14 px-4 bg-green_80_mate z-10",
       )}
     >
       <div className="w-full max-w-4xl flex justify-between items-center">
