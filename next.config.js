@@ -5,9 +5,8 @@ const nextConfig = {
     styledComponents: true
   },
 
-  output: 'export',
-
   webpack(config, { isServer, dev }) {
+    // Правило для аудиофайлов (остается без изменений)
     config.module.rules.push({
       test: /\.(ogg|mp3|wav|mpe?g)$/i,
       use: [
