@@ -42,6 +42,7 @@ export default function TimerButtonBlock({
 
     useEffect(() => {
         resetTimer();
+		setIsTimerPaused(false);
         setTimerCount(timerTimeout);
     }, [timerTimeout, resetTrigger]);
 
@@ -68,10 +69,9 @@ export default function TimerButtonBlock({
         if (!isDataAvailable) {
         	await loadSentencesAndStart();
         }
-
-		if(timeInterval && !isTimerPaused){
+		
+		if(isTimerStarted && !isTimerPaused){
 			pauseTimer();
-			setIsTimerPaused(true);
 			return;
 		}
 
@@ -100,6 +100,7 @@ export default function TimerButtonBlock({
 
       const pauseTimer = () => {
         clearInterval(timeInterval);
+		setIsTimerPaused(true);
       };
 
     function resetTimer() {
