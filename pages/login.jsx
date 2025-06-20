@@ -3,6 +3,8 @@ import { UiButton } from "../components/ui/UiButton";
 import { sendLoginRequest } from "../utils/api";
 import InputBlock from "../components/ui/InputBlock";
 import Head from 'next/head';
+import LoginButton from "../components/ui/LoginButton";
+import RegisterButton from "../components/ui/RegisterButton";
 
 export default function Login() {
     const router = useRouter();
@@ -69,9 +71,11 @@ export default function Login() {
         <div className="px-4">
             <div
                 className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80">
-                <p className="text-center mb-7 text-2xl font-black text-yellow-900 uppercase">
-                    вход
-                </p>
+                <div className="flex justify-around">
+					<LoginButton/>
+					<RegisterButton/>
+				</div>
+				
                 <form
 					className="w-full flex flex-col gap-5 bg-opacity-80 mb-5"
 					name="authForm"
@@ -92,9 +96,6 @@ export default function Login() {
 						войти
 					</UiButton>
 				</form>
-				<UiButton className={"w-full mb-5"} onClick={() => router.push("/register")}>
-                    регистрация
-				</UiButton>
 				<UiButton className={"w-full"} onClick={guestLogin}>
 					гостевой режим
 				</UiButton>

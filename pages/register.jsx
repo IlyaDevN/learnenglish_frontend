@@ -4,6 +4,8 @@ import { sendRegistrationRequest } from "../utils/api";
 import InputBlock from "../components/ui/InputBlock";
 import Link from "next/link";
 import Head from 'next/head';
+import RegisterButton from "../components/ui/RegisterButton";
+import LoginButton from "../components/ui/LoginButton";
 
 export default function Register() {
     const router = useRouter();
@@ -64,9 +66,10 @@ export default function Register() {
         <div className="px-4">
             <div
                 className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-8 bg-opacity-80">
-                <p className="text-center mb-7 text-2xl font-black text-yellow-900 uppercase">
-                    регистрация
-                </p>
+                <div className="flex justify-around">
+					<LoginButton/>
+					<RegisterButton/>
+				</div>
                 <form
                     className="w-full flex flex-col gap-5 bg-opacity-80"
                     name="registerForm"
