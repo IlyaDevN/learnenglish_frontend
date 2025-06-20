@@ -11,14 +11,14 @@ export default function Header() {
   const router = useRouter();
 
   function changeModalState() {
-	if(isModalSettingsActive) {
-		setIsModalSettingsActive(false);
-		setTimeout(() => {
-			setIsModalActive(true);
-		}, 500)
-	} else {
+	// if(isModalSettingsActive) {
+	// 	setIsModalSettingsActive(false);
+	// 	setTimeout(() => {
+	// 		setIsModalActive(true);
+	// 	}, 500)
+	// } else {
 		setIsModalActive(!isModalActive);
-	}
+	// }
   }
 
   function moveBack() {

@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { ContentContext } from "../../../context";
 
 export function TimerButton({ className }) {
-  const { isTimerOn, setIsTimerOn } = useContext(ContentContext);
+  const { isTimerOn, setIsTimerOn, isModalActive, isModalSettingsActive } = useContext(ContentContext);
 
   function buttonHandler() {
 	setIsTimerOn(!isTimerOn);
@@ -15,8 +15,10 @@ export function TimerButton({ className }) {
   return (
     <button
       className={clsx(
+		"p-1 border-4 border-yellow-400 rounded-full",
+		"transition-opacity duration-500 ease-in-out",
         isTimerOn ? "bg-gradient-to-br from-light_blue to-dark_blue" : "bg-gradient-to-br from-light_green to-dark_green",
-        "p-1 border-4 border-yellow-400 rounded-full",
+        isModalActive || isModalSettingsActive ? "opacity-0 pointer-events-none" : "opacity-100",
         className,
       )}
       onClick={buttonHandler}

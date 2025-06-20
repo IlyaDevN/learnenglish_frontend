@@ -3,11 +3,17 @@ import { ContentContext } from "../../context";
 import { useContext } from "react";
 
 export default function BurgerButton({ onClick }) {
-  const { isModalActive } = useContext(ContentContext);
+  const { isModalActive, isModalSettingsActive } = useContext(ContentContext);
 
   return (
     <button
-      className="w-6 h-6 flex flex-col justify-center items-center gap-[3px]"
+      className={clsx(
+		"w-6 h-6 flex flex-col justify-center items-center gap-[3px]",
+		"transition-opacity duration-500 ease-in-out",
+		isModalSettingsActive
+			? "opacity-0 pointer-events-none"
+			: "opacity-100",
+	)}
       onClick={onClick}
     >
       <div

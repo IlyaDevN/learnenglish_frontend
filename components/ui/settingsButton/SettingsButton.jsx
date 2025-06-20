@@ -9,14 +9,14 @@ export function SettingsButton({ className }) {
   const { isModalSettingsActive, setIsModalSettingsActive, isModalActive, setIsModalActive } = useContext(ContentContext);
 
   function buttonHandler() {
-	if(isModalActive) {
-		setIsModalActive(false);
-		setTimeout(() => {
-			setIsModalSettingsActive(true);
-		}, 500)
-	} else {
+	// if(isModalActive) {
+	// 	setIsModalActive(false);
+	// 	setTimeout(() => {
+	// 		setIsModalSettingsActive(true);
+	// 	}, 500)
+	// } else {
 		setIsModalSettingsActive(!isModalSettingsActive);
-	}
+	// }
   }
 
   return (
@@ -24,6 +24,9 @@ export function SettingsButton({ className }) {
       className={clsx(
         isModalSettingsActive ? "bg-gradient-to-br from-light_blue to-dark_blue" : "bg-gradient-to-br from-light_green to-dark_green",
         "p-1 border-4 border-yellow-400 rounded-full",
+		isModalActive
+			? "opacity-0 pointer-events-none"
+			: "opacity-100",
         className,
       )}
       onClick={buttonHandler}

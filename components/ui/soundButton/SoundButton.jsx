@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { ContentContext } from "../../../context";
 
 export function SoundButton({ className }) {
-  const { isSoundOn, setIsSoundOn } = useContext(ContentContext);
+  const { isSoundOn, setIsSoundOn, isModalActive, isModalSettingsActive } = useContext(ContentContext);
 
   function buttonHandler() {
     setIsSoundOn(!isSoundOn);
@@ -15,10 +15,14 @@ export function SoundButton({ className }) {
   return (
     <button
       className={clsx(
+		"p-1 border-4 border-yellow-400 rounded-full",
+		"transition-opacity duration-500 ease-in-out",
         isSoundOn
           ? "bg-gradient-to-br from-light_blue to-dark_blue"
           : "bg-gradient-to-br from-light_green to-dark_green",
-        "p-1 border-4 border-yellow-400 rounded-full",
+		isModalActive || isModalSettingsActive
+		  ? "opacity-0 pointer-events-none"
+		  : "opacity-100",
         className,
       )}
       onClick={buttonHandler}
