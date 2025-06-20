@@ -4,7 +4,10 @@ const nextConfig = {
   compiler: {
     styledComponents: true
   },
-  webpack(config, options) {
+
+  output: 'export',
+
+  webpack(config, { isServer, dev }) {
     config.module.rules.push({
       test: /\.(ogg|mp3|wav|mpe?g)$/i,
       use: [
@@ -16,6 +19,17 @@ const nextConfig = {
         },
       ],
     });
+
+    const shouldDropConsole = !dev && process.env.NEXT_PUBLIC_DROP_CONSOLE === 'true';
+
+    if (shouldDropConsole) {
+      config.optimization.minimizer.forEach((minimizer) => {
+        if (minimizer.constructor.name === 'TerserPlugin') {
+          minimizer.options.terserOptions.compress.drop_console = true;
+        }
+      });
+    }
+
     return config;
   },
 };
