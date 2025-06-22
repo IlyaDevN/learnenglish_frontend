@@ -8,6 +8,9 @@ import LevelModeBlock from "../components/ui/menuBlocks/LevelModeBlock";
 import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
 import { getFilteredLessons } from "../utils";
 import clsx from "clsx";
+import Image from "next/image";
+import bgTranslation from "../img/bgTranslation.svg"
+import CircleBg from "../components/ui/CircleBg";
 
 export default function ServerSentences() {
     const [initialData, setInitialData] = useState();
@@ -86,7 +89,19 @@ export default function ServerSentences() {
                         />
                     </div>
                 </div>
-                <div className="w-full max-w-4xl mx-auto align-middle bg-orange-100 border-4 border-s-gray-100 rounded-2xl px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80">
+                <div className="relative w-full max-w-4xl mx-auto align-middle border-t-4 border-b-4 border-brown px-3.5 py-3.5 flex flex-col gap-4 bg-opacity-80 z-0">
+					<CircleBg className={"-left-[6px] -top-2"}/>
+					<CircleBg className={"-right-[6px] -top-2"}/>
+					<CircleBg className={"-left-[6px] -bottom-2"}/>
+					<CircleBg className={"-right-[6px] -bottom-2"}/>
+					<Image
+						src={bgTranslation}
+						alt="Фон"
+						layout="fill"
+						objectFit="cover"
+						// quality={100}
+						className="absolute inset-0"
+					/>
                     <LessonTranslation
                         initialData={initialData}
                         isDataAvailable={isDataAvailable}

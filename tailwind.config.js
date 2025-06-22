@@ -23,8 +23,17 @@ module.exports = {
 			"dark_green": "#58AA2C",
 			"light_yellow": "#FAE355",
 			"dark_yellow": "#D49D26",
+			"brown": "#694A04",
 			"green_80_mate": "rgba(112, 184, 57, 0.8)"
-		}
+		},
+		backgroundImage: {
+			'radial-gradient-yellow': 'radial-gradient(at center, var(--tw-gradient-stops))',
+			'gradient-yellow-stops': 'var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%',
+		},
+		gradientColorStops: theme => ({
+			'gradient-yellow-from': '#D49D26',
+			'gradient-yellow-to': '#FAE355',
+		}),
 	}
   },
   plugins: [],

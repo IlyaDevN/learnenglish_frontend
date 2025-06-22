@@ -11,6 +11,7 @@ import TimerButtonBlock from "../ui/TimerButtonsBlock";
 import { sendTranslationLog } from "../../utils/api";
 
 export default function LessonTranslation({
+	className,
     initialData,
     setInitialData,
     isDataAvailable,
@@ -491,7 +492,7 @@ export default function LessonTranslation({
 		}
 		
     return (
-        <>
+        <div className="relative z-10 flex flex-col gap-4">
             <ContentField>
                 {isDataAvailable &&
                     (sentences.length
@@ -554,6 +555,6 @@ export default function LessonTranslation({
             )}
             <AudioPlayer src={questionAudioSrc} audioRef={audioRefQuestion} />
             <AudioPlayer src={answerAudioSrc} audioRef={audioRefAnswer} />
-        </>
+        </div>
     );
 }
