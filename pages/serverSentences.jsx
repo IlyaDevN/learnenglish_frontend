@@ -9,7 +9,7 @@ import LessonModeBlock from "../components/ui/menuBlocks/LessonModeBlock";
 import { getFilteredLessons } from "../utils";
 import clsx from "clsx";
 import Image from "next/image";
-import bgTranslation from "../img/bgTranslation.svg"
+import bgTranslation from "../img/bgTranslation.png"
 import CircleBg from "../components/ui/CircleBg";
 
 export default function ServerSentences() {
