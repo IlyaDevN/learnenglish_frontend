@@ -516,7 +516,7 @@ export default function LessonTranslation({
                 <UiButton
                     className={clsx(
                         currentAnswer &&
-                            "pr-14 text-left text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 ",
+                            "pr-14 text-left text-lg text-yellow-900 font-normal normal-case bg-white bg-opacity-50 pointer-events-none",
                         "w-full min-h-[84px] h-auto rounded-lg",
                     )}
                     onClick={handleShowTranslation}
