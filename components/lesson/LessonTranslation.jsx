@@ -239,6 +239,7 @@ export default function LessonTranslation({
         if (isSoundOn) {
             getSoundAnswer();
         }
+		setIsAnswerShown(true);
     }
 
     useEffect(() => {
