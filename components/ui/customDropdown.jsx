@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import { ContentContext } from "../../context";
 
-export default function CustomDropdown({ options, initialValue, onChange }) {
+export default function CustomDropdown({ options, initialValue, onChange, className }) {
 	const router = useRouter();
 	const currentPath = router.asPath;
 	const { isMobile } = useContext(ContentContext);
@@ -72,7 +72,9 @@ export default function CustomDropdown({ options, initialValue, onChange }) {
                     />
                 </svg>
             </summary>
-            <div className="uppercase absolute top-full left-0 right-0 bg-stone-100 border border-amber-800 border-t-0 rounded-b-lg shadow-md z-10 max-h-48 overflow-y-auto">
+            <div className={clsx("uppercase absolute top-full left-0 right-0 bg-stone-100 border border-amber-800 border-t-0 rounded-b-lg shadow-md z-10 max-h-48 overflow-y-auto", 
+				className
+			)}>
                 {options?.map((option) => (
                     <div
                         key={option.value || option.id}
