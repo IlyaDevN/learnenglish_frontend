@@ -83,10 +83,10 @@ export default function ServerSentencesMenu() {
 				)}>
                     <div className={clsx("flex flex-col items-center",
 						isMobile
-						? "gap-3"
+						? "gap-2"
 						: "gap-5"
 					)}>
-                        <p className="text-2xl font-black text-yellow-900 uppercase">
+                        <p className="text-2xl font-black text-yellow-900 uppercase leading-4">
                             выберите задание
                         </p>
                         <DirectionModeBlock />

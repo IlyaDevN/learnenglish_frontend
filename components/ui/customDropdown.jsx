@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import { ContentContext } from "../../context";
 
-export default function CustomDropdown({ options, initialValue, onChange, className }) {
+export default function CustomDropdown({ options, initialValue, onChange, isLastLine = false }) {
 	const router = useRouter();
 	const currentPath = router.asPath;
 	const { isMobile } = useContext(ContentContext);
@@ -73,17 +73,20 @@ export default function CustomDropdown({ options, initialValue, onChange, classN
                 </svg>
             </summary>
             <div className={clsx("uppercase absolute top-full left-0 right-0 bg-stone-100 border border-amber-800 border-t-0 rounded-b-lg shadow-md z-10 max-h-48 overflow-y-auto", 
-				className
+				isLastLine && !isMobile && "max-h-[7rem]",
+				isLastLine && isMobile && "max-h-[7.5rem]"
 			)}>
                 {options?.map((option) => (
                     <div
                         key={option.value || option.id}
-                        className={`p-2.5 cursor-pointer text-amber-800 text-xl
-                        ${
+                        className={clsx("cursor-pointer text-amber-800 text-xl",
+							currentPath === "/serverSentencesMenu" && isMobile && "p-1.5",
+							currentPath === "/serverSentencesMenu" && !isMobile && "p-3.5",
+							currentPath === "/serverSentences" &&  "p-1.5",
                             option.name === selectedValue
                                 ? "bg-amber-100 font-semibold"
                                 : "hover:bg-stone-200"
-                        }`}
+						)}
                         onClick={(e) => handleOptionClick(e, option)}
                     >
                         {option.name}

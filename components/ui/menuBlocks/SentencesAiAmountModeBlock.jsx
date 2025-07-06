@@ -25,7 +25,7 @@ export default function SentencesAiAmountModeBlock() {
 				initialValue={amountOfGeneratedSentences.name}
 				options={AMOUNT_OF_SENTENCES_TO_GENERATE}
 				onChange={handleChange}
-				className={"max-h-24"}
+				isLastLine={true}
 			/>
 		</div>
 	);
