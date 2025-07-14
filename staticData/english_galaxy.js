@@ -294,6 +294,12 @@ export const english_galaxy = [
 		address: "https://ilyadevn.github.io/JsonApi/english_galaxy/A0/lesson_48.json"
 	},
 	{	
+		id: 49,
+		level: "A0",
+		name: "Урок 49",
+		address: "https://ilyadevn.github.io/JsonApi/english_galaxy/A0/lesson_49.json"
+	},
+	{	
 		id: 4000,
 		level: "B1",
 		name: "Mix",
