@@ -140,7 +140,7 @@ export default function LessonTranslation({
 
             const lessonsAmount = currentLessonList.length - 1;
             let allTheSentences = [];
-            for (let i = 1; i <= lessonsAmount; i++) {
+            for (let i = 0; i < lessonsAmount; i++) { //i < lessonsAmount (<, а не <=, т.к. последний элемент массива - это объект с полями MIX для каждого уровня)
                 let newLesson = currentLessonList[i];
 
                 const response = await fetch(newLesson.address);
